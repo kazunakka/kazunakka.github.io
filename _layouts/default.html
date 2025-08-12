@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page.title }}</title>
+    <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+</head>
+<body>
+    <header>
+        <h1>アプリ総合窓口</h1>
+        <nav>
+            <ul>
+                <li><a href="#meditation-timer">瞑想タイマー</a></li>
+                <li><a href="#ton-tsu-game">トンツーゲーム</a></li>
+                <li><a href="#support-qa">サポート・Q&A</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        {{ content }}
+    </main>
+
+    <footer>
+        <p>&copy; 2025 アプリ制作チーム</p>
+    </footer>
+</body>
+</html>
