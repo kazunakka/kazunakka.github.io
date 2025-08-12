@@ -2,8 +2,8 @@ title: アプリ総合窓口
 email: your-email@example.com
 description: >
   アプリのサポート・紹介サイトです。
-baseurl: ""
-url: ""
+baseurl: "/kazunakka-repo"  # ← これを追加（リポジトリ名）
+url: "https://kazunakka.github.io"  # ← これを追加（GitHubユーザー名）
 # theme: minima
 # plugins:
 #   - jekyll-feed
