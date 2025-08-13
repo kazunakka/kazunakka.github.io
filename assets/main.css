@@ -95,6 +95,24 @@ section h2 {
     margin: 0 auto 20px; /* 中央に配置し、下部に余白を追加 */
 }
 
+/* スマートフォン向けのスタイル */
+@media screen and (max-width: 600px) {
+  section {
+    text-align: initial; /* 親要素のテキスト配置をリセット */
+  }
+  section h2 {
+    text-align: center;
+  }
+  .detail-link, .x-link {
+    display: block;
+    margin: 0 auto 10px;
+    text-align: center;
+  }
+  section p {
+    text-align: left;
+  }
+}
+
 /* フッター */
 footer {
     text-align: center;

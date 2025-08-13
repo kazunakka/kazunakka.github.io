@@ -4,7 +4,7 @@ title: アプリ総合窓口
 ---
 <section id="meditation-timer">
     <img src="images/meditation_timer/meditation_timer_icon.png" alt="瞑想タイマーのアイコン" class="app-icon">
-    <h2>瞑想タイマー</h2>
+    <h2>瞑想タイマー 〜わたし時間</h2>
     <p>使いやすいインターフェースと穏やかなサウンドで、あなたの瞑想をサポートします。</p>
     <a href="meditation_timer.html" class="detail-link">詳細を見る</a>
 </section>
