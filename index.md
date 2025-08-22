@@ -2,10 +2,17 @@
 layout: default
 title: アプリ総合窓口
 ---
+<section id="site-intro">
+    <h2>このサイトについて</h2>
+    <p>このサイトでは、わたしが個人的に開発したアプリを紹介しています。<br>
+        日々の暮らしを少し豊かにするツールや、楽しみながら学べるゲームなど、シンプルで親しみやすいアプリを公開しています。<br> 興味のあるアプリがあれば、ぜひ詳細ページをご覧ください。
+    </p>
+</section>
+
 <section id="meditation-timer">
     <img src="images/meditation_timer/meditation_timer_icon.png" alt="瞑想タイマーのアイコン" class="app-icon">
-    <h2>瞑想タイマー 〜わたし時間</h2>
-    <p>使いやすいインターフェースと穏やかなサウンドで、あなたの瞑想をサポートします。</p>
+    <h2>わたし時間 / Still Time</h2>
+    <p>使いやすいインターフェース。呼吸をサポートするアニメーションと、穏やかなサウンドで、あなたの瞑想をサポートします。</p>
     <a href="meditation_timer.html" class="detail-link">詳細を見る</a>
 </section>
 
