@@ -19,7 +19,7 @@ title: アプリ総合窓口
 <section id="ton-tsu-game">
     <img src="images/ton_tsu_game/ton_tsu_game_icon.png" alt="トンツーゲームのアイコン" class="app-icon">
     <h2>トンツーゲーム</h2>
-    <p>モールス信号を楽しく学べるゲームです。簡単な操作で、あなたもモールス信号の達人を目指しましょう。</p>
+    <p>現在作成している、モールス信号を楽しく学べるゲームです。</p>
     <a href="ton_tsu_game.html" class="detail-link">詳細を見る</a>
 </section>
 

@@ -19,33 +19,52 @@
     </header>
 
     <main>
+        <!-- アプリについて -->
         <section id="about">
             <h2>アプリについて</h2>
             <img src="images/meditation_timer_icon.png" alt="瞑想タイマーのアイコン" class="app-icon">
         
-        <p>「わたし時間 / Still Time」は、<strong>余計な要素を省き、純粋な瞑想体験をサポート</strong>するために作られた、Android端末用の瞑想タイマーアプリです。</p>
-        <p>私自身、瞑想を習慣にする中で、スマホのタイマーアプリでは、終了時間を知らせる音が大きかったり、いつまでも鳴っていたりと、瞑想の終りを知らせる手段としては、あまりふさわしくないと感じていました。それがこのアプリを作ろうと思ったきっかけでした。</p>
-        <p>それと、フリーで配布されているアプリの多くには広告がついていて、瞑想の前後に広告を目にすることになり、瞑想の効果の点で良くない影響があると考えました。</p>
-        <h3>瞑想のためのこだわり</h3>
-        <ul>
-            <li><strong>カスタマイズ可能な時間設定</strong>: ユーザーがボタンに好みの瞑想時間を割り当てることができます。</li>
-            <li><strong>穏やかな通知</strong>: 終了を知らせる静かな「りんの音」が一度だけ鳴ります。</li>
-            <li><strong>広告非表示</strong>: 瞑想の前後に集中を妨げる広告は一切表示しません。</li>
-        </ul>
+            <p>「わたし時間 / Still Time」は、<strong>余計な要素を省き、純粋な瞑想体験をサポート</strong>するために作られた、Android端末用の瞑想タイマーアプリです。</p>
+            <p>私自身、瞑想を習慣にする中で、スマホのタイマーアプリでは、終了時間を知らせる音が大きかったり、いつまでも鳴っていたりと、瞑想の終りを知らせる手段としては、あまりふさわしくないと感じていました。それがこのアプリを作ろうと思ったきっかけでした。</p>
+            <p>それと、フリーで配布されているアプリの多くには広告がついていて、瞑想の前後に広告を目にすることになり、瞑想の効果の点で良くない影響があると考えました。</p>
+
+            <h3>瞑想のためのこだわり</h3>
+            <ul>
+                <li><strong>カスタマイズ可能な時間設定</strong>: ユーザーがボタンに好みの瞑想時間を割り当てることができます。</li>
+                <li><strong>穏やかな通知</strong>: 終了を知らせる静かな「りんの音」が一度だけ鳴ります。</li>
+                <li><strong>広告非表示</strong>: 瞑想の前後に集中を妨げる広告は一切表示しません。</li>
+            </ul>
         </section>
 
+        <!-- 使い方 -->
         <section id="how-to-use">
             <h2>使い方</h2>
             <p>アプリを起動したら、希望する瞑想時間をボタンで選択し、スタートボタンを押すだけです。シンプルな操作で、すぐに瞑想を始められます。</p>
+ 
+            <!-- サムネイル -->
+<div class="gallery">
+  <img src="images/meditation_timer/howto_start.jpg" alt="使い方1" class="gallery-img" onclick="openModal(this.src)">
+ <!--  <img src="images/meditation_timer/howto_start.jpg" alt="使い方1" class="gallery-img" onclick="openModal(this.src)">
+  <img src="images/meditation_timer/howto_start.jpg" alt="使い方1" class="gallery-img" onclick="openModal(this.src)">
+  -->
+</div>
+
+            <!-- モーダル（拡大表示用） -->
+            <div id="imgModal" class="modal" onclick="closeModal()">
+                <span class="close">&times;</span>
+                <img class="modal-content" id="modalImg">
+            </div>
         </section>
         
+        <!-- 支援 -->
         <section id="support">
             <h2>開発へのご支援</h2>
-           <p>「わたし時間 / Still Time」は、広告なしで提供しています。もしこのアプリを気に入っていただけたなら、開発へのご支援をいただけると幸いです。いただいたサポートは、アプリの改善や維持に大切に使わせていただきます。</p>
-<p>※Paypalでは、銀行口座やPayPal残高からの送金であれば、手数料はかかりません。もしよろしければ、そちらをご利用いただけると幸いです。</p>
-<a href="https://www.paypal.me/kazunakka/500JPY" target="_blank" class="detail-link">開発者をサポートする</a>
+            <p>「わたし時間 / Still Time」は、広告なしで提供しています。もしこのアプリを気に入っていただけたなら、開発へのご支援をいただけると幸いです。いただいたサポートは、アプリの改善や維持に大切に使わせていただきます。</p>
+            <p>※Paypalでは、銀行口座やPayPal残高からの送金であれば、手数料はかかりません。もしよろしければ、そちらをご利用いただけると幸いです。</p>
+            <a href="https://www.paypal.me/kazunakka/500JPY" target="_blank" class="detail-link">開発者をサポートする</a>
         </section>
         
+        <!-- ダウンロード -->
         <section id="download">
             <h2>ダウンロード</h2>
             <a href="#" class="detail-link">Google Playでダウンロード</a>
@@ -55,5 +74,16 @@
     <footer>
         <p>&copy; 2025 アプリ制作チーム</p>
     </footer>
+
+    <!-- モーダル用スクリプト -->
+    <script>
+        function openModal(src) {
+            document.getElementById("imgModal").style.display = "block";
+            document.getElementById("modalImg").src = src;
+        }
+        function closeModal() {
+            document.getElementById("imgModal").style.display = "none";
+        }
+    </script>
 </body>
 </html>
