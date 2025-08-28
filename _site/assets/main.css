@@ -8,7 +8,7 @@ body {
     color: #333333; /* 濃いグレーの文字 */
 }
 
-/* 段落のスタイルを追加 */
+/* 段落のスタイル */
 p {
     margin-bottom: 1.2em;
 }
@@ -80,7 +80,7 @@ section h2 {
 
 .x-link, .detail-link {
     display: inline-block;
-    background-color: #66B2B2; /* ボタンの背景をターコイズブルーに */
+    background-color: #66B2B2;
     color: #fff;
     padding: 10px 20px;
     text-decoration: none;
@@ -90,20 +90,21 @@ section h2 {
 }
 
 .x-link:hover, .detail-link:hover {
-    background-color: #559999; /* ホバーで少し濃い色に */
-}
-/* アプリのアイコン */
-.app-icon {
-    width: 100px;  /* アイコンのサイズを調整 */
-    height: auto;
-    display: block;
-    margin: 0 auto 20px; /* 中央に配置し、下部に余白を追加 */
+    background-color: #559999;
 }
 
-/* スマートフォン向けのスタイル */
+/* アプリのアイコン */
+.app-icon {
+    width: 100px;
+    height: auto;
+    display: block;
+    margin: 0 auto 20px;
+}
+
+/* スマートフォン向け */
 @media screen and (max-width: 600px) {
   section {
-    text-align: initial; /* 親要素のテキスト配置をリセット */
+    text-align: initial;
   }
   section h2 {
     text-align: center;
@@ -128,48 +129,73 @@ footer {
     box-shadow: 0 -1px 3px rgba(0,0,0,0.1);
 }
 
-
+/* ギャラリー */
 .gallery {
-  display: flex;
-  gap: 15px;
-  justify-content: center;
-  margin-top: 1em;
-  flex-wrap: wrap; /* 画面幅が狭いときだけ折り返す */
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 1em;
+    flex-wrap: wrap;
 }
-
 .gallery-img {
-  max-width: 180px;
-  height: auto;
-  cursor: pointer;
-  border-radius: 6px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    width: 100px;
+    height: auto;
+    cursor: pointer;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
+}
+.gallery-img:hover {
+    transform: scale(1.05);
 }
 
-/* モーダルのスタイル */
+/* モーダル */
 .modal {
-    display: none; 
+    display: none;
     position: fixed;
     z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    padding-top: 60px;
     background-color: rgba(0,0,0,0.8);
     text-align: center;
 }
-
 .modal-content {
+    margin: auto;
+    display: block;
     max-width: 90%;
-    max-height: 90%;
-    margin-top: 5%;
+    max-height: 80%;
     border-radius: 8px;
 }
-
 .close {
     position: absolute;
-    top: 20px;
+    top: 30px;
     right: 35px;
+    color: #fff;
     font-size: 40px;
-    color: white;
+    font-weight: bold;
     cursor: pointer;
+}
+
+/* Stripeボタン */
+.button-container {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+.stripe-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #66b2b2;
+    color: #fff;
+    text-decoration: none;
+    font-size: 1rem;
+    border-radius: 25px;
+    text-align: center;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+.stripe-button:hover {
+    background-color: #559999;
+    transform: translateY(-2px);
 }
