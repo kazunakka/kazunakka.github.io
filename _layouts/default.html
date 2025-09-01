@@ -9,15 +9,18 @@
 <body>
     <header>
         <h1>Still Time Studio</h1>
+        <!-- デバッグ情報 -->
+        <p style="font-size: 12px; color: #999;">Debug: {{ page.url }} | {{ page.lang }}</p>
+        
         <nav>
             <ul>
-                {% if page.url == '/ja/' or page.url == '/' %}
+                {% if page.url == '/ja/' or page.url == '/' or page.url == '/index.html' %}
                     <!-- ホームページ用ナビゲーション -->
                     <li><a href="#meditation-timer">わたし時間 / Still Time</a></li>
                     <li><a href="#ton-tsu-game">トンツーゲーム</a></li>
                     <li><a href="#support-qa">サポート・Q&A</a></li>
-                {% elsif page.url contains '/ja/' %}
-                    <!-- 日本語ページ用ナビゲーション -->
+                {% else %}
+                    <!-- その他のページ用ナビゲーション -->
                     <li><a href="/ja/">ホーム</a></li>
                     <li><a href="#about">アプリについて</a></li>
                     <li><a href="#how-to-use">使い方</a></li>
@@ -25,14 +28,6 @@
                     <li><a href="#support">開発へのご支援</a></li>
                     <li><a href="#download">ダウンロード</a></li>
                     <li><a href="/en/meditation_timer.html">🇺🇸 English</a></li>
-                {% else %}
-                    <!-- 英語ページ用ナビゲーション -->
-                    <li><a href="/en/">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#how-to-use">How to Use</a></li>
-                    <li><a href="#support">Support</a></li>
-                    <li><a href="#download">Download</a></li>
-                    <li><a href="/ja/meditation_timer.html">🇯🇵 日本語</a></li>
                 {% endif %}
             </ul>
         </nav>
