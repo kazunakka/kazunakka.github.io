@@ -1,7 +1,7 @@
 ---
 layout: meditation-post
 title: "なぜ瞑想アプリを作ったのか"
-date: 2025-09-02 00:08
+date: 2025-09-02 00:08 +0900
 categories: [瞑想]  # ← カテゴリ設定（複数可）
 lang: ja
 ---
