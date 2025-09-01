@@ -1,0 +1,48 @@
+---
+layout: default
+title: 瞑想についての想い
+lang: ja
+---
+
+<section id="meditation-blog-archive">
+    <h1>瞑想についての想い</h1>
+    <p>瞑想を通じて気づいたこと、行きすぎた資本主義への個人の挑戦について書いています。<br>
+    「わたし時間」アプリに込めた想いや、現代社会での内面との向き合い方について考えを綴ります。</p>
+    
+    {% assign meditation_posts = site.posts | where: "categories", "瞑想" %}
+    {% assign philosophy_posts = site.posts | where: "categories", "私の想い" %}
+    {% assign all_posts = meditation_posts | concat: philosophy_posts | sort: "date" | reverse %}
+    
+    {% if all_posts.size > 0 %}
+        {% for post in all_posts %}
+        <article class="blog-post-archive">
+            <h2><a href="{{ post.url }}" class="post-title">{{ post.title }}</a></h2>
+            <p class="post-date">{{ post.date | date: "%Y年%m月%d日" }}</p>
+            
+            {% if post.categories.size > 0 %}
+            <div class="post-categories">
+                {% for category in post.categories %}
+                <span class="category-tag">{{ category }}</span>
+                {% endfor %}
+            </div>
+            {% endif %}
+            
+            <div class="post-excerpt">
+                {{ post.excerpt }}
+            </div>
+            
+            <a href="{{ post.url }}" class="read-more">続きを読む →</a>
+        </article>
+        {% endfor %}
+    {% else %}
+        <div class="no-posts">
+            <p>まもなく、瞑想や私の想いについて書いた記事を投稿します。<br>
+            現代の忙しい生活の中で、どのように内面と向き合っていくか、<br>
+            そして個人レベルでできる資本主義への挑戦について綴っていく予定です。</p>
+        </div>
+    {% endif %}
+    
+    <div class="back-to-app">
+        <a href="/ja/meditation_timer.html">← わたし時間アプリに戻る</a>
+    </div>
+</section>

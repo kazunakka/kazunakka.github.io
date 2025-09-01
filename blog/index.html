@@ -1,0 +1,69 @@
+---
+layout: default
+title: ブログ
+lang: ja
+---
+
+<section id="blog-categories">
+    <h1>ブログ</h1>
+    <p>様々なテーマについて書いた記事をカテゴリごとに整理しています。</p>
+    
+    <div class="blog-category-list">
+        <div class="category-card">
+            <h2><a href="/ja/blog/meditation/">瞑想についての想い</a></h2>
+            <p>瞑想を通じて気づいたこと、行きすぎた資本主義への個人の挑戦について。「わたし時間」アプリに込めた想いや、現代社会での内面との向き合い方について綴ります。</p>
+            
+            {% assign meditation_posts = site.posts | where: "categories", "瞑想" %}
+            {% assign philosophy_posts = site.posts | where: "categories", "私の想い" %}
+            {% assign all_meditation_posts = meditation_posts | concat: philosophy_posts %}
+            
+            <p class="post-count">{{ all_meditation_posts.size }}件の記事</p>
+            <a href="/ja/blog/meditation/" class="category-link">記事を読む →</a>
+        </div>
+        
+        <!-- 将来的に他のカテゴリを追加する場合はここに -->
+        <!-- 
+        <div class="category-card">
+            <h2><a href="/ja/blog/technology/">技術について</a></h2>
+            <p>アプリ開発や技術的な学びについて。</p>
+            <p class="post-count">0件の記事</p>
+            <a href="/ja/blog/technology/" class="category-link">記事を読む →</a>
+        </div>
+        -->
+        
+        <!-- 
+        <div class="category-card">
+            <h2><a href="/ja/blog/life/">日常の想い</a></h2>
+            <p>日々の生活で感じたことや考えたことについて。</p>
+            <p class="post-count">0件の記事</p>
+            <a href="/ja/blog/life/" class="category-link">記事を読む →</a>
+        </div>
+        -->
+    </div>
+    
+    <div class="recent-posts">
+        <h2>最新の記事</h2>
+        {% for post in site.posts limit:3 %}
+        <article class="recent-post">
+            <h3><a href="{{ post.url }}" class="post-title">{{ post.title }}</a></h3>
+            <p class="post-date">{{ post.date | date: "%Y年%m月%d日" }}</p>
+            
+            {% if post.categories.size > 0 %}
+            <div class="post-categories">
+                {% for category in post.categories %}
+                <span class="category-tag">{{ category }}</span>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </article>
+        {% endfor %}
+        
+        {% if site.posts.size == 0 %}
+        <p class="no-posts">まだ記事がありません。近日中に投稿予定です。</p>
+        {% endif %}
+    </div>
+    
+    <div class="back-to-home">
+        <a href="/ja/">← ホームに戻る</a>
+    </div>
+</section>
