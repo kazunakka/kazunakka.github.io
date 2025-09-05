@@ -9,7 +9,6 @@
 <body>
     <header>
         <h1>Still Time Studio</h1>
-        
         <nav>
             <ul>
                 {% if page.url == '/ja/' or page.url == '/' %}
@@ -22,7 +21,7 @@
                     <li><a href="#meditation-timer">Still Time</a></li>
                     <li><a href="#ton-tsu-game">Morse Code Game</a></li>
                     <li><a href="#support-qa">Support & Q&A</a></li>
-                {% elsif page.url contains '/ja/' %}
+                {% elsif page.url contains '/ja/' and page.url != '/ja/' %}
                     <!-- 日本語詳細ページ用ナビゲーション -->
                     <li><a href="/ja/">ホーム</a></li>
                     <li><a href="#about">アプリについて</a></li>
