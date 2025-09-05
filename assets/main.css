@@ -23,7 +23,7 @@ header {
 
 header h1 {
     margin: 0;
-    color: #FFFFFF; /* 白い文字 */
+    color: #FFFFFF !important; /* 白い文字 */
 }
 
 nav ul {
@@ -101,24 +101,6 @@ section h2 {
     margin: 0 auto 20px;
 }
 
-/* スマートフォン向け */
-@media screen and (max-width: 600px) {
-  section {
-    text-align: initial;
-  }
-  section h2 {
-    text-align: center;
-  }
-  .detail-link, .x-link {
-    display: block;
-    margin: 0 auto 10px;
-    text-align: center;
-  }
-  section p {
-    text-align: left;
-  }
-}
-
 /* フッター */
 footer {
     text-align: center;
@@ -137,6 +119,7 @@ footer {
     margin-top: 1em;
     flex-wrap: wrap;
 }
+
 .gallery-img {
     width: 100px;
     height: auto;
@@ -145,6 +128,7 @@ footer {
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     transition: transform 0.2s ease;
 }
+
 .gallery-img:hover {
     transform: scale(1.05);
 }
@@ -160,6 +144,7 @@ footer {
     background-color: rgba(0,0,0,0.8);
     text-align: center;
 }
+
 .modal-content {
     margin: auto;
     display: block;
@@ -167,6 +152,7 @@ footer {
     max-height: 80%;
     border-radius: 8px;
 }
+
 .close {
     position: absolute;
     top: 30px;
@@ -184,6 +170,7 @@ footer {
     flex-wrap: wrap;
     margin-top: 10px;
 }
+
 .stripe-button {
     display: inline-block;
     padding: 10px 20px;
@@ -195,8 +182,40 @@ footer {
     text-align: center;
     transition: background-color 0.2s ease, transform 0.2s ease;
 }
+
 .stripe-button:hover {
     background-color: #559999;
     transform: translateY(-2px);
 }
 
+/* 開発中アプリ用のスタイル */
+.in-development {
+    color: #cc6666;
+    background-color: #f5f5f5;
+    padding: 8px 16px;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+/* ===============================
+   スマートフォン向けスタイル
+   =============================== */
+@media screen and (max-width: 600px) {
+    section {
+        text-align: initial;
+    }
+    
+    section h2 {
+        text-align: center;
+    }
+    
+    .detail-link, .x-link {
+        display: block;
+        margin: 0 auto 10px;
+        text-align: center;
+    }
+    
+    section p {
+        text-align: left;
+    }
+}
