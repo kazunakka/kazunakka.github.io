@@ -21,20 +21,24 @@
                     <li><a href="#meditation-timer">Still Time</a></li>
                     <li><a href="#ton-tsu-game">Morse Code Game</a></li>
                     <li><a href="#support-qa">Support & Q&A</a></li>
-                {% elsif page.url contains '/ja/meditation_timer' %}
+                {% elsif page.page_type == 'meditation_timer' and page.lang == 'ja' %}
                     <!-- 日本語詳細ページ -->
                     <li><a href="/ja/">ホーム</a></li>
-                    <li><a href="/en/meditation_timer.html">English</a></li>
-                    <li><a href="#features">機能</a></li>
+                    <li><a href="/en/meditation_timer.html">🇺🇸 English</a></li>
+                    <li><a href="#about">アプリについて</a></li>
+                    <li><a href="#how-to-use">使い方</a></li>
+                    <li><a href="#my-thoughts">わたしの思い</a></li>
+                    <li><a href="#support">開発へのご支援</a></li>
                     <li><a href="#download">ダウンロード</a></li>
-                    <li><a href="#screenshots">スクリーンショット</a></li>
-                {% elsif page.url contains '/en/meditation_timer' %}
+                {% elsif page.page_type == 'meditation_timer' and page.lang == 'en' %}
                     <!-- 英語詳細ページ -->
                     <li><a href="/en/">Home</a></li>
-                    <li><a href="/ja/meditation_timer.html">日本語</a></li>
-                    <li><a href="#features">Features</a></li>
+                    <li><a href="/ja/meditation_timer.html">🇯🇵 日本語</a></li>
+                    <li><a href="#about">About the App</a></li>
+                    <li><a href="#how-to-use">How to Use</a></li>
+                    <li><a href="#my-thoughts">My Thoughts</a></li>
+                    <li><a href="#support">Support Development</a></li>
                     <li><a href="#download">Download</a></li>
-                    <li><a href="#screenshots">Screenshots</a></li>
                 {% else %}
                     <!-- その他のページ -->
                     <li><a href="/ja/">ホーム</a></li>
