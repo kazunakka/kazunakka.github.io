@@ -9,20 +9,24 @@
 <body>
     <header>
         <h1>Still Time Studio</h1>
-        
-        {% if page.url == '/ja/' or page.url == '/' %}
-            {% include nav_home_ja.html %}
-        {% elsif page.url == '/en/' %}
-            {% include nav_home_en.html %}
-        {% else %}
-            <!-- デフォルトナビゲーション -->
-            <nav>
-                <ul>
+        <nav>
+            <ul>
+                {% if page.url == '/ja/' or page.url == '/' %}
+                    <!-- 日本語ホームページ -->
+                    <li><a href="#meditation-timer">わたし時間 / Still Time</a></li>
+                    <li><a href="#ton-tsu-game">トンツーゲーム</a></li>
+                    <li><a href="#support-qa">サポート・Q&A</a></li>
+                {% elsif page.url == '/en/' %}
+                    <!-- 英語ホームページ -->
+                    <li><a href="#meditation-timer">Still Time</a></li>
+                    <li><a href="#ton-tsu-game">Morse Code Game</a></li>
+                    <li><a href="#support-qa">Support & Q&A</a></li>
+                {% else %}
+                    <!-- その他のページはデフォルトメニュー -->
                     <li><a href="/">Home</a></li>
-                </ul>
-            </nav>
-        {% endif %}
-        
+                {% endif %}
+            </ul>
+        </nav>
     </header>
     
     <main>
