@@ -1,107 +1,133 @@
----
-layout: meditation_timer
-title: Still Time / わたし時間
-lang: en
----
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Still Time / わたし時間 - Details</title>
+    <link rel="stylesheet" href="/assets/main.css">
+</head>
+<body>
+    <header>
+        <h1>Still Time / わたし時間</h1>
+        <nav>
+            <ul>
+                <li><a href="/en/">Home</a></li>
+                <li><a href="#about">About the App</a></li>
+                <li><a href="#how-to-use">How to Use</a></li>
+                <li><a href="#my-thoughts">My Thoughts</a></li>
+                <li><a href="#support">Support Development</a></li>
+                <li><a href="#download">Download</a></li>
+                <li><a href="/ja/meditation_timer.html">🇯🇵 日本語</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        <!-- About the App -->
+        <section id="about">
+            <h2>About the App</h2>
+            <img src="/images/meditation_timer/meditation_timer_icon.png" alt="Still Time app icon" class="app-icon">
+            <p>"Still Time" is a meditation timer app for Android devices, designed to support pure meditation experiences by eliminating unnecessary elements.</p>
+            <p>As someone who meditates regularly, I found that most smartphone timer apps had sounds that were too loud or kept ringing indefinitely, which didn't feel appropriate for ending a meditation session. This inspired me to create this app.</p>
+            <p>Additionally, many free apps include advertisements, which means seeing ads before and after meditation. I believe this negatively impacts the benefits of meditation practice.</p>
 
-<!-- About the App -->
-<section id="about">
-    <h2>About the App</h2>
-    <img src="/images/meditation_timer/meditation_timer_icon.png" alt="Still Time app icon" class="app-icon">
-    <p>"Still Time" is a meditation timer app for Android devices, designed to support pure meditation experiences by eliminating unnecessary elements.</p>
-    <p>As someone who meditates regularly, I found that most smartphone timer apps had sounds that were too loud or kept ringing indefinitely, which didn't feel appropriate for ending a meditation session. This inspired me to create this app.</p>
-    <p>Additionally, many free apps include advertisements, which means seeing ads before and after meditation. I believe this negatively impacts the benefits of meditation practice.</p>
+            <h3>Meditation-Focused Features</h3>
+            <ul>
+                <li>Customizable time settings: Users can assign their preferred meditation durations to buttons.</li>
+                <li>Gentle notification: A quiet "bell sound" rings just once to signal completion.</li>
+                <li>Ad-free experience: No advertisements to disturb your focus before or after meditation.</li>
+            </ul>
+        </section>
 
-    <h3>Meditation-Focused Features</h3>
-    <ul>
-        <li>Customizable time settings: Users can assign their preferred meditation durations to buttons.</li>
-        <li>Gentle notification: A quiet "bell sound" rings just once to signal completion.</li>
-        <li>Ad-free experience: No advertisements to disturb your focus before or after meditation.</li>
-    </ul>
-</section>
+        <!-- How to Use -->
+        <section id="how-to-use">
+            <h2>How to Use</h2>
+            <h3>Basic Usage</h3>
+            <p><strong>Select meditation time</strong><br>Choose your meditation duration from the buttons at the bottom of the screen. Default options include 5, 10, 15, 20, and 30 minutes.</p>
+            <p><strong>Start meditation</strong><br>Press the "Start" button to begin. Beautiful ripple animations will appear, moving in harmony with natural breathing rhythm (6 seconds expanding, 5 seconds contracting).</p>
+            <p><strong>Focus on meditation</strong><br>If desired, gaze at the ripple animation while focusing on your natural breath. The app automatically prevents screen sleep so you can concentrate on your practice.</p>
+            <p><strong>Meditation complete</strong><br>When the set time ends, a gentle bell sound will notify you, and the app automatically returns to the initial screen.</p>
 
-<!-- How to Use -->
-<section id="how-to-use">
-    <h2>How to Use</h2>
-    <h3>Basic Usage</h3>
-    <p><strong>Select meditation time</strong><br>Choose your meditation duration from the buttons at the bottom of the screen. Default options include 5, 10, 15, 20, and 30 minutes.</p>
-    <p><strong>Start meditation</strong><br>Press the "Start" button to begin. Beautiful ripple animations will appear, moving in harmony with natural breathing rhythm (6 seconds expanding, 5 seconds contracting).</p>
-    <p><strong>Focus on meditation</strong><br>If desired, gaze at the ripple animation while focusing on your natural breath. The app automatically prevents screen sleep so you can concentrate on your practice.</p>
-    <p><strong>Meditation complete</strong><br>When the set time ends, a gentle bell sound will notify you, and the app automatically returns to the initial screen.</p>
+            <h3>Customization Features</h3>
+            <p>You can customize meditation times from the settings screen. Access the gear icon to set any duration from 1 to 99 minutes. Save up to 5 custom time settings.</p>
 
-    <h3>Customization Features</h3>
-    <p>You can customize meditation times from the settings screen. Access the gear icon to set any duration from 1 to 99 minutes. Save up to 5 custom time settings.</p>
+            <h3>Operation Tips</h3>
+            <ul>
+                <li>During meditation, use "Stop" to pause or "Reset" to restart</li>
+                <li>The app supports both Japanese and English, automatically switching based on your device settings</li>
+                <li>Designed with simple operations to help you focus on meditation</li>
+            </ul>
 
-    <h3>Operation Tips</h3>
-    <ul>
-        <li>During meditation, use "Stop" to pause or "Reset" to restart</li>
-        <li>The app supports both Japanese and English, automatically switching based on your device settings</li>
-        <li>Designed with simple operations to help you focus on meditation</li>
-    </ul>
+            <h3>Important Notes</h3>
+            <p>Screen display: Please keep the screen visible during meditation. If your smartphone enters sleep mode, the timer may not function properly. While the app includes features to prevent automatic sleep during meditation, we recommend keeping the screen active for reliable operation.</p>
 
-    <h3>Important Notes</h3>
-    <p>Screen display: Please keep the screen visible during meditation. If your smartphone enters sleep mode, the timer may not function properly. While the app includes features to prevent automatic sleep during meditation, we recommend keeping the screen active for reliable operation.</p>
+            <!-- Gallery -->
+            <div class="gallery">
+                <img src="/images/meditation_timer/howto_start.jpg" alt="Main screen" class="gallery-img" onclick="openModal(this.src)">
+                <img src="/images/meditation_timer/hamon.jpg" alt="Meditation screen" class="gallery-img" onclick="openModal(this.src)">
+                <img src="/images/meditation_timer/setting.jpg" alt="Settings screen" class="gallery-img" onclick="openModal(this.src)">
+            </div>
 
-    <!-- Gallery -->
-    <div class="gallery">
-        <img src="/images/meditation_timer/howto_start.jpg" alt="Main screen" class="gallery-img" onclick="openModal(this.src)">
-        <img src="/images/meditation_timer/hamon.jpg" alt="Meditation screen" class="gallery-img" onclick="openModal(this.src)">
-        <img src="/images/meditation_timer/setting.jpg" alt="Settings screen" class="gallery-img" onclick="openModal(this.src)">
-    </div>
+            <!-- Modal -->
+            <div id="imgModal" class="modal" onclick="closeModal()">
+                <span class="close">&times;</span>
+                <img class="modal-content" id="modalImg">
+            </div>
+        </section>
 
-    <!-- Modal -->
-    <div id="imgModal" class="modal" onclick="closeModal()">
-        <span class="close">&times;</span>
-        <img class="modal-content" id="modalImg">
-    </div>
-</section>
+        <!-- My Thoughts -->
+        <section id="my-thoughts">
+            <h2>My Thoughts</h2>
+            <p>This app embodies not only convenience but also a spirit of gratitude and sharing. In a society where excessive capitalism burdens many people, rather than simply following that flow, I offer this app as my personal challenge to circulate value in a more human-centered way.</p>
+            <p>When you feel "I want to support this app," I would be grateful if you could express that sentiment through your support.</p>
+        </section>
 
-<!-- My Thoughts -->
-<section id="my-thoughts">
-    <h2>My Thoughts</h2>
-    <p>This app embodies not only convenience but also a spirit of gratitude and sharing. In a society where excessive capitalism burdens many people, rather than simply following that flow, I offer this app as my personal challenge to circulate value in a more human-centered way.</p>
-    <p>When you feel "I want to support this app," I would be grateful if you could express that sentiment through your support.</p>
-</section>
+        <!-- Support Development -->
+        <section id="support">
+            <h2>Support Development</h2>
+            <p>"Still Time" is provided completely ad-free. If you enjoy using the app, I would greatly appreciate your support for its development. Your support will be carefully used for app improvements and maintenance.</p>
 
-<!-- Support Development -->
-<section id="support">
-    <h2>Support Development</h2>
-    <p>"Still Time" is provided completely ad-free. If you enjoy using the app, I would greatly appreciate your support for its development. Your support will be carefully used for app improvements and maintenance.</p>
+            <p>For those who provide additional support, I will add <strong>"Recording and Reflection Features"</strong> to the app:</p>
+            <ul>
+                <li>Track session count and total time</li>
+                <li>Calendar view to monitor consistency</li>
+                <li>Tap dates to see meditation time for that day</li>
+            </ul>
 
-    <p>For those who provide additional support, I will add <strong>"Recording and Reflection Features"</strong> to the app:</p>
-    <ul>
-        <li>Track session count and total time</li>
-        <li>Calendar view to monitor consistency</li>
-        <li>Tap dates to see meditation time for that day</li>
-    </ul>
+            <!-- Gallery -->
+            <div class="gallery">
+                <img src="/images/meditation_timer/log.jpg" alt="Recording and reflection features" class="gallery-img" onclick="openModal(this.src)">
+            </div>
 
-    <!-- Gallery -->
-    <div class="gallery">
-        <img src="/images/meditation_timer/log.jpg" alt="Recording and reflection features" class="gallery-img" onclick="openModal(this.src)">
-    </div>
+            <p>Please choose your preferred way to show support:</p>
+            <div class="button-container">
+                <a href="https://buy.stripe.com/8x28wPgrI5uz7mzdfQfw400" target="_blank" class="stripe-button">Student Rate ¥300</a>
+                <a href="https://buy.stripe.com/3cI6oH7Vc0af6iv6Rsfw401" target="_blank" class="stripe-button">Standard Rate ¥500</a>
+                <a href="https://buy.stripe.com/aFaeVdb7ocX16ivcbMfw402" target="_blank" class="stripe-button">Choose Your Amount</a>
+            </div>
+            <p>※ Prices are in Japanese Yen (¥). Your bank will automatically convert the currency at the current exchange rate.</p>
+        </section>
 
-    <p>Please choose your preferred way to show support:</p>
-    <div class="button-container">
-        <a href="https://buy.stripe.com/8x28wPgrI5uz7mzdfQfw400" target="_blank" class="stripe-button">Student Rate ¥300</a>
-        <a href="https://buy.stripe.com/3cI6oH7Vc0af6iv6Rsfw401" target="_blank" class="stripe-button">Standard Rate ¥500</a>
-        <a href="https://buy.stripe.com/aFaeVdb7ocX16ivcbMfw402" target="_blank" class="stripe-button">Choose Your Amount</a>
-    </div>
-    <p>※ Prices are in Japanese Yen (¥). Your bank will automatically convert the currency at the current exchange rate.</p>
-</section>
+        <!-- Download -->
+        <section id="download">
+            <h2>Download</h2>
+            <a href="#" class="detail-link">Download from Google Play</a>
+        </section>
+    </main>
+    
+    <footer>
+        <p>&copy; 2025 Still Time Studio</p>
+    </footer>
 
-<!-- Download -->
-<section id="download">
-    <h2>Download</h2>
-    <a href="#" class="detail-link">Download from Google Play</a>
-</section>
-
-<!-- Modal Script -->
-<script>
-    function openModal(src) {
-        document.getElementById("imgModal").style.display = "block";
-        document.getElementById("modalImg").src = src;
-    }
-    function closeModal() {
-        document.getElementById("imgModal").style.display = "none";
-    }
-</script>
+    <!-- Modal Script -->
+    <script>
+        function openModal(src) {
+            document.getElementById("imgModal").style.display = "block";
+            document.getElementById("modalImg").src = src;
+        }
+        function closeModal() {
+            document.getElementById("imgModal").style.display = "none";
+        }
+    </script>
+</body>
+</html>
