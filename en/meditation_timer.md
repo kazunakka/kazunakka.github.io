@@ -2,7 +2,7 @@
 layout: default
 lang: en
 page_type: meditation_timer
-title: "Still Time / わたし時間 - Details"
+title: "Still Time / わたし時間 "
 ---
 
 <!-- About the App -->

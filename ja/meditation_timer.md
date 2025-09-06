@@ -2,7 +2,7 @@
 layout: default
 lang: ja
 page_type: meditation_timer
-title: "わたし時間 / Still Time - 詳細"
+title: "わたし時間 / Still Time"
 ---
 
 <div style="position: fixed; top: 0; left: 0; background: red; color: white; padding: 10px; z-index: 9999; font-size: 14px;">

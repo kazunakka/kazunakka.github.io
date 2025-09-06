@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>わたし時間 / Still Time - 詳細</title>
+    <title>わたし時間 / Still Time</title>
     <link rel="stylesheet" href="/assets/main.css">
 </head>
 <body>
@@ -35,10 +35,18 @@
     -->
     
     <main>
-        <!-- アプリについて -->
+        <div style="position: fixed; top: 0; left: 0; background: red; color: white; padding: 10px; z-index: 9999; font-size: 14px;">
+DEBUG INFO:<br />
+page.url: /ja/meditation_timer.html<br />
+page.lang: ja<br />
+page.page_type: meditation_timer<br />
+layout: {}<br />
+</div>
+
+<!-- アプリについて -->
 <section id="about">
     <h2>アプリについて</h2>
-    <img src="/images/meditation_timer/meditation_timer_icon.png" alt="瞑想タイマーのアイコン" class="app-icon">
+    <img src="/images/meditation_timer/meditation_timer_icon.png" alt="瞑想タイマーのアイコン" class="app-icon" />
     <p>「わたし時間 / Still Time」は、余計な要素を省き、純粋な瞑想体験をサポートするために作られた、Android端末用の瞑想タイマーアプリです。</p>
     <p>私自身、瞑想をする中で、スマホのタイマーアプリでは、終了時間を知らせる音が大きかったり、いつまでも鳴っていたりと、瞑想の終りを知らせる手段としては、あまりふさわしくないと感じていました。それがこのアプリを作ろうと思ったきっかけでした。</p>
     <p>それと、フリーで配布されているアプリの多くには広告がついていて、瞑想の前後に広告を目にすることになり、瞑想の効果の点で良くない影響があると考えました。</p>
@@ -55,10 +63,10 @@
 <section id="how-to-use">
     <h2>使い方</h2>
     <h3>基本的な使い方</h3>
-    <p><strong>瞑想時間を選択</strong><br>画面下部のボタンから瞑想時間を選択します。デフォルトで5分、10分、15分、20分、30分が用意されています。</p>
-    <p><strong>瞑想を開始</strong><br>「スタート」ボタンを押すと、美しい波紋アニメーションが表示され、瞑想が始まります。アニメーションは自然な呼吸リズム（6秒で拡大、5秒で縮小）に合わせて動きます。</p>
-    <p><strong>瞑想に集中</strong><br>必要なら波紋アニメーションを見つめながら、自然な呼吸に意識を向けてください。アプリが画面のスリープを自動で防ぎ、瞑想に集中できます。</p>
-    <p><strong>瞑想完了</strong><br>設定した時間が終了すると、穏やかな鐘の音で知らせ、自動的に初期画面に戻ります。</p>
+    <p><strong>瞑想時間を選択</strong><br />画面下部のボタンから瞑想時間を選択します。デフォルトで5分、10分、15分、20分、30分が用意されています。</p>
+    <p><strong>瞑想を開始</strong><br />「スタート」ボタンを押すと、美しい波紋アニメーションが表示され、瞑想が始まります。アニメーションは自然な呼吸リズム（6秒で拡大、5秒で縮小）に合わせて動きます。</p>
+    <p><strong>瞑想に集中</strong><br />必要なら波紋アニメーションを見つめながら、自然な呼吸に意識を向けてください。アプリが画面のスリープを自動で防ぎ、瞑想に集中できます。</p>
+    <p><strong>瞑想完了</strong><br />設定した時間が終了すると、穏やかな鐘の音で知らせ、自動的に初期画面に戻ります。</p>
 
     <h3>カスタマイズ機能</h3>
     <p>設定画面から瞑想時間をカスタマイズできます。歯車アイコンの設定画面で、1分から99分まで自由に瞑想時間を設定可能。最大5つまでのカスタム時間を保存できます。</p>
@@ -75,15 +83,15 @@
 
     <!-- ギャラリー表示 -->
     <div class="gallery">
-        <img src="/images/meditation_timer/howto_start.jpg" alt="メイン画面" class="gallery-img" onclick="openModal(this.src)">
-        <img src="/images/meditation_timer/hamon.jpg" alt="瞑想中の画面" class="gallery-img" onclick="openModal(this.src)">
-        <img src="/images/meditation_timer/setting.jpg" alt="設定画面" class="gallery-img" onclick="openModal(this.src)">
+        <img src="/images/meditation_timer/howto_start.jpg" alt="メイン画面" class="gallery-img" onclick="openModal(this.src)" />
+        <img src="/images/meditation_timer/hamon.jpg" alt="瞑想中の画面" class="gallery-img" onclick="openModal(this.src)" />
+        <img src="/images/meditation_timer/setting.jpg" alt="設定画面" class="gallery-img" onclick="openModal(this.src)" />
     </div>
 
     <!-- モーダル -->
     <div id="imgModal" class="modal" onclick="closeModal()">
         <span class="close">&times;</span>
-        <img class="modal-content" id="modalImg">
+        <img class="modal-content" id="modalImg" />
     </div>
 </section>
 
@@ -108,7 +116,7 @@
 
     <!-- ギャラリー表示 -->
     <div class="gallery">
-        <img src="/images/meditation_timer/log.jpg" alt="記録と振り返り" class="gallery-img" onclick="openModal(this.src)">
+        <img src="/images/meditation_timer/log.jpg" alt="記録と振り返り" class="gallery-img" onclick="openModal(this.src)" />
     </div>
 
     <p>応援の形は以下からお選びください：</p>
@@ -136,6 +144,8 @@
         document.getElementById("imgModal").style.display = "none";
     }
 </script>
+
+
     </main>
     
     <footer>
