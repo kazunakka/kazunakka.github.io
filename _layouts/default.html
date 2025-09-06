@@ -11,49 +11,50 @@
         <h1>Still Time Studio</h1>
         <nav>
             <ul>
-                {% if page.url == '/ja/meditation_timer.html' %}
-                    <!-- 日本語meditation_timer専用ナビゲーション -->
-                    <li><a href="/ja/">ホーム</a></li>
-                    <li><a href="#about">アプリについて</a></li>
-                    <li><a href="#how-to-use">使い方</a></li>
-                    <li><a href="#my-thoughts">わたしの思い</a></li>
-                    <li><a href="#support">開発へのご支援</a></li>
-                    <li><a href="#download">ダウンロード</a></li>
-                    <li><a href="/en/meditation_timer.html">🇺🇸 English</a></li>
-                {% elsif page.url == '/en/meditation_timer.html' %}
-                    <!-- 英語meditation_timer専用ナビゲーション -->
-                    <li><a href="/en/">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#how-to-use">How to Use</a></li>
-                    <li><a href="#support">Support</a></li>
-                    <li><a href="#download">Download</a></li>
-                    <li><a href="/ja/meditation_timer.html">🇯🇵 日本語</a></li>
-                {% elsif page.url == '/ja/ton_tsu_game.html' %}
-                    <!-- 日本語ton_tsu_game専用ナビゲーション -->
-                    <li><a href="/ja/">ホーム</a></li>
-                    <li><a href="#about">アプリについて</a></li>
-                    <li><a href="#how-to-use">使い方</a></li>
-                    <li><a href="/en/ton_tsu_game.html">🇺🇸 English</a></li>
-                {% elsif page.url == '/en/ton_tsu_game.html' %}
-                    <!-- 英語ton_tsu_game専用ナビゲーション -->
-                    <li><a href="/en/">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#how-to-use">How to Use</a></li>
-                    <li><a href="/ja/ton_tsu_game.html">🇯🇵 日本語</a></li>
-                {% elsif page.url == '/ja/' or page.url == '/' %}
-                    <!-- 日本語ホームページ用ナビゲーション -->
-                    <li><a href="#meditation-timer">わたし時間 / Still Time</a></li>
-                    <li><a href="#ton-tsu-game">トンツーゲーム</a></li>
-                    <li><a href="#support-qa">サポート・Q&A</a></li>
-                {% elsif page.url == '/en/' %}
-                    <!-- 英語ホームページ用ナビゲーション -->
-                    <li><a href="#meditation-timer">Still Time</a></li>
-                    <li><a href="#ton-tsu-game">Morse Code Game</a></li>
-                    <li><a href="#support-qa">Support & Q&A</a></li>
-                {% else %}
-                    <!-- デフォルト（その他のページ） -->
-                    <li><a href="/">Home</a></li>
-                {% endif %}
+                {% case page.url %}
+                    {% when '/ja/meditation_timer.html' %}
+                        <!-- 日本語meditation_timer専用 -->
+                        <li><a href="/ja/">ホーム</a></li>
+                        <li><a href="#about">アプリについて</a></li>
+                        <li><a href="#how-to-use">使い方</a></li>
+                        <li><a href="#my-thoughts">わたしの思い</a></li>
+                        <li><a href="#support">開発へのご支援</a></li>
+                        <li><a href="#download">ダウンロード</a></li>
+                        <li><a href="/en/meditation_timer.html">🇺🇸 English</a></li>
+                    {% when '/en/meditation_timer.html' %}
+                        <!-- 英語meditation_timer専用 -->
+                        <li><a href="/en/">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#how-to-use">How to Use</a></li>
+                        <li><a href="#support">Support</a></li>
+                        <li><a href="#download">Download</a></li>
+                        <li><a href="/ja/meditation_timer.html">🇯🇵 日本語</a></li>
+                    {% when '/ja/ton_tsu_game.html' %}
+                        <!-- 日本語ton_tsu_game専用 -->
+                        <li><a href="/ja/">ホーム</a></li>
+                        <li><a href="#about">アプリについて</a></li>
+                        <li><a href="#how-to-use">使い方</a></li>
+                        <li><a href="/en/ton_tsu_game.html">🇺🇸 English</a></li>
+                    {% when '/en/ton_tsu_game.html' %}
+                        <!-- 英語ton_tsu_game専用 -->
+                        <li><a href="/en/">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#how-to-use">How to Use</a></li>
+                        <li><a href="/ja/ton_tsu_game.html">🇯🇵 日本語</a></li>
+                    {% when '/ja/', '/' %}
+                        <!-- 日本語ホームページ -->
+                        <li><a href="#meditation-timer">わたし時間 / Still Time</a></li>
+                        <li><a href="#ton-tsu-game">トンツーゲーム</a></li>
+                        <li><a href="#support-qa">サポート・Q&A</a></li>
+                    {% when '/en/' %}
+                        <!-- 英語ホームページ -->
+                        <li><a href="#meditation-timer">Still Time</a></li>
+                        <li><a href="#ton-tsu-game">Morse Code Game</a></li>
+                        <li><a href="#support-qa">Support & Q&A</a></li>
+                    {% else %}
+                        <!-- デフォルト -->
+                        <li><a href="/">Home</a></li>
+                {% endcase %}
             </ul>
         </nav>
     </header>
