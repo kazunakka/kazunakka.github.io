@@ -21,13 +21,37 @@
                     <li><a href="#meditation-timer">Still Time</a></li>
                     <li><a href="#ton-tsu-game">Morse Code Game</a></li>
                     <li><a href="#support-qa">Support & Q&A</a></li>
+                {% elsif page.url contains '/ja/meditation_timer' %}
+                    <!-- 日本語詳細ページ -->
+                    <li><a href="/ja/">ホーム</a></li>
+                    <li><a href="/en/meditation_timer.html">English</a></li>
+                    <li><a href="#features">機能</a></li>
+                    <li><a href="#download">ダウンロード</a></li>
+                    <li><a href="#screenshots">スクリーンショット</a></li>
+                {% elsif page.url contains '/en/meditation_timer' %}
+                    <!-- 英語詳細ページ -->
+                    <li><a href="/en/">Home</a></li>
+                    <li><a href="/ja/meditation_timer.html">日本語</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#download">Download</a></li>
+                    <li><a href="#screenshots">Screenshots</a></li>
                 {% else %}
-                    <!-- その他のページはデフォルトメニュー -->
-                    <li><a href="/">Home</a></li>
+                    <!-- その他のページ -->
+                    <li><a href="/ja/">ホーム</a></li>
+                    <li><a href="/en/">English</a></li>
                 {% endif %}
             </ul>
         </nav>
     </header>
+    
+    <!-- デバッグ情報（一時的） -->
+    <!-- 
+    <div style="position: fixed; top: 0; right: 0; background: yellow; padding: 5px; font-size: 12px; z-index: 9999;">
+        DEBUG: page.url={{ page.url }}<br>
+        page.lang={{ page.lang }}<br>
+        layout={{ layout }}
+    </div>
+    -->
     
     <main>
         {{ content }}
