@@ -10,37 +10,12 @@
     <header>
         <h1>Still Time Studio</h1>
         
-        <!-- 最終デバッグ情報 -->
-        <div style="background: yellow; color: black; padding: 15px; margin: 10px 0; border: 2px solid red;">
-            <h3>FINAL DEBUG - GITHUB PAGES</h3>
-            <p><strong>page.url:</strong> "{{ page.url }}"</p>
-            <p><strong>Length:</strong> {{ page.url | size }}</p>
-            <p><strong>Test 1:</strong> {{ page.url == '/ja/meditation_timer.html' }}</p>
-            <p><strong>Test 2:</strong> {{ page.url == '/en/meditation_timer.html' }}</p>
-            <p><strong>Test 3:</strong> {{ page.url == '/ja/' }}</p>
-            <p><strong>Test 4:</strong> {{ page.url == '/' }}</p>
-            <p><strong>Test 5:</strong> {{ page.url == '/en/' }}</p>
-            <p><strong>Jekyll version:</strong> {{ jekyll.version }}</p>
-            <p><strong>Site source:</strong> {{ site.source }}</p>
-        </div>
-        
-        {% if page.url == '/ja/meditation_timer.html' %}
-            <div style="background: green; color: white; padding: 10px;">✓ MATCHED: JP meditation_timer</div>
-            {% include nav_meditation_timer_ja.html %}
-        {% elsif page.url == '/en/meditation_timer.html' %}
-            <div style="background: green; color: white; padding: 10px;">✓ MATCHED: EN meditation_timer</div>
-            {% include nav_meditation_timer_en.html %}
-        {% elsif page.url == '/ja/' %}
-            <div style="background: blue; color: white; padding: 10px;">✓ MATCHED: JP Home (/ja/)</div>
-            {% include nav_home_ja.html %}
-        {% elsif page.url == '/' %}
-            <div style="background: blue; color: white; padding: 10px;">✓ MATCHED: Root Home (/)</div>
+        {% if page.url == '/ja/' or page.url == '/' %}
             {% include nav_home_ja.html %}
         {% elsif page.url == '/en/' %}
-            <div style="background: blue; color: white; padding: 10px;">✓ MATCHED: EN Home</div>
             {% include nav_home_en.html %}
         {% else %}
-            <div style="background: orange; color: black; padding: 10px;">✓ MATCHED: DEFAULT CASE</div>
+            <!-- デフォルトナビゲーション -->
             <nav>
                 <ul>
                     <li><a href="/">Home</a></li>

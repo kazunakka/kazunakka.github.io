@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: 'ja' }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page.title | default: site.title }}</title>
+    <link rel="stylesheet" href="/assets/main.css">
+</head>
+<body>
+    <header>
+        <h1>Still Time Studio</h1>
+        <nav>
+            <ul>
+                {% if page.lang == 'ja' %}
+                    <!-- 日本語版 -->
+                    <li><a href="/ja/">ホーム</a></li>
+                    <li><a href="#about">アプリについて</a></li>
+                    <li><a href="#how-to-use">使い方</a></li>
+                    <li><a href="#my-thoughts">わたしの思い</a></li>
+                    <li><a href="#support">開発へのご支援</a></li>
+                    <li><a href="#download">ダウンロード</a></li>
+                    <li><a href="/en/meditation_timer.html">🇺🇸 English</a></li>
+                {% else %}
+                    <!-- 英語版 -->
+                    <li><a href="/en/">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#how-to-use">How to Use</a></li>
+                    <li><a href="#support">Support</a></li>
+                    <li><a href="#download">Download</a></li>
+                    <li><a href="/ja/meditation_timer.html">🇯🇵 日本語</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        {{ content }}
+    </main>
+    
+    <footer>
+        <p>&copy; 2025 Still Time Studio</p>
+    </footer>
+</body>
+</html>
