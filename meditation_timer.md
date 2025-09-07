@@ -2,7 +2,7 @@
 layout: default
 lang: en
 page_type: meditation_timer
-title: "Still Time / わたし時間 "
+title: "Still Time - Meditation Timer"
 ---
 
 <!-- About the App -->
@@ -96,7 +96,72 @@ title: "Still Time / わたし時間 "
     <a href="#" class="detail-link">Download from Google Play</a>
 </section>
 
-<!-- Modal Script -->
+<!-- Styles and Scripts -->
+<style>
+    .button-container {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 10px;
+    }
+    .stripe-button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #66b2b2;
+        color: #fff;
+        text-decoration: none;
+        font-size: 1rem;
+        border-radius: 25px;
+        text-align: center;
+        transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+    .stripe-button:hover {
+        background-color: #559999;
+        transform: translateY(-2px);
+    }
+
+    .gallery {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 10px;
+    }
+    .gallery-img {
+        width: 100px;
+        height: auto;
+        cursor: pointer;
+        border-radius: 8px;
+        transition: transform 0.2s ease;
+    }
+    .gallery-img:hover {
+        transform: scale(1.05);
+    }
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        padding-top: 60px;
+        left: 0; top: 0;
+        width: 100%; height: 100%;
+        background-color: rgba(0,0,0,0.8);
+    }
+    .modal-content {
+        margin: auto;
+        display: block;
+        max-width: 90%;
+        max-height: 80%;
+    }
+    .close {
+        position: absolute;
+        top: 30px;
+        right: 35px;
+        color: #fff;
+        font-size: 40px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+</style>
+
 <script>
     function openModal(src) {
         document.getElementById("imgModal").style.display = "block";

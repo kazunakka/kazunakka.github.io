@@ -21,15 +21,6 @@
         </nav>
     </header>
     
-    <!-- デバッグ情報（一時的） -->
-    <!-- 
-    <div style="position: fixed; top: 0; right: 0; background: yellow; padding: 5px; font-size: 12px; z-index: 9999;">
-        DEBUG: page.url=/ja/<br>
-        page.lang=<br>
-        layout={}
-    </div>
-    -->
-    
     <main>
         <section id="site-intro">
     <h2>このサイトについて</h2>
@@ -42,7 +33,7 @@
     <img src="/images/meditation_timer/meditation_timer_icon.png" alt="瞑想タイマーのアイコン" class="app-icon">
     <h2>わたし時間 / Still Time</h2>
     <p>使いやすいインターフェース。呼吸をサポートするアニメーションと、穏やかなサウンドで、あなたの瞑想をサポートします。</p>
-    <a href="meditation_timer.html" class="detail-link">詳細を見る</a>
+    <a href="/meditation_timer.html" class="detail-link">詳細を見る</a>
 </section>
 
 <section id="ton-tsu-game">
@@ -66,5 +57,25 @@
     <footer>
         <p>&copy; 2025 Still Time Studio</p>
     </footer>
+
+    <!-- 英語サイトでトンツーゲーム非表示 -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        if (window.location.pathname === '/en/' || window.location.pathname === '/en/index.html') {
+            const tonTsuSection = document.getElementById('ton-tsu-game');
+            if (tonTsuSection) {
+                tonTsuSection.style.display = 'none';
+            }
+            
+            const tonTsuNavLink = document.querySelector('a[href="#ton-tsu-game"]');
+            if (tonTsuNavLink) {
+                const listItem = tonTsuNavLink.closest('li');
+                if (listItem) {
+                    listItem.style.display = 'none';
+                }
+            }
+        }
+    });
+    </script>
 </body>
 </html>

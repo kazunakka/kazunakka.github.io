@@ -11,7 +11,15 @@
         <h1>Still Time Studio</h1>
         <nav>
             <ul>
-                {% if page.url == '/ja/' or page.url == '/' %}
+                {% if page.page_type == 'meditation_timer' %}
+                    <!-- 瞑想アプリ詳細ページ（英語のみ） -->
+                    <li><a href="/">Home</a></li>
+                    <li><a href="#about">About the App</a></li>
+                    <li><a href="#how-to-use">How to Use</a></li>
+                    <li><a href="#my-thoughts">My Thoughts</a></li>
+                    <li><a href="#support">Support Development</a></li>
+                    <li><a href="#download">Download</a></li>
+                {% elsif page.url == '/ja/' or page.url == '/' %}
                     <!-- 日本語ホームページ -->
                     <li><a href="#meditation-timer">わたし時間 / Still Time</a></li>
                     <li><a href="#ton-tsu-game">トンツーゲーム</a></li>
@@ -21,41 +29,13 @@
                     <li><a href="#meditation-timer">Still Time</a></li>
                     <li><a href="#ton-tsu-game">Morse Code Game</a></li>
                     <li><a href="#support-qa">Support & Q&A</a></li>
-                {% elsif page.page_type == 'meditation_timer' and page.lang == 'ja' %}
-                    <!-- 日本語詳細ページ -->
-                    <li><a href="/ja/">ホーム</a></li>
-                    <li><a href="/en/meditation_timer.html">🇺🇸 English</a></li>
-                    <li><a href="#about">アプリについて</a></li>
-                    <li><a href="#how-to-use">使い方</a></li>
-                    <li><a href="#my-thoughts">わたしの思い</a></li>
-                    <li><a href="#support">開発へのご支援</a></li>
-                    <li><a href="#download">ダウンロード</a></li>
-                {% elsif page.page_type == 'meditation_timer' and page.lang == 'en' %}
-                    <!-- 英語詳細ページ -->
-                    <li><a href="/en/">Home</a></li>
-                    <li><a href="/ja/meditation_timer.html">🇯🇵 日本語</a></li>
-                    <li><a href="#about">About the App</a></li>
-                    <li><a href="#how-to-use">How to Use</a></li>
-                    <li><a href="#my-thoughts">My Thoughts</a></li>
-                    <li><a href="#support">Support Development</a></li>
-                    <li><a href="#download">Download</a></li>
                 {% else %}
                     <!-- その他のページ -->
-                    <li><a href="/ja/">ホーム</a></li>
-                    <li><a href="/en/">English</a></li>
+                    <li><a href="/">Home</a></li>
                 {% endif %}
             </ul>
         </nav>
     </header>
-    
-    <!-- デバッグ情報（一時的） -->
-    <!-- 
-    <div style="position: fixed; top: 0; right: 0; background: yellow; padding: 5px; font-size: 12px; z-index: 9999;">
-        DEBUG: page.url={{ page.url }}<br>
-        page.lang={{ page.lang }}<br>
-        layout={{ layout }}
-    </div>
-    -->
     
     <main>
         {{ content }}
@@ -64,5 +44,25 @@
     <footer>
         <p>&copy; 2025 Still Time Studio</p>
     </footer>
+
+    <!-- 英語サイトでトンツーゲーム非表示 -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        if (window.location.pathname === '/en/' || window.location.pathname === '/en/index.html') {
+            const tonTsuSection = document.getElementById('ton-tsu-game');
+            if (tonTsuSection) {
+                tonTsuSection.style.display = 'none';
+            }
+            
+            const tonTsuNavLink = document.querySelector('a[href="#ton-tsu-game"]');
+            if (tonTsuNavLink) {
+                const listItem = tonTsuNavLink.closest('li');
+                if (listItem) {
+                    listItem.style.display = 'none';
+                }
+            }
+        }
+    });
+    </script>
 </body>
 </html>
