@@ -1,9 +1,29 @@
-title: アプリ総合窓口
-email: your-email@example.com
+title: Still Time Studio
 description: >
-  アプリのサポート・紹介サイトです。
-baseurl: ""  # リポジトリ名がないため、空白にする
+  瞑想アプリとゲームの開発スタジオ
+baseurl: ""
 url: "https://kazunakka.github.io"
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+permalink: pretty
+
+# Jekyll processing
+source: .
+destination: _site
+
+# Exclude from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - README.md
+
 # theme: minima
 # plugins:
 #   - jekyll-feed
