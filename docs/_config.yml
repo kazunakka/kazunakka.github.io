@@ -9,9 +9,6 @@ markdown: kramdown
 highlighter: rouge
 permalink: pretty
 
-# Jekyll processing
-source: .
-destination: _site
 
 # Exclude from processing
 exclude:
@@ -23,7 +20,3 @@ exclude:
   - vendor/gems/
   - vendor/ruby/
   - README.md
-
-# theme: minima
-# plugins:
-#   - jekyll-feed
