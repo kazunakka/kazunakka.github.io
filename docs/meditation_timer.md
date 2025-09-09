@@ -31,8 +31,9 @@ title: "Still Time - Meditation Timer"
     <p><strong>Meditation complete</strong><br>When the set time ends, a gentle bell sound will notify you, and the app automatically returns to the initial screen.</p>
 
     <h3>Customization Features</h3>
-    <p>You can customize meditation times from the settings screen. Access the gear icon to set any duration from 1 to 99 minutes. Save up to 5 custom time settings.</p>
-
+   <p>Customize your meditation time and app appearance from the settings screen. Through the gear icon settings menu, you can freely set meditation times from 1 to 99 minutes. Save up to 5 custom time presets for quick access.</p>
+   <p>Additionally, choose your app's theme color from 6 beautiful options: Teal, Blue, Green, Purple, Brown, and Rose Pink. Select your preferred color to create a more comfortable and personalized meditation experience that suits your individual style.</p>
+  
     <h3>Operation Tips</h3>
     <ul>
         <li>During meditation, use "Stop" to pause or "Reset" to restart</li>
