@@ -70,7 +70,8 @@ title: "Still Time - Meditation Timer"
     <h2>Support Development</h2>
     <p>"Still Time" is provided completely ad-free. If you enjoy using the app, I would greatly appreciate your support for its development. Your support will be carefully used for app improvements and maintenance.</p>
 
-    <p>For those who provide additional support, I will add <strong>"Recording and Reflection Features"</strong> to the app:</p>
+    <p>For those who provide additional support, I will add <strong>"Recording and Reflection Features"</strong> to the app:
+        For those who support this project, I will add <strong>Recording and Reflection Features</strong> to the app.</p>
     <ul>
         <li>Track session count and total time</li>
         <li>Calendar view to monitor consistency</li>
