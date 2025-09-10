@@ -13,14 +13,14 @@ title: アプリ総合窓口
     <img src="/images/meditation_timer/meditation_timer_icon.png" alt="瞑想タイマーのアイコン" class="app-icon">
     <h2>わたし時間 / Still Time</h2>
     <p>使いやすいインターフェース。呼吸をサポートするアニメーションと、穏やかなサウンドで、あなたの瞑想をサポートします。</p>
-    <a href="/ja/meditation-timer-jp.html" class="detail-link">詳細を見る</a>
+    <a href="/ja/meditation-timer-jp" class="detail-link">詳細を見る</a>
 </section>
 
 <section id="ton-tsu-game">
     <img src="/images/ton_tsu_game/ton_tsu_game_icon.png" alt="トンツーゲームのアイコン" class="app-icon">
     <h2>トンツーゲーム</h2>
     <p>現在作成している、モールス信号を楽しく学べるゲームです。</p>
-    <a href="ton_tsu_game.html" class="detail-link">詳細を見る</a>
+    <a href="ton_tsu_game" class="detail-link">詳細を見る</a>
 </section>
 
   
