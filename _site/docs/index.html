@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -73,7 +73,6 @@
 
     <script>
         function detectAndRedirect() {
-            // URLパラメータで言語強制指定
             const urlParams = new URLSearchParams(window.location.search);
             const forceLang = urlParams.get('lang');
             
@@ -85,15 +84,12 @@
                 return;
             }
 
-            // ブラウザのシステム言語を取得
             const systemLang = navigator.language || navigator.userLanguage || 'en';
             const langCode = systemLang.split('-')[0].toLowerCase();
             
-            // デバッグ用ログ
             console.log('Detected language:', systemLang);
             console.log('Language code:', langCode);
             
-            // 日本語設定の場合は日本語サイトへ
             if (langCode === 'ja') {
                 console.log('Redirecting to Japanese site');
                 window.location.replace('ja/');
@@ -103,16 +99,13 @@
             }
         }
 
-        // フォールバック用の手動選択表示
         function showManualSelection() {
             document.getElementById('loading-section').style.display = 'none';
             document.getElementById('manual-section').style.display = 'block';
         }
 
-        // 即座に実行
         detectAndRedirect();
 
-        // 1秒後に手動選択をフォールバックとして表示
         setTimeout(() => {
             if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
                 showManualSelection();
