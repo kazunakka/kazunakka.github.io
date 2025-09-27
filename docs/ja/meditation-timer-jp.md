@@ -94,7 +94,7 @@ page_type: meditation_timer_ja
 <!-- ダウンロード -->
 <section id="download">
     <h2>ダウンロード</h2>
-    <a href="#" class="detail-link">Google Playでダウンロード</a>
+    <a href="https://play.google.com/store/apps/details?id=com.kazuhisa.stilltime" class="detail-link">Google Playでダウンロード</a>
 </section>
 
 <!-- モーダル用スクリプト -->
