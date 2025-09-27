@@ -95,7 +95,7 @@ title: "Still Time - Meditation Timer"
 <!-- Download -->
 <section id="download">
     <h2>Download</h2>
-    <a href="#" class="detail-link">Download from Google Play</a>
+    <a href="https://play.google.com/store/apps/details?id=com.kazuhisa.stilltime" class="detail-link">Download from Google Play</a>
 </section>
 
 <!-- Styles and Scripts -->
