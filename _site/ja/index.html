@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="{{ page.lang | default: 'ja' }}">
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ page.title | default: site.title }}</title>
+    <title>アプリ総合窓口</title>
     <link rel="stylesheet" href="/assets/main.css">
 </head>
 <body>
@@ -11,44 +11,46 @@
         <h1>Still Time Studio</h1>
         <nav>
             <ul>
-                {% if page.page_type == 'meditation_timer' %}
-                    <!-- 瞑想アプリ詳細ページ（英語） -->
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/ja/meditation-timer-jp">🇯🇵 日本語</a></li>
-                    <li><a href="#about">About the App</a></li>
-                    <li><a href="#how-to-use">How to Use</a></li>
-                    <li><a href="#my-thoughts">My Thoughts</a></li>
-                    <li><a href="#support">Support Development</a></li>
-                    <li><a href="#download">Download</a></li>
-                {% elsif page.page_type == 'meditation_timer_ja' %}
-                    <!-- 瞑想アプリ詳細ページ（日本語） -->
-                    <li><a href="/ja/">ホーム</a></li>
-                    <li><a href="/meditation_timer">🇺🇸 English</a></li>
-                    <li><a href="#about">アプリについて</a></li>
-                    <li><a href="#how-to-use">使い方</a></li>
-                    <li><a href="#my-thoughts">開発者の想い</a></li>
-                    <li><a href="#support">開発支援</a></li>
-                    <li><a href="#download">ダウンロード</a></li>
-                {% elsif page.url == '/ja/' or page.url == '/' %}
+                
                     <!-- 日本語ホームページ -->
                     <li><a href="#meditation-timer">わたし時間 / Still Time</a></li>
                     <li><a href="#ton-tsu-game">トンツーゲーム</a></li>
                     <li><a href="#support-qa">サポート・Q&A</a></li>
-                {% elsif page.url == '/en/' %}
-                    <!-- 英語ホームページ -->
-                    <li><a href="#meditation-timer">Still Time</a></li>
-                    <li><a href="#ton-tsu-game">Morse Code Game</a></li>
-                    <li><a href="#support-qa">Support & Q&A</a></li>
-                {% else %}
-                    <!-- その他のページ -->
-                    <li><a href="/">Home</a></li>
-                {% endif %}
+                
             </ul>
         </nav>
     </header>
     
     <main>
-         {{ content | markdownify }} 
+         <section id="site-intro">
+    <h2>このサイトについて</h2>
+    <p>このサイトでは、わたしが個人的に開発したアプリを紹介しています。<br />
+        日々の暮らしを少し豊かにするツールや、楽しみながら学べるゲームなど、シンプルで親しみやすいアプリを公開しています。<br /> 興味のあるアプリがあれば、ぜひ詳細ページをご覧ください。
+    </p>
+</section>
+
+<section id="meditation-timer">
+    <img src="/images/meditation_timer/meditation_timer_icon.png" alt="瞑想タイマーのアイコン" class="app-icon" />
+    <h2>わたし時間 / Still Time</h2>
+    <p>使いやすいインターフェース。呼吸をサポートするアニメーションと、穏やかなサウンドで、あなたの瞑想をサポートします。</p>
+    <a href="/ja/meditation-timer-jp" class="detail-link">詳細を見る</a>
+</section>
+
+<section id="ton-tsu-game">
+    <img src="/images/ton_tsu_game/ton_tsu_game_icon.png" alt="トンツーゲームのアイコン" class="app-icon" />
+    <h2>トンツーゲーム</h2>
+    <p>現在作成している、モールス信号を楽しく学べるゲームです。</p>
+    <a href="ton_tsu_game" class="detail-link">詳細を見る</a>
+</section>
+
+<section id="support-qa">
+    <h2>サポート・Q&amp;A</h2>
+    <p>アプリについてご質問やご意見がございましたら、お気軽にお声がけください。</p>
+    <a href="mailto:kazunakka.contact@gmail.com" class="x-link">
+        お問い合わせメール
+    </a>
+</section>
+ 
     </main>
     
     <footer>

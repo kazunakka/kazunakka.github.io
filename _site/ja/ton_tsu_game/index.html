@@ -1,10 +1,26 @@
----
-layout: default
-lang: ja
-title: "トンツーゲーム"
-page_type: ton_tsu_game
----
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>トンツーゲーム</title>
+    <link rel="stylesheet" href="/assets/main.css">
+</head>
 <body>
+    <header>
+        <h1>Still Time Studio</h1>
+        <nav>
+            <ul>
+                
+                    <!-- その他のページ -->
+                    <li><a href="/">Home</a></li>
+                
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+         <body>
     <header>
         <h1>トンツーゲーム</h1>
         <nav>
@@ -105,3 +121,55 @@ function scrollToTop() {
 </script>
 </body>
 
+ 
+    </main>
+    
+    <footer>
+        <p>&copy; 2025 Still Time Studio</p>
+    </footer>
+
+    <!-- 英語サイトでトンツーゲーム非表示 -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    if (window.location.pathname === '/en/' || window.location.pathname === '/en/index.html' || window.location.pathname === '/en') {
+        const tonTsuSection = document.getElementById('ton-tsu-game');
+        if (tonTsuSection) {
+            tonTsuSection.style.display = 'none';
+        }
+        
+        const tonTsuNavLink = document.querySelector('a[href="#ton-tsu-game"]');
+        if (tonTsuNavLink) {
+            const listItem = tonTsuNavLink.closest('li');
+            if (listItem) {
+                listItem.style.display = 'none';
+            }
+        }
+    }
+});
+</script>
+    
+    
+    <button class="back-to-top" id="backToTop" onclick="scrollToTop()">↑</button>
+    
+    
+    <script>
+// 上に戻るボタンの表示制御
+window.addEventListener('scroll', function() {
+    const backToTopButton = document.getElementById('backToTop');
+    if (window.pageYOffset > 300) {
+        backToTopButton.classList.add('show');
+    } else {
+        backToTopButton.classList.remove('show');
+    }
+});
+
+// スムーズスクロール
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
+</script>
+</body>
+</html>
