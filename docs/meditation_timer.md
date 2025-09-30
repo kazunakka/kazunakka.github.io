@@ -61,8 +61,19 @@ title: "Still Time - Meditation Timer"
 <!-- My Thoughts -->
 <section id="my-thoughts">
     <h2>My Thoughts</h2>
-    <p>This app embodies not only convenience but also a spirit of gratitude and sharing. In a society where excessive capitalism burdens many people, rather than simply following that flow, I offer this app as my personal challenge to circulate value in a more human-centered way.</p>
-    <p>When you feel "I want to support this app," I would be grateful if you could express that sentiment through your support.</p>
+    <p>This app carries not only convenience but also a spirit of gratitude and sharing.</p>
+
+<p>In a society where excessive capitalism places burdens on many people, I don’t simply go along with that current. Instead, I hope to circulate value in a more human-centered way. This app is one of my small steps toward that goal.</p>
+
+<p>I originally created it for myself, thinking, “I wish there were a meditation timer like this.” Over time, I realized that sharing it could bring joy to others who share similar values.</p>
+
+<p>To make it available to anyone, it needed to be published on the Play Store. That was a big challenge for me, but I went ahead and registered the app.</p>
+
+<p>So if you choose to use this app as your meditation companion, it brings me great joy as its creator.</p>
+
+<p>At the same time, I often feel discomfort with a society so focused on money. I believe that a warmer, more compassionate society beyond such frameworks is possible. And I’m convinced that it would be a <strong>circulation-based society</strong>, where everyone shares the value they already have.</p>
+
+<p>I created “Still Time” with the thought, “I’ve made a convenient timer, so please give it a try.” If you use it and find it helpful, I hope that along with making your meditation time more meaningful, you can also feel a glimpse of that warm, circulation-based society.</p>
 </section>
 
 <!-- Support Development -->
