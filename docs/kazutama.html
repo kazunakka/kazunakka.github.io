@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数霊占い - Kazutama</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-top: 20px;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.1rem;
+        }
+
+        .sparkle {
+            display: inline-block;
+            animation: sparkle 2s infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.7; }
+        }
+
+        .card {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+
+        .tab.active {
+            background: white;
+            color: #667eea;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .tab:hover:not(.active) {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            color: white;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            background: rgba(255,255,255,0.9);
+            transition: all 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255,255,255,0.5);
+        }
+
+        .result {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 20px;
+            animation: slideIn 0.5s;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .result-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .number-circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .result-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .info-box {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .info-box h4 {
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .info-box p {
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .personality { background: #f3e5f5; }
+        .personality h4 { color: #7b1fa2; }
+
+        .fortune { background: #e3f2fd; }
+        .fortune h4 { color: #1976d2; }
+
+        .trait { background: #fce4ec; }
+        .trait h4 { color: #c2185b; }
+
+        .lucky-section {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .lucky-box {
+            flex: 1;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .lucky-number {
+            background: linear-gradient(135deg, #fff9c4, #fff59d);
+        }
+
+        .lucky-color {
+            background: linear-gradient(135deg, #e1bee7, #ce93d8);
+        }
+
+        .lucky-box p {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .lucky-box .value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #f57c00;
+        }
+
+        .color-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin: 0 auto;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .chars-section {
+            border-top: 2px solid #e0e0e0;
+            padding-top: 20px;
+            margin-top: 20px;
+        }
+
+        .chars-section h4 {
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        .chars-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .char-item {
+            background: #f5f5f5;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .char-item .char {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .char-item .value {
+            color: #666;
+            margin-left: 5px;
+        }
+
+        .compatibility-bar {
+            width: 100%;
+            height: 20px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        .compatibility-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b9d, #c44569);
+            transition: width 1s ease;
+            border-radius: 10px;
+        }
+
+        .heart-icon {
+            font-size: 3rem;
+            color: #e91e63;
+            margin-bottom: 15px;
+        }
+
+        .compatibility-percent {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .compatibility-message {
+            font-size: 1.2rem;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .numbers-compare {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .number-box {
+            flex: 1;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .number-box.blue {
+            background: #e3f2fd;
+        }
+
+        .number-box.pink {
+            background: #fce4ec;
+        }
+
+        .number-box p {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .number-box .num {
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+
+        .number-box.blue .num {
+            color: #1976d2;
+        }
+
+        .number-box.pink .num {
+            color: #c2185b;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: rgba(255,255,255,0.8);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .number-circle {
+                width: 80px;
+                height: 80px;
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><span class="sparkle">✨</span> 数霊占い <span class="sparkle">✨</span></h1>
+            <p>あなたの名前に秘められた運命を読み解きます</p>
+        </div>
+
+        <div class="card">
+            <div class="tabs">
+                <button class="tab active" onclick="showTab('name')">名前診断</button>
+                <button class="tab" onclick="showTab('compatibility')">❤️ 相性診断</button>
+            </div>
+
+            <div id="nameTab" class="tab-content active">
+                <div class="input-group">
+                    <label>お名前をひらがなで入力</label>
+                    <input type="text" id="nameInput" placeholder="例：やまだたろう" oninput="calculateName()">
+                </div>
+                <div id="nameResult"></div>
+            </div>
+
+            <div id="compatibilityTab" class="tab-content">
+                <div class="input-group">
+                    <label>1人目の名前</label>
+                    <input type="text" id="name1Input" placeholder="例：たろう" oninput="calculateCompatibility()">
+                </div>
+                <div class="input-group">
+                    <label>2人目の名前</label>
+                    <input type="text" id="name2Input" placeholder="例：はなこ" oninput="calculateCompatibility()">
+                </div>
+                <div id="compatibilityResult"></div>
+            </div>
+        </div>
+
+        <div class="footer">
+            ※ 数霊は古来より伝わる占術です。楽しみながらご活用ください。
+        </div>
+    </div>
+
+    <script>
+        const kazutamaMap = {
+            'あ': 1, 'い': 2, 'う': 3, 'え': 4, 'お': 5,
+            'か': 6, 'き': 7, 'く': 8, 'け': 9, 'こ': 10,
+            'さ': 11, 'し': 12, 'す': 13, 'せ': 14, 'そ': 15,
+            'た': 16, 'ち': 17, 'つ': 18, 'て': 19, 'と': 20,
+            'な': 21, 'に': 22, 'ぬ': 23, 'ね': 24, 'の': 25,
+            'は': 26, 'ひ': 27, 'ふ': 28, 'へ': 29, 'ほ': 30,
+            'ま': 31, 'み': 32, 'む': 33, 'め': 34, 'も': 35,
+            'や': 36, 'ゆ': 38, 'よ': 40,
+            'ら': 41, 'り': 42, 'る': 43, 'れ': 44, 'ろ': 45,
+            'わ': 46, 'ゐ': 47, 'ゑ': 48, 'を': 49, 'ん': 50,
+            'が': 6, 'ぎ': 7, 'ぐ': 8, 'げ': 9, 'ご': 10,
+            'ざ': 11, 'じ': 12, 'ず': 13, 'ぜ': 14, 'ぞ': 15,
+            'だ': 16, 'ぢ': 17, 'づ': 18, 'で': 19, 'ど': 20,
+            'ば': 26, 'び': 27, 'ぶ': 28, 'べ': 29, 'ぼ': 30,
+            'ぱ': 26, 'ぴ': 27, 'ぷ': 28, 'ぺ': 29, 'ぽ': 30,
+        };
+
+        const readings = {
+            1: { 
+                title: '始まりの数',
+                personality: 'リーダーシップがあり、独立心が強い',
+                fortune: '新しいことを始めるのに最適な運気',
+                trait: '積極的で情熱的、先駆者の資質',
+                color: '#FF6B6B',
+                lucky: 1
+            },
+            2: {
+                title: '調和の数',
+                personality: '協調性があり、思いやり深い',
+                fortune: '人間関係が良好、パートナーシップに恵まれる',
+                trait: '優しく穏やか、バランス感覚に優れる',
+                color: '#4ECDC4',
+                lucky: 2
+            },
+            3: {
+                title: '創造の数',
+                personality: '表現力豊かで、明るく社交的',
+                fortune: '芸術や創造的な活動で成功',
+                trait: '楽観的で魅力的、コミュニケーション上手',
+                color: '#FFE66D',
+                lucky: 3
+            },
+            4: {
+                title: '安定の数',
+                personality: '真面目で責任感が強く、実直',
+                fortune: '堅実な努力が実を結ぶ',
+                trait: '信頼できる、計画的で組織的',
+                color: '#95E1D3',
+                lucky: 4
+            },
+            5: {
+                title: '変化の数',
+                personality: '自由を愛し、冒険心がある',
+                fortune: '変化と挑戦の中で成長',
+                trait: '柔軟で適応力が高い、好奇心旺盛',
+                color: '#F38181',
+                lucky: 5
+            },
+            6: {
+                title: '愛の数',
+                personality: '家族思いで、責任感がある',
+                fortune: '家庭や人間関係が充実',
+                trait: '思いやりがあり、奉仕の精神',
+                color: '#AA96DA',
+                lucky: 6
+            },
+            7: {
+                title: '知恵の数',
+                personality: '思慮深く、分析的',
+                fortune: '精神的な成長と洞察力の開花',
+                trait: '知的で探究心が強い、直感的',
+                color: '#A8D8EA',
+                lucky: 7
+            },
+            8: {
+                title: '力の数',
+                personality: '野心的で、実行力がある',
+                fortune: '物質的な成功と権力の獲得',
+                trait: '自信があり、組織運営能力が高い',
+                color: '#FCBAD3',
+                lucky: 8
+            },
+            9: {
+                title: '完成の数',
+                personality: '理想主義的で、博愛精神がある',
+                fortune: '人類愛と精神性の向上',
+                trait: '寛容で慈悲深い、芸術的感性',
+                color: '#FFFFD2',
+                lucky: 9
+            }
+        };
+
+        function showTab(tabName) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            
+            if (tabName === 'name') {
+                document.querySelector('.tabs .tab:first-child').classList.add('active');
+                document.getElementById('nameTab').classList.add('active');
+            } else {
+                document.querySelector('.tabs .tab:last-child').classList.add('active');
+                document.getElementById('compatibilityTab').classList.add('active');
+            }
+        }
+
+        function calculateKazutama(name) {
+            let total = 0;
+            const chars = [];
+            
+            for (let char of name) {
+                const value = kazutamaMap[char] || 0;
+                if (value > 0) {
+                    chars.push({ char, value });
+                    total += value;
+                }
+            }
+            
+            while (total > 9) {
+                total = String(total).split('').reduce((sum, digit) => sum + parseInt(digit), 0);
+            }
+            
+            return { total, chars };
+        }
+
+        function calculateName() {
+            const name = document.getElementById('nameInput').value;
+            const resultDiv = document.getElementById('nameResult');
+            
+            if (!name) {
+                resultDiv.innerHTML = '';
+                return;
+            }
+            
+            const result = calculateKazutama(name);
+            if (result.chars.length === 0) {
+                resultDiv.innerHTML = '';
+                return;
+            }
+            
+            const reading = readings[result.total] || readings[1];
+            
+            const charsHTML = result.chars.map(item => 
+                `<div class="char-item"><span class="char">${item.char}</span><span class="value">= ${item.value}</span></div>`
+            ).join('');
+            
+            resultDiv.innerHTML = `
+                <div class="result">
+                    <div class="result-header">
+                        <div class="number-circle" style="background-color: ${reading.color}">${result.total}</div>
+                        <div class="result-title">${reading.title}</div>
+                    </div>
+                    
+                    <div class="info-box personality">
+                        <h4>性格</h4>
+                        <p>${reading.personality}</p>
+                    </div>
+                    
+                    <div class="info-box fortune">
+                        <h4>運勢</h4>
+                        <p>${reading.fortune}</p>
+                    </div>
+                    
+                    <div class="info-box trait">
+                        <h4>特徴</h4>
+                        <p>${reading.trait}</p>
+                    </div>
+                    
+                    <div class="lucky-section">
+                        <div class="lucky-box lucky-number">
+                            <p>ラッキーナンバー</p>
+                            <div class="value">${reading.lucky}</div>
+                        </div>
+                        <div class="lucky-box lucky-color">
+                            <p>ラッキーカラー</p>
+                            <div class="color-circle" style="background-color: ${reading.color}"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="chars-section">
+                        <h4>文字の数霊</h4>
+                        <div class="chars-grid">${charsHTML}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function calculateCompatibility() {
+            const name1 = document.getElementById('name1Input').value;
+            const name2 = document.getElementById('name2Input').value;
+            const resultDiv = document.getElementById('compatibilityResult');
+            
+            if (!name1 || !name2) {
+                resultDiv.innerHTML = '';
+                return;
+            }
+            
+            const result1 = calculateKazutama(name1);
+            const result2 = calculateKazutama(name2);
+            
+            if (result1.chars.length === 0 || result2.chars.length === 0) {
+                resultDiv.innerHTML = '';
+                return;
+            }
+            
+            const diff = Math.abs(result1.total - result2.total);
+            const compatibility = Math.max(0, 100 - diff * 11);
+            
+            let message = '';
+            if (compatibility >= 80) {
+                message = '最高の相性です！お互いを高め合える関係';
+            } else if (compatibility >= 60) {
+                message = '良好な相性です。理解し合える仲';
+            } else if (compatibility >= 40) {
+                message = '普通の相性。努力次第で良好に';
+            } else {
+                message = '異なる個性。互いを尊重することが大切';
+            }
+            
+            resultDiv.innerHTML = `
+                <div class="result">
+                    <div class="result-header">
+                        <div class="heart-icon">❤️</div>
+                        <div class="compatibility-percent">相性度: ${compatibility}%</div>
+                        <div class="compatibility-bar">
+                            <div class="compatibility-fill" style="width: ${compatibility}%"></div>
+                        </div>
+                        <div class="compatibility-message">${message}</div>
+                    </div>
+                    
+                    <div class="numbers-compare">
+                        <div class="number-box blue">
+                            <p>1人目の数霊</p>
+                            <div class="num">${result1.total}</div>
+                        </div>
+                        <div class="number-box pink">
+                            <p>2人目の数霊</p>
+                            <div class="num">${result2.total}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
