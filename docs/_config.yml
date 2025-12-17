@@ -4,8 +4,7 @@ description: >
 baseurl: ""
 url: "https://kazunakka.github.io"
 
-# ソースディレクトリをdocsに変更
-source: docs
+
 
 # Build settings
 markdown: kramdown
