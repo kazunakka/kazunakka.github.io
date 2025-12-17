@@ -32,12 +32,10 @@
                 {% elsif page.url == '/ja/' or page.url == '/' %}
                     <!-- 日本語ホームページ -->
                     <li><a href="#meditation-timer">わたし時間 / Still Time</a></li>
-                    <li><a href="#ton-tsu-game">トンツーゲーム</a></li>
                     <li><a href="#support-qa">サポート・Q&A</a></li>
                 {% elsif page.url == '/en/' %}
                     <!-- 英語ホームページ -->
                     <li><a href="#meditation-timer">Still Time</a></li>
-                    <li><a href="#ton-tsu-game">Morse Code Game</a></li>
                     <li><a href="#support-qa">Support & Q&A</a></li>
                 {% else %}
                     <!-- その他のページ -->
@@ -55,25 +53,7 @@
         <p>&copy; 2025 Still Time Studio</p>
     </footer>
 
-    <!-- 英語サイトでトンツーゲーム非表示 -->
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    if (window.location.pathname === '/en/' || window.location.pathname === '/en/index.html' || window.location.pathname === '/en') {
-        const tonTsuSection = document.getElementById('ton-tsu-game');
-        if (tonTsuSection) {
-            tonTsuSection.style.display = 'none';
-        }
-        
-        const tonTsuNavLink = document.querySelector('a[href="#ton-tsu-game"]');
-        if (tonTsuNavLink) {
-            const listItem = tonTsuNavLink.closest('li');
-            if (listItem) {
-                listItem.style.display = 'none';
-            }
-        }
-    }
-});
-</script>
+ 
     
     
     <button class="back-to-top" id="backToTop" onclick="scrollToTop()">↑</button>

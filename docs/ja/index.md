@@ -16,12 +16,6 @@ title: アプリ総合窓口
     <a href="/ja/meditation-timer-jp" class="detail-link">詳細を見る</a>
 </section>
 
-<section id="ton-tsu-game">
-    <img src="/images/ton_tsu_game/ton_tsu_game_icon.png" alt="トンツーゲームのアイコン" class="app-icon">
-    <h2>トンツーゲーム</h2>
-    <p>現在作成している、モールス信号を楽しく学べるゲームです。</p>
-    <a href="ton_tsu_game" class="detail-link">詳細を見る</a>
-</section>
 
   
 
