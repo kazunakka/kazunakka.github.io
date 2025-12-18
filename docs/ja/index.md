@@ -19,7 +19,7 @@ title: アプリ総合窓口
 <section id="log-editor-tool">
     <h2>瞑想ログ編集ツール</h2>
     <p>「わたし時間」アプリでエクスポートしたJSONデータをブラウザ上で直接編集できる外部ツールです。手動でのデータ修正や、一括削除、復元などに便利です。</p>
-    <a href="/meditation-timer-jp/log_editor.html" class="detail-link">ツールにアクセスする</a>
+    <a href="/ja/log_editor.html" class="detail-link">ツールにアクセスする</a>
 </section>
 <section id="support-qa">
     <h2>サポート・Q&A</h2>
