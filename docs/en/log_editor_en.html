@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Still Time Meditation Log Editor</title>
+    <style>
+        body {
+            font-family: 'Arial', 'Helvetica', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #4d8a8a; 
+            border-bottom: 2px solid #66b2b2;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+        h2 {
+            color: #66b2b2;
+            margin-top: 30px;
+            font-size: 1.4em;
+        }
+        textarea {
+            width: 100%;
+            height: 120px;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            resize: vertical;
+            font-family: monospace;
+        }
+        button {
+            padding: 10px 18px;
+            background-color: #66b2b2;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-right: 10px;
+            font-size: 1em;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #4d8a8a;
+        }
+        table {
+            width: 100%;
+            border-collapse: separate; 
+            border-spacing: 0;
+            margin-top: 20px;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+        th, td {
+            border-right: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+            padding: 12px 8px;
+            text-align: left;
+            vertical-align: middle;
+        }
+        th:last-child, td:last-child {
+            border-right: none;
+        }
+        th {
+            background-color: #eef4f4;
+            font-weight: bold;
+            color: #333;
+            border-top: 1px solid #ddd;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        .mood-select {
+            padding: 5px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        .memo-input {
+            width: 100%;
+            border: 1px solid #eee;
+            padding: 5px;
+            box-sizing: border-box;
+            border-radius: 4px;
+        }
+        .duration-input {
+            width: 60px;
+            text-align: right;
+            border: 1px solid #eee;
+            padding: 5px;
+            border-radius: 4px;
+        }
+        .date-display {
+            font-size: 0.8em;
+            color: #888;
+        }
+        .hidden {
+            display: none;
+        }
+        .error {
+            color: #d9534f;
+            background-color: #f2dede;
+            border: 1px solid #ebccd1;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Still Time Meditation Log Editor</h1>
+    <p>This tool allows you to load, edit, and re-export your JSON meditation logs for use with the app's import feature. Your data is processed only in your browser and is not sent externally.</p>
+
+    <h2>1. Import JSON Data</h2>
+    <textarea id="jsonInput" placeholder='Paste the JSON data copied from the app\'s "Export Data" feature here.'></textarea>
+    <button onclick="displayLogs()">Show / Update Logs</button>
+    <div id="errorDisplay" class="error hidden"></div>
+
+    <h2 id="editHeader" class="hidden">2. Edit Logs</h2>
+    <div id="logTableContainer">
+        <table id="logTable" class="hidden">
+            <thead>
+                <tr>
+                    <th style="width: 15%;">Date & Time (Original/Creation)</th>
+                    <th style="width: 10%;">Duration (min)</th>
+                    <th style="width: 15%;">Mood</th>
+                    <th style="width: 50%;">Memo</th>
+                    <th style="width: 10%;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <div style="margin-top: 15px;">
+        <button id="addRowButton" class="hidden" onclick="addRow()">+ Add New Log</button>
+    </div>
+    
+    <h2 id="exportHeader" class="hidden">3. Export JSON Data</h2>
+    <button id="exportButton" class="hidden" onclick="exportLogs()">Generate Edited JSON & Copy to Clipboard</button>
+    <p id="exportMessage" class="hidden" style="margin-top: 10px; color: #555;">Copy the JSON string and use the app's "Import Data (Restore)" feature.</p>
+    <textarea id="jsonOutput" class="hidden" readonly></textarea>
+</div>
+
+<script>
+    // 1: Bad, 5: Great
+    const MOOD_MAPPING = {
+        1: '😫 (1: Bad)',
+        2: '😞 (2: Not Good)',
+        3: '😐 (3: Neutral)',
+        4: '🙂 (4: Good)',
+        5: '😀 (5: Great)'
+    };
+
+    function toggleElements(visible) {
+        document.getElementById('editHeader').classList.toggle('hidden', !visible);
+        document.getElementById('logTable').classList.toggle('hidden', !visible);
+        document.getElementById('addRowButton').classList.toggle('hidden', !visible);
+        document.getElementById('exportHeader').classList.toggle('hidden', !visible);
+        document.getElementById('exportButton').classList.toggle('hidden', !visible);
+        document.getElementById('jsonOutput').classList.add('hidden');
+        document.getElementById('exportMessage').classList.add('hidden');
+    }
+    
+    function getMoodEmoji(value) {
+        return MOOD_MAPPING[value] || '😐 (3: Neutral)';
+    }
+
+    function displayLogs() {
+        const input = document.getElementById('jsonInput').value.trim();
+        const tbody = document.getElementById('logTable').querySelector('tbody');
+        const errorDisplay = document.getElementById('errorDisplay');
+        
+        tbody.innerHTML = '';
+        errorDisplay.classList.add('hidden');
+        toggleElements(false);
+
+        if (!input) {
+            errorDisplay.textContent = 'JSON data is empty.';
+            errorDisplay.classList.remove('hidden');
+            return;
+        }
+
+        try {
+            const logs = JSON.parse(input);
+            if (!Array.isArray(logs)) {
+                throw new Error('JSON data must be in Array format ([...]).');
+            }
+
+            logs.forEach(log => {
+                if (log.date && typeof log.durationMinutes === 'number') {
+                    addLogToTable(log);
+                } else {
+                    console.warn("Skipping invalid log entry:", log);
+                }
+            });
+
+            if (tbody.rows.length > 0) {
+                toggleElements(true);
+            } else {
+                 errorDisplay.textContent = 'No valid meditation logs found in the JSON data.';
+                errorDisplay.classList.remove('hidden');
+            }
+            
+        } catch (e) {
+            errorDisplay.textContent = 'Failed to parse JSON data. Please check the format. Error: ' + e.message;
+            errorDisplay.classList.remove('hidden');
+        }
+    }
+    
+    function createMoodSelect(initialValue) {
+        const select = document.createElement('select');
+        select.className = 'mood-select';
+        
+        for (let val = 1; val <= 5; val++) {
+            const option = document.createElement('option');
+            option.value = val;
+            option.textContent = getMoodEmoji(val);
+            if (val === (initialValue || 3)) {
+                option.selected = true;
+            }
+            select.appendChild(option);
+        }
+        return select;
+    }
+
+    function addLogToTable(logData) {
+        const tbody = document.getElementById('logTable').querySelector('tbody');
+        const row = tbody.insertRow();
+        row.dataset.originalDate = logData.date; 
+
+        // 1. Date & Time
+        const dateCell = row.insertCell();
+        const dateObj = new Date(logData.date);
+        dateCell.innerHTML = `
+            ${dateObj.getFullYear()}/${dateObj.getMonth() + 1}/${dateObj.getDate()} 
+            <br>
+            <span class="date-display">${String(dateObj.getHours()).padStart(2, '0')}:${String(dateObj.getMinutes()).padStart(2, '0')}</span>
+        `;
+        
+        // 2. Duration
+        const durationCell = row.insertCell();
+        const durationInput = document.createElement('input');
+        durationInput.type = 'number';
+        durationInput.min = '1';
+        durationInput.value = logData.durationMinutes || 5;
+        durationInput.className = 'duration-input';
+        durationCell.appendChild(durationInput);
+
+        // 3. Mood
+        const moodCell = row.insertCell();
+        const moodSelect = createMoodSelect(logData.mood);
+        moodCell.appendChild(moodSelect);
+        
+        // 4. Memo
+        const memoCell = row.insertCell();
+        const memoInput = document.createElement('input');
+        memoInput.type = 'text';
+        memoInput.value = logData.memo || ''; 
+        memoInput.className = 'memo-input';
+        memoCell.appendChild(memoInput);
+
+        // 5. Delete Button
+        const deleteCell = row.insertCell();
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.style.backgroundColor = '#d9534f'; 
+        deleteButton.style.marginRight = '0';
+        deleteButton.onclick = function() {
+            tbody.removeChild(row);
+            if (tbody.rows.length === 0) {
+                 toggleElements(false);
+            }
+        };
+        deleteCell.appendChild(deleteButton);
+    }
+    
+    function addRow() {
+        const newLog = {
+            date: new Date().toISOString(), 
+            durationMinutes: 10,
+            mood: 3,
+            memo: 'New added log',
+        };
+        addLogToTable(newLog);
+    }
+
+    function exportLogs() {
+        const tbody = document.getElementById('logTable').querySelector('tbody');
+        const rows = tbody.querySelectorAll('tr');
+        const exportedLogs = [];
+
+        rows.forEach(row => {
+            const durationInput = row.cells[1].querySelector('input').value;
+            const moodSelect = row.cells[2].querySelector('select').value;
+            const memoInput = row.cells[3].querySelector('input').value;
+
+            const log = {
+                date: row.dataset.originalDate, 
+                durationMinutes: parseInt(durationInput) || 1,
+                mood: parseInt(moodSelect) || 3,
+                memo: memoInput.trim(),
+            };
+            exportedLogs.push(log);
+        });
+        
+        exportedLogs.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+        const jsonString = JSON.stringify(exportedLogs);
+        
+        document.getElementById('jsonOutput').value = jsonString;
+        document.getElementById('jsonOutput').classList.remove('hidden');
+        document.getElementById('exportMessage').classList.remove('hidden');
+        
+        navigator.clipboard.writeText(jsonString).then(() => {
+            alert('Edited JSON copied to clipboard!\nGo back to the app and paste it into the "Import Data" feature.');
+        }).catch(err => {
+            console.error('Failed to copy text: ', err);
+            document.getElementById('jsonOutput').select();
+            alert('Failed to copy to clipboard.\nPlease manually copy all the JSON from the output area.');
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        toggleElements(false);
+    });
+
+</script>
+
+</body>
+</html>
