@@ -22,6 +22,30 @@ title: アプリ総合窓口
     <a href="/ja/log_editor.html" class="detail-link">ツールにアクセスする</a>
 </section>
 
+<section id="updates">
+    <h2>📣 最新の更新情報・開発者の考え</h2>
+
+    <ul class="post-list" style="list-style: none; padding: 0;">
+      {% for post in site.posts reversed limit: 5 %} 
+        <li>
+          <span class="post-meta" style="color: #666; font-size: 0.9em;">
+            {{ post.date | date: "%Y年%m月%d日" }}
+          </span>
+
+          <h3 style="margin-top: 5px; margin-bottom: 5px;">
+            <a class="post-link" href="{{ post.url | relative_url }}">
+              {{ post.title }}
+            </a>
+          </h3>
+          
+          </li>
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 10px 0;">
+      {% endfor %}
+    </ul>
+    <p><a href="/blog/">→ すべての記事を見る</a></p>
+</section>
+
+
 <section id="support-qa">
     <h2>サポート・Q&A</h2>
     <p>アプリについてご質問やご意見がございましたら、お気軽にお声がけください。</p>
