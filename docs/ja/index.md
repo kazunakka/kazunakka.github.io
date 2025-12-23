@@ -45,8 +45,6 @@ title: アプリ総合窓口
     <p><a href="/blog/">→ すべての記事を見る</a></p>
 </section>
    
-   
-</section>
 
 <section id="support-qa">
     <h2>サポート・Q&A</h2>
