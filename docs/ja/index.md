@@ -44,7 +44,8 @@ title: アプリ総合窓口
     
     <p><a href="/blog/">→ すべての記事を見る</a></p>
 </section>
-    <p><a href="/blog/">→ すべての記事を見る</a></p>
+   
+   
 </section>
 
 <section id="support-qa">
