@@ -23,7 +23,7 @@ title: アプリ総合窓口
 </section>
 
 <section id="updates">
-    <h2>📣 最新の更新情報</h2>
+    <h2>📣 更新情報</h2>
 
     <ul class="post-list" style="list-style: none; padding: 0;">
       {% for post in site.posts reversed limit: 5 %} 
