@@ -250,3 +250,89 @@ footer {
     transform: translateY(-2px);
 }
 
+/* ===============================
+   投稿一覧 (Post List) のスタイル
+   =============================== */
+.post-list {
+    list-style: none; /* 箇条書きの点を非表示に */
+    padding: 0;      /* 左側のパディングを削除 */
+    margin-top: 15px;
+}
+
+.post-list li {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee; /* 区切り線を追加 */
+}
+
+.post-list li:last-child {
+    border-bottom: none; /* 最後の項目の区切り線は不要 */
+}
+
+.post-meta {
+    display: block;
+    color: #999999; /* 日付の色をフッターと同じ淡いグレーに */
+    font-size: 0.85em;
+    margin-bottom: 5px;
+}
+
+.post-list h3 {
+    margin: 0;
+    font-size: 1.1em;
+}
+
+.post-link {
+    color: #559999; /* section h2 の色 (#66B2B2) に近い色をリンクに */
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.post-link:hover {
+    color: #66B2B2; /* ホバーでサイトのテーマカラーに */
+    text-decoration: underline;
+}
+
+/* 「すべてを見る」リンクのスタイル */
+#updates p a {
+    color: #66B2B2;
+    text-decoration: underline;
+    font-weight: bold;
+    display: inline-block;
+    margin-top: 10px;
+}
+
+
+/* ===============================
+   個別投稿ページ (Post Page) のスタイル
+   =============================== */
+.post-content {
+    /* トップページと同じセクションのスタイルを適用 */
+    background: #FFFFFF;
+    padding: 25px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.post-content h1 {
+    color: #66B2B2; /* サイトのテーマカラー */
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 10px;
+    margin-top: 0;
+}
+
+.post-content .post-meta {
+    color: #999999;
+    font-size: 0.9em;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.post-body {
+    line-height: 1.8;
+}
+
+.post-body p {
+    margin-bottom: 1.5em;
+}

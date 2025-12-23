@@ -25,23 +25,25 @@ title: アプリ総合窓口
 <section id="updates">
     <h2>📣 更新情報</h2>
 
-    <ul class="post-list" style="list-style: none; padding: 0;">
+    <ul class="post-list">
       {% for post in site.posts reversed limit: 5 %} 
         <li>
-          <span class="post-meta" style="color: #666; font-size: 0.9em;">
+          <span class="post-meta">
             {{ post.date | date: "%Y年%m月%d日" }}
           </span>
 
-          <h3 style="margin-top: 5px; margin-bottom: 5px;">
+          <h3>
             <a class="post-link" href="{{ post.url | relative_url }}">
               {{ post.title }}
             </a>
           </h3>
           
-          </li>
-        <hr style="border: 0; border-top: 1px solid #eee; margin: 10px 0;">
+        </li>
       {% endfor %}
     </ul>
+    
+    <p><a href="/blog/">→ すべての記事を見る</a></p>
+</section>
     <p><a href="/blog/">→ すべての記事を見る</a></p>
 </section>
 
