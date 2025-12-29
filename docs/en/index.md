@@ -27,6 +27,30 @@ title: "Still Time Studio - English"
     <a href="/en/log_editor_en.html" class="detail-link">Access the Tool</a>
 </section>
 
+<section id="updates">
+    <h2>📣 Latest Updates & Dev Notes</h2>
+
+    <ul class="post-list">
+      {% assign english_posts = site.posts | where: "lang", "en" %} 
+      {% for post in english_posts reversed limit: 5 %} 
+        <li>
+          <span class="post-meta">
+            {{ post.date | date: "%B %d, %Y" }}
+          </span>
+
+          <h3>
+            <a class="post-link" href="{{ post.url | relative_url }}">
+              {{ post.title }}
+            </a>
+          </h3>
+          
+        </li>
+      {% endfor %}
+    </ul>
+    
+    <p><a href="/blog/">→ View All Posts</a></p>
+</section>
+
 <section id="support-qa">
     <h2>Support & Q&A</h2>
     <p>Have questions or feedback about the apps? Feel free to reach out.</p>
