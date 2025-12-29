@@ -1,29 +1,38 @@
 ---
 layout: default
-title: 更新情報・ブログ
+title: Updates & Blog Posts
 permalink: /blog/
 ---
 
 <main>
     <section>
-        <h2>すべての更新情報</h2>
+        <h2>All Updates</h2>
         
         <ul class="post-list">
-          {% for post in site.posts %} 
+          {% for post in site.posts %}
             <li>
               <span class="post-meta">
-                {{ post.date | date: "%Y年%m月%d日" }}
+                {% if post.lang == "ja" %}
+                    {{ post.date | date: "%Y年%m月%d日" }}
+                {% else %}
+                    {{ post.date | date: "%B %d, %Y" }}
+                {% endif %}
               </span>
 
               <h3>
                 <a class="post-link" href="{{ post.url | relative_url }}">
                   {{ post.title }}
+                  {% if post.lang == "en" %}[EN]{% endif %}
+                  {% if post.lang == "ja" %}[JP]{% endif %}
                 </a>
               </h3>
             </li>
           {% endfor %}
         </ul>
         
-        <p><a href="/ja/">← 日本語トップページへ戻る</a></p>
+        <p>
+          <a href="/ja/">← 日本語トップページへ戻る</a> | 
+          <a href="/en/">← Back to English Homepage</a>
+        </p>
     </section>
 </main>
