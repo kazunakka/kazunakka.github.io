@@ -32,7 +32,7 @@ title: "Still Time Studio - English"
 
     <ul class="post-list">
       {% assign english_posts = site.posts | where: "lang", "en" %} 
-      {% for post in english_posts reversed limit: 5 %} 
+      {% for post in english_posts limit: 5 %} 
         <li>
           <span class="post-meta">
             {{ post.date | date: "%B %d, %Y" }}

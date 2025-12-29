@@ -9,7 +9,7 @@ permalink: /blog/
         <h2>すべての更新情報</h2>
         
         <ul class="post-list">
-          {% for post in site.posts reversed %} 
+          {% for post in site.posts %} 
             <li>
               <span class="post-meta">
                 {{ post.date | date: "%Y年%m月%d日" }}

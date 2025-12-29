@@ -29,7 +29,7 @@ title: アプリ総合窓口
 
     <ul class="post-list">
       {% assign japanese_posts = site.posts | where: "lang", "ja" %} 
-      {% for post in japanese_posts reversed limit: 5 %} 
+      {% for post in japanese_posts limit: 5 %}
         <li>
           <span class="post-meta">
             {{ post.date | date: "%Y年%m月%d日" }}

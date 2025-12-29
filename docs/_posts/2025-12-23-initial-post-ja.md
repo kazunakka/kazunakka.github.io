@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "アプリダウンロード増加への第一歩"
-lang: ja 
+lang: ja
 date: 2025-12-23 16:00:00 +0900
 categories: [更新情報]
 ---
