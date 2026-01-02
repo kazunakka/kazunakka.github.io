@@ -59,7 +59,12 @@
             background-color: #4d8a8a;
         }
 
-        /* ★修正: ボタンが縦に並んだ時の間隔と幅の調整 */
+        /* ★修正: ログ表示/更新ボタンの下にマージンを追加 */
+        #logDisplayButton {
+            margin-bottom: 20px; 
+        }
+
+        /* ログ編集セクションのボタンの調整 */
         #exportButton {
             margin-bottom: 10px; 
             display: block; 
@@ -69,10 +74,9 @@
             display: block; 
             width: 100%; 
         }
-        /* 広い画面 (600px以上) の設定 */
         @media (min-width: 600px) {
             #exportButton {
-                margin-right: 15px; /* 横並び時の間隔 */
+                margin-right: 15px; 
                 margin-bottom: 0;
                 display: inline-block;
                 width: auto;
@@ -169,7 +173,7 @@
 
     <h2>1. JSONデータのインポート</h2>
     <textarea id="jsonInput" placeholder='アプリの「データのエクスポート」機能でコピーしたJSONデータをここに貼り付けてください。'></textarea>
-    <button onclick="displayLogs()">ログを表示 / 更新</button>
+    <button id="logDisplayButton" onclick="displayLogs()">ログを表示 / 更新</button> 
     <div id="errorDisplay" class="error hidden"></div>
 
     <h2 id="editHeader" class="hidden">2. ログの編集とエクスポート</h2>

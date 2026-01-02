@@ -59,7 +59,12 @@
             background-color: #4d8a8a;
         }
         
-        /* ★Fix: Adjust spacing and width when buttons stack vertically */
+        /* ★Fix 1: Add margin below the display button */
+        #logDisplayButton {
+            margin-bottom: 20px; 
+        }
+
+        /* ★Fix 2: Adjust spacing and width for Edit section buttons */
         #exportButton {
             margin-bottom: 10px; 
             display: block; 
@@ -82,7 +87,7 @@
                 width: auto;
             }
         }
-        /* --- End of Fix --- */
+        /* --- End of Fix 2 --- */
 
         table {
             width: 100%;
@@ -168,7 +173,7 @@
 
     <h2>1. Import JSON Data</h2>
     <textarea id="jsonInput" placeholder='Paste the JSON data copied from the app\'s "Export Data" feature here.'></textarea>
-    <button onclick="displayLogs()">Show / Update Logs</button>
+    <button id="logDisplayButton" onclick="displayLogs()">Show / Update Logs</button> 
     <div id="errorDisplay" class="error hidden"></div>
 
     <h2 id="editHeader" class="hidden">2. Edit Logs and Export</h2>
@@ -365,6 +370,7 @@
         document.getElementById('jsonOutput').classList.remove('hidden');
         document.getElementById('exportMessage').classList.remove('hidden');
         
+        // Copy to clipboard
         navigator.clipboard.writeText(jsonString).then(() => {
             alert('Edited JSON copied to clipboard!\nGo back to the app and paste it into the "Import Data" feature.');
         }).catch(err => {
