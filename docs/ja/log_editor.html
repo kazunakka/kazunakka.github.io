@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Still Time 瞑想ログ編集ツール</title>
+    <title>Still Time Meditation Log Editor</title>
     <style>
         body {
             font-family: 'Arial', 'Helvetica', sans-serif;
@@ -21,7 +21,7 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
         h1 {
-            color: #4d8a8a; /* アプリのテーマカラーに合わせる */
+            color: #4d8a8a; 
             border-bottom: 2px solid #66b2b2;
             padding-bottom: 10px;
             margin-bottom: 20px;
@@ -51,18 +51,24 @@
             border-radius: 6px;
             cursor: pointer;
             transition: background-color 0.3s;
-            margin-right: 10px;
+            /* ★Fix 1: Remove default right margin from all buttons */
+            margin-right: 0; 
             font-size: 1em;
             font-weight: bold;
         }
         button:hover {
             background-color: #4d8a8a;
         }
+        /* ★Fix 1: Apply margin only to the Export button for spacing */
+        #exportButton {
+            margin-right: 15px; 
+        }
+        
         table {
             width: 100%;
-            border-collapse: separate; /* ボーダーを丸くするためにcollapseを解除 */
+            min-width: 750px; /* ★Fix 3: Ensure minimum width for horizontal scroll */
+            border-collapse: separate; 
             border-spacing: 0;
-            /* margin-top: 20px; <-- #logTableContainerに移動するため削除 */
             overflow: hidden;
             border-radius: 8px;
         }
@@ -72,17 +78,27 @@
             padding: 12px 8px;
             text-align: left;
             vertical-align: middle;
-            /* テーブルの幅が100%になるのを防ぐ */
-            white-space: nowrap; 
+            /* white-space: nowrap; removed from td */
         }
-        th:last-child, td:last-child {
-            border-right: none;
-        }
+
         th {
             background-color: #eef4f4;
             font-weight: bold;
             color: #333;
             border-top: 1px solid #ddd;
+            white-space: nowrap; /* Keep header text from wrapping */
+        }
+        /* ★Fix 3: Adjust header widths */
+        #logTable thead th {
+            width: auto;
+        }
+        /* Set Memo column width */
+        #logTable thead tr th:nth-child(4) {
+            width: 45%; 
+        }
+
+        th:last-child, td:last-child {
+            border-right: none;
         }
         tr:last-child td {
             border-bottom: none;
@@ -98,6 +114,8 @@
             padding: 5px;
             box-sizing: border-box;
             border-radius: 4px;
+            /* ★Fix 2: Allow memo text to wrap inside the input field */
+            white-space: normal; 
         }
         .duration-input {
             width: 60px;
@@ -121,29 +139,29 @@
             border-radius: 6px;
             margin-bottom: 15px;
         }
-        /* ★★★ 修正箇所 ★★★ */
         #logTableContainer {
-            margin-top: 20px; /* 以前tableにあったマージンをこちらに移動 */
-            overflow-x: auto; /* 横スクロールを有効にする */
+            margin-top: 20px; 
+            overflow-x: auto; /* Enables horizontal scrolling */
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <h1>Still Time 瞑想ログ編集ツール</h1>
-    <p>このツールは、アプリからエクスポートしたJSONデータをブラウザ内で読み込み、編集し、再度アプリにインポートできる形式で出力するためのものです。データは外部に送信されません。</p>
 
-    <h2>1. JSONデータのインポート</h2>
-    <textarea id="jsonInput" placeholder='アプリの「データのエクスポート」機能でコピーしたJSONデータをここに貼り付けてください。'></textarea>
-    <button onclick="displayLogs()">ログを表示 / 更新</button>
+<div class="container">
+    <h1>Still Time Meditation Log Editor</h1>
+    <p>This tool allows you to load, edit, and re-export your JSON meditation logs for use with the app's import feature. Your data is processed only in your browser and is not sent externally.</p>
+
+    <h2>1. Import JSON Data</h2>
+    <textarea id="jsonInput" placeholder='Paste the JSON data copied from the app\'s "Export Data" feature here.'></textarea>
+    <button onclick="displayLogs()">Show / Update Logs</button>
     <div id="errorDisplay" class="error hidden"></div>
 
-    <h2 id="editHeader" class="hidden">2. ログの編集とエクスポート</h2>
+    <h2 id="editHeader" class="hidden">2. Edit Logs and Export</h2>
     
     <div id="exportSection" style="margin-bottom: 20px;">
-        <button id="exportButton" class="hidden" onclick="exportLogs()">編集したJSONを生成 & クリップボードにコピー</button>
-        <button id="addRowButton" class="hidden" onclick="addRow()">+ 新しいログを追加</button>
-        <p id="exportMessage" class="hidden" style="margin-top: 10px; color: #555;">コピーされたJSON文字列をアプリの「データのインポート（復元）」機能に貼り付けてください。</p>
+        <button id="exportButton" class="hidden" onclick="exportLogs()">Generate Edited JSON & Copy to Clipboard</button>
+        <button id="addRowButton" class="hidden" onclick="addRow()">+ Add New Log</button>
+        <p id="exportMessage" class="hidden" style="margin-top: 10px; color: #555;">Copy the JSON string and use the app's "Import Data (Restore)" feature.</p>
         <textarea id="jsonOutput" class="hidden" readonly></textarea>
     </div>
 
@@ -151,11 +169,11 @@
         <table id="logTable" class="hidden">
             <thead>
                 <tr>
-                    <th style="width: 15%;">日時 (作成/復元日時)</th>
-                    <th style="width: 10%;">時間 (分)</th>
-                    <th style="width: 15%;">気分</th>
-                    <th style="width: 50%;">メモ</th>
-                    <th style="width: 10%;">操作</th>
+                    <th>Date & Time (Original/Creation)</th>
+                    <th>Duration (min)</th>
+                    <th>Mood</th>
+                    <th>Memo</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -166,11 +184,11 @@
 <script>
     // 1: Bad, 5: Great
     const MOOD_MAPPING = {
-        1: '😫 (1: 最悪)',
-        2: '😞 (2: 良くない)',
-        3: '😐 (3: 普通)',
-        4: '🙂 (4: 良い)',
-        5: '😀 (5: 最高)'
+        1: '😫 (1: Bad)',
+        2: '😞 (2: Not Good)',
+        3: '😐 (3: Neutral)',
+        4: '🙂 (4: Good)',
+        5: '😀 (5: Great)'
     };
 
     function toggleElements(visible) {
@@ -181,22 +199,22 @@
         document.getElementById('jsonOutput').classList.add('hidden');
         document.getElementById('exportMessage').classList.add('hidden');
     }
-
+    
     function getMoodEmoji(value) {
-        return MOOD_MAPPING[value] || '😐 (3: 普通)';
+        return MOOD_MAPPING[value] || '😐 (3: Neutral)';
     }
 
     function displayLogs() {
         const input = document.getElementById('jsonInput').value.trim();
         const tbody = document.getElementById('logTable').querySelector('tbody');
         const errorDisplay = document.getElementById('errorDisplay');
-
+        
         tbody.innerHTML = '';
         errorDisplay.classList.add('hidden');
         toggleElements(false);
 
         if (!input) {
-            errorDisplay.textContent = 'JSONデータが空です。';
+            errorDisplay.textContent = 'JSON data is empty.';
             errorDisplay.classList.remove('hidden');
             return;
         }
@@ -204,7 +222,7 @@
         try {
             const logs = JSON.parse(input);
             if (!Array.isArray(logs)) {
-                throw new Error('JSONデータは配列形式（[...]）である必要があります。');
+                throw new Error('JSON data must be in Array format ([...]).');
             }
 
             logs.forEach(log => {
@@ -218,19 +236,20 @@
             if (tbody.rows.length > 0) {
                 toggleElements(true);
             } else {
-                 errorDisplay.textContent = 'JSONデータ内に有効な瞑想ログが見つかりませんでした。';
+                 errorDisplay.textContent = 'No valid meditation logs found in the JSON data.';
                 errorDisplay.classList.remove('hidden');
             }
+            
         } catch (e) {
-            errorDisplay.textContent = 'JSONデータの解析に失敗しました。形式が正しいか確認してください。エラー: ' + e.message;
+            errorDisplay.textContent = 'Failed to parse JSON data. Please check the format. Error: ' + e.message;
             errorDisplay.classList.remove('hidden');
         }
     }
-
+    
     function createMoodSelect(initialValue) {
         const select = document.createElement('select');
         select.className = 'mood-select';
-
+        
         for (let val = 1; val <= 5; val++) {
             const option = document.createElement('option');
             option.value = val;
@@ -246,16 +265,18 @@
     function addLogToTable(logData) {
         const tbody = document.getElementById('logTable').querySelector('tbody');
         const row = tbody.insertRow();
-        row.dataset.originalDate = logData.date;
+        row.dataset.originalDate = logData.date; 
 
+        // 1. Date & Time
         const dateCell = row.insertCell();
         const dateObj = new Date(logData.date);
         dateCell.innerHTML = `
-            ${dateObj.getFullYear()}/${dateObj.getMonth() + 1}/${dateObj.getDate()}
+            ${dateObj.getFullYear()}/${dateObj.getMonth() + 1}/${dateObj.getDate()} 
             <br>
             <span class="date-display">${String(dateObj.getHours()).padStart(2, '0')}:${String(dateObj.getMinutes()).padStart(2, '0')}</span>
         `;
-
+        
+        // 2. Duration
         const durationCell = row.insertCell();
         const durationInput = document.createElement('input');
         durationInput.type = 'number';
@@ -264,21 +285,24 @@
         durationInput.className = 'duration-input';
         durationCell.appendChild(durationInput);
 
+        // 3. Mood
         const moodCell = row.insertCell();
         const moodSelect = createMoodSelect(logData.mood);
         moodCell.appendChild(moodSelect);
-
+        
+        // 4. Memo
         const memoCell = row.insertCell();
         const memoInput = document.createElement('input');
         memoInput.type = 'text';
-        memoInput.value = logData.memo || '';
-         memoInput.className = 'memo-input';
+        memoInput.value = logData.memo || ''; 
+        memoInput.className = 'memo-input';
         memoCell.appendChild(memoInput);
 
+        // 5. Delete Button
         const deleteCell = row.insertCell();
         const deleteButton = document.createElement('button');
-        deleteButton.textContent = '削除';
-        deleteButton.style.backgroundColor = '#d9534f'; // Red color
+        deleteButton.textContent = 'Delete';
+        deleteButton.style.backgroundColor = '#d9534f'; 
         deleteButton.style.marginRight = '0';
         deleteButton.onclick = function() {
             tbody.removeChild(row);
@@ -288,13 +312,13 @@
         };
         deleteCell.appendChild(deleteButton);
     }
-
+    
     function addRow() {
         const newLog = {
-            date: new Date().toISOString(),
+            date: new Date().toISOString(), 
             durationMinutes: 10,
             mood: 3,
-            memo: '新規追加のログ',
+            memo: 'New added log',
         };
         addLogToTable(newLog);
     }
@@ -310,34 +334,38 @@
             const memoInput = row.cells[3].querySelector('input').value;
 
             const log = {
-                date: row.dataset.originalDate,
+                date: row.dataset.originalDate, 
                 durationMinutes: parseInt(durationInput) || 1,
                 mood: parseInt(moodSelect) || 3,
                 memo: memoInput.trim(),
             };
             exportedLogs.push(log);
         });
-
+        
+        // Sort by date for stability upon import
         exportedLogs.sort((a, b) => new Date(a.date) - new Date(b.date));
 
         const jsonString = JSON.stringify(exportedLogs);
-
+        
         document.getElementById('jsonOutput').value = jsonString;
         document.getElementById('jsonOutput').classList.remove('hidden');
         document.getElementById('exportMessage').classList.remove('hidden');
-
+        
+        // Copy to clipboard
         navigator.clipboard.writeText(jsonString).then(() => {
-            alert('編集したJSONがクリップボードにコピーされました！\nアプリに戻って「データのインポート」機能で貼り付けてください。');
+            alert('Edited JSON copied to clipboard!\nGo back to the app and paste it into the "Import Data" feature.');
         }).catch(err => {
             console.error('Failed to copy text: ', err);
             document.getElementById('jsonOutput').select();
-            alert('クリップボードへのコピーに失敗しました。\n出力エリアのJSONをすべて手動でコピーしてください。');
+            alert('Failed to copy to clipboard.\nPlease manually copy all the JSON from the output area.');
         });
     }
 
     document.addEventListener('DOMContentLoaded', () => {
         toggleElements(false);
     });
+
 </script>
+
 </body>
 </html>
