@@ -122,7 +122,6 @@
     </style>
 </head>
 <body>
-
 <div class="container">
     <h1>Still Time 瞑想ログ編集ツール</h1>
     <p>このツールは、アプリからエクスポートしたJSONデータをブラウザ内で読み込み、編集し、再度アプリにインポートできる形式で出力するためのものです。データは外部に送信されません。</p>
@@ -132,7 +131,13 @@
     <button onclick="displayLogs()">ログを表示 / 更新</button>
     <div id="errorDisplay" class="error hidden"></div>
 
-    <h2 id="editHeader" class="hidden">2. ログの編集</h2>
+    <h2 id="editHeader" class="hidden">2. ログの編集とエクスポート</h2>
+    
+    <div id="exportSection" style="margin-bottom: 20px;">
+        <button id="exportButton" class="hidden" onclick="exportLogs()">編集したJSONを生成 & クリップボードにコピー</button>
+        <p id="exportMessage" class="hidden" style="margin-top: 10px; color: #555;">コピーされたJSON文字列をアプリの「データのインポート（復元）」機能に貼り付けてください。</p>
+        <textarea id="jsonOutput" class="hidden" readonly></textarea>
+    </div>
     <div id="logTableContainer">
         <table id="logTable" class="hidden">
             <thead>
@@ -152,11 +157,7 @@
         <button id="addRowButton" class="hidden" onclick="addRow()">+ 新しいログを追加</button>
     </div>
     
-    <h2 id="exportHeader" class="hidden">3. JSONデータのエクスポート</h2>
-    <button id="exportButton" class="hidden" onclick="exportLogs()">編集したJSONを生成 & クリップボードにコピー</button>
-    <p id="exportMessage" class="hidden" style="margin-top: 10px; color: #555;">コピーされたJSON文字列をアプリの「データのインポート（復元）」機能に貼り付けてください。</p>
-    <textarea id="jsonOutput" class="hidden" readonly></textarea>
-</div>
+    </div>
 
 <script>
     // 1: Bad, 5: Great
@@ -173,12 +174,12 @@
         document.getElementById('editHeader').classList.toggle('hidden', !visible);
         document.getElementById('logTable').classList.toggle('hidden', !visible);
         document.getElementById('addRowButton').classList.toggle('hidden', !visible);
-        document.getElementById('exportHeader').classList.toggle('hidden', !visible);
-        document.getElementById('exportButton').classList.toggle('hidden', !visible);
+        // エクスポート関連の要素の表示もここで管理
+        document.getElementById('exportButton').classList.toggle('hidden', !visible); 
         document.getElementById('jsonOutput').classList.add('hidden');
         document.getElementById('exportMessage').classList.add('hidden');
     }
-    
+
     function getMoodEmoji(value) {
         return MOOD_MAPPING[value] || '😐 (3: 普通)';
     }
@@ -187,7 +188,7 @@
         const input = document.getElementById('jsonInput').value.trim();
         const tbody = document.getElementById('logTable').querySelector('tbody');
         const errorDisplay = document.getElementById('errorDisplay');
-        
+
         tbody.innerHTML = '';
         errorDisplay.classList.add('hidden');
         toggleElements(false);
@@ -219,17 +220,16 @@
                  errorDisplay.textContent = 'JSONデータ内に有効な瞑想ログが見つかりませんでした。';
                 errorDisplay.classList.remove('hidden');
             }
-            
         } catch (e) {
             errorDisplay.textContent = 'JSONデータの解析に失敗しました。形式が正しいか確認してください。エラー: ' + e.message;
             errorDisplay.classList.remove('hidden');
         }
     }
-    
+
     function createMoodSelect(initialValue) {
         const select = document.createElement('select');
         select.className = 'mood-select';
-        
+
         for (let val = 1; val <= 5; val++) {
             const option = document.createElement('option');
             option.value = val;
@@ -246,17 +246,17 @@
         const tbody = document.getElementById('logTable').querySelector('tbody');
         const row = tbody.insertRow();
         // 復元時に使うため、元のISO日付（編集不可）をデータ属性に保持
-        row.dataset.originalDate = logData.date; 
+        row.dataset.originalDate = logData.date;
 
         // 1. 日時
         const dateCell = row.insertCell();
         const dateObj = new Date(logData.date);
         dateCell.innerHTML = `
-            ${dateObj.getFullYear()}/${dateObj.getMonth() + 1}/${dateObj.getDate()} 
+            ${dateObj.getFullYear()}/${dateObj.getMonth() + 1}/${dateObj.getDate()}
             <br>
             <span class="date-display">${String(dateObj.getHours()).padStart(2, '0')}:${String(dateObj.getMinutes()).padStart(2, '0')}</span>
         `;
-        
+
         // 2. 瞑想時間
         const durationCell = row.insertCell();
         const durationInput = document.createElement('input');
@@ -270,14 +270,14 @@
         const moodCell = row.insertCell();
         const moodSelect = createMoodSelect(logData.mood);
         moodCell.appendChild(moodSelect);
-        
+
         // 4. メモ
         const memoCell = row.insertCell();
         const memoInput = document.createElement('input');
         memoInput.type = 'text';
         // null/undefinedを空文字列に置換
-        memoInput.value = logData.memo || ''; 
-        memoInput.className = 'memo-input';
+        memoInput.value = logData.memo || '';
+         memoInput.className = 'memo-input';
         memoCell.appendChild(memoInput);
 
         // 5. 削除ボタン
@@ -295,11 +295,11 @@
         };
         deleteCell.appendChild(deleteButton);
     }
-    
+
     function addRow() {
         const newLog = {
             // 新規作成時は現在のISO日時をセット
-            date: new Date().toISOString(), 
+            date: new Date().toISOString(),
             durationMinutes: 10,
             mood: 3,
             memo: '新規追加のログ',
@@ -319,23 +319,23 @@
 
             const log = {
                 // 元の日付 (row.dataset.originalDate) を使用。新規行の場合は new Date().toISOString()
-                date: row.dataset.originalDate, 
+                date: row.dataset.originalDate,
                 durationMinutes: parseInt(durationInput) || 1,
                 mood: parseInt(moodSelect) || 3,
                 memo: memoInput.trim(),
             };
             exportedLogs.push(log);
         });
-        
+
         // 日付順にソート（復元時の安定性のため）
         exportedLogs.sort((a, b) => new Date(a.date) - new Date(b.date));
 
         const jsonString = JSON.stringify(exportedLogs);
-        
+
         document.getElementById('jsonOutput').value = jsonString;
         document.getElementById('jsonOutput').classList.remove('hidden');
         document.getElementById('exportMessage').classList.remove('hidden');
-        
+
         // クリップボードにコピー
         navigator.clipboard.writeText(jsonString).then(() => {
             alert('編集したJSONがクリップボードにコピーされました！\nアプリに戻って「データのインポート」機能で貼り付けてください。');
@@ -349,8 +349,6 @@
     document.addEventListener('DOMContentLoaded', () => {
         toggleElements(false);
     });
-
 </script>
-
 </body>
 </html>
