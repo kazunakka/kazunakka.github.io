@@ -62,7 +62,7 @@
             width: 100%;
             border-collapse: separate; 
             border-spacing: 0;
-            margin-top: 20px;
+            /* margin-top: 20px; <-- Moved to #logTableContainer */
             overflow: hidden;
             border-radius: 8px;
         }
@@ -72,6 +72,7 @@
             padding: 12px 8px;
             text-align: left;
             vertical-align: middle;
+            white-space: nowrap; /* Prevents cell content from wrapping */
         }
         th:last-child, td:last-child {
             border-right: none;
@@ -119,6 +120,11 @@
             border-radius: 6px;
             margin-bottom: 15px;
         }
+        /* ★★★ MODIFICATION HERE ★★★ */
+        #logTableContainer {
+            margin-top: 20px; /* Moved margin from table element */
+            overflow-x: auto; /* Enables horizontal scrolling */
+        }
     </style>
 </head>
 <body>
@@ -156,7 +162,8 @@
             </tbody>
         </table>
     </div>
-    <script>
+
+<script>
     // 1: Bad, 5: Great
     const MOOD_MAPPING = {
         1: '😫 (1: Bad)',
@@ -166,11 +173,10 @@
         5: '😀 (5: Great)'
     };
 
-    // Updated toggleElements function to control all buttons
     function toggleElements(visible) {
         document.getElementById('editHeader').classList.toggle('hidden', !visible);
         document.getElementById('logTable').classList.toggle('hidden', !visible);
-        document.getElementById('addRowButton').classList.toggle('hidden', !visible); // Controls visibility here
+        document.getElementById('addRowButton').classList.toggle('hidden', !visible); 
         document.getElementById('exportButton').classList.toggle('hidden', !visible); 
         document.getElementById('jsonOutput').classList.add('hidden');
         document.getElementById('exportMessage').classList.add('hidden');
