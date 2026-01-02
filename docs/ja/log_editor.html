@@ -135,9 +135,11 @@
     
     <div id="exportSection" style="margin-bottom: 20px;">
         <button id="exportButton" class="hidden" onclick="exportLogs()">編集したJSONを生成 & クリップボードにコピー</button>
+        <button id="addRowButton" class="hidden" onclick="addRow()">+ 新しいログを追加</button>
         <p id="exportMessage" class="hidden" style="margin-top: 10px; color: #555;">コピーされたJSON文字列をアプリの「データのインポート（復元）」機能に貼り付けてください。</p>
         <textarea id="jsonOutput" class="hidden" readonly></textarea>
     </div>
+
     <div id="logTableContainer">
         <table id="logTable" class="hidden">
             <thead>
@@ -153,10 +155,6 @@
             </tbody>
         </table>
     </div>
-    <div style="margin-top: 15px;">
-        <button id="addRowButton" class="hidden" onclick="addRow()">+ 新しいログを追加</button>
-    </div>
-    
     </div>
 
 <script>
@@ -173,8 +171,7 @@
     function toggleElements(visible) {
         document.getElementById('editHeader').classList.toggle('hidden', !visible);
         document.getElementById('logTable').classList.toggle('hidden', !visible);
-        document.getElementById('addRowButton').classList.toggle('hidden', !visible);
-        // エクスポート関連の要素の表示もここで管理
+        document.getElementById('addRowButton').classList.toggle('hidden', !visible); // ここで表示/非表示を制御
         document.getElementById('exportButton').classList.toggle('hidden', !visible); 
         document.getElementById('jsonOutput').classList.add('hidden');
         document.getElementById('exportMessage').classList.add('hidden');
