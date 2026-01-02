@@ -51,18 +51,44 @@
             border-radius: 6px;
             cursor: pointer;
             transition: background-color 0.3s;
-            margin-right: 10px;
+            margin-right: 0; 
             font-size: 1em;
             font-weight: bold;
         }
         button:hover {
             background-color: #4d8a8a;
         }
+        
+        /* ★Fix: Adjust spacing and width when buttons stack vertically */
+        #exportButton {
+            margin-bottom: 10px; 
+            display: block; 
+            width: 100%; 
+        }
+        #addRowButton {
+            display: block; 
+            width: 100%; 
+        }
+        /* When there's enough space (600px+), revert to horizontal layout with margin */
+        @media (min-width: 600px) {
+            #exportButton {
+                margin-right: 15px; /* Horizontal gap */
+                margin-bottom: 0;
+                display: inline-block;
+                width: auto;
+            }
+            #addRowButton {
+                display: inline-block;
+                width: auto;
+            }
+        }
+        /* --- End of Fix --- */
+
         table {
             width: 100%;
+            min-width: 750px; 
             border-collapse: separate; 
             border-spacing: 0;
-            /* margin-top: 20px; <-- Moved to #logTableContainer */
             overflow: hidden;
             border-radius: 8px;
         }
@@ -72,16 +98,23 @@
             padding: 12px 8px;
             text-align: left;
             vertical-align: middle;
-            white-space: nowrap; /* Prevents cell content from wrapping */
         }
-        th:last-child, td:last-child {
-            border-right: none;
-        }
+
         th {
             background-color: #eef4f4;
             font-weight: bold;
             color: #333;
             border-top: 1px solid #ddd;
+            white-space: nowrap; 
+        }
+        #logTable thead th {
+            width: auto;
+        }
+        #logTable thead tr th:nth-child(4) {
+            width: 45%; 
+        }
+        th:last-child, td:last-child {
+            border-right: none;
         }
         tr:last-child td {
             border-bottom: none;
@@ -97,6 +130,7 @@
             padding: 5px;
             box-sizing: border-box;
             border-radius: 4px;
+            white-space: normal; 
         }
         .duration-input {
             width: 60px;
@@ -120,10 +154,9 @@
             border-radius: 6px;
             margin-bottom: 15px;
         }
-        /* ★★★ MODIFICATION HERE ★★★ */
         #logTableContainer {
-            margin-top: 20px; /* Moved margin from table element */
-            overflow-x: auto; /* Enables horizontal scrolling */
+            margin-top: 20px; 
+            overflow-x: auto; 
         }
     </style>
 </head>
@@ -151,11 +184,11 @@
         <table id="logTable" class="hidden">
             <thead>
                 <tr>
-                    <th style="width: 15%;">Date & Time (Original/Creation)</th>
-                    <th style="width: 10%;">Duration (min)</th>
-                    <th style="width: 15%;">Mood</th>
-                    <th style="width: 50%;">Memo</th>
-                    <th style="width: 10%;">Action</th>
+                    <th>Date & Time (Original/Creation)</th>
+                    <th>Duration (min)</th>
+                    <th>Mood</th>
+                    <th>Memo</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -324,7 +357,6 @@
             exportedLogs.push(log);
         });
         
-        // Sort by date for stability upon import
         exportedLogs.sort((a, b) => new Date(a.date) - new Date(b.date));
 
         const jsonString = JSON.stringify(exportedLogs);
@@ -333,7 +365,6 @@
         document.getElementById('jsonOutput').classList.remove('hidden');
         document.getElementById('exportMessage').classList.remove('hidden');
         
-        // Copy to clipboard
         navigator.clipboard.writeText(jsonString).then(() => {
             alert('Edited JSON copied to clipboard!\nGo back to the app and paste it into the "Import Data" feature.');
         }).catch(err => {
