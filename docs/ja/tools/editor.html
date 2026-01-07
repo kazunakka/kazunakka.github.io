@@ -275,6 +275,7 @@
         <div class="button-group">
             <button onclick="exportLogs()">📋 編集したJSONを生成 & クリップボードにコピー</button>
             <button class="add-btn" onclick="addRow()">+ 新しいログを追加</button>
+            <button class="add-btn" onclick="toggleSort()">🔄 並び順を切り替え</button>
         </div>
         
         <div id="exportMessage" class="info-box hidden">
@@ -287,7 +288,7 @@
             <table id="logTable">
                 <thead>
                     <tr>
-                        <th>日時</th>
+                        <th>日時 <span id="sortIndicator" style="font-size: 0.8em; color: #8cc5c5;">(新しい順)</span></th>
                         <th>時間(分)</th>
                         <th>気分</th>
                         <th style="width: 40%;">メモ</th>
@@ -313,17 +314,42 @@
         5: '😀 (5: 最高)'
     };
 
+    let currentLogs = [];
+    let sortAscending = false; // false = 降順（新しい順）, true = 昇順（古い順）
+
     function getMoodEmoji(value) {
         return MOOD_MAPPING[value] || '😐 (3: 普通)';
     }
 
+    function toggleSort() {
+        sortAscending = !sortAscending;
+        const indicator = document.getElementById('sortIndicator');
+        indicator.textContent = sortAscending ? '(古い順)' : '(新しい順)';
+        
+        // 現在のログを並び替えて再表示
+        sortAndDisplayLogs();
+    }
+
+    function sortAndDisplayLogs() {
+        const tbody = document.getElementById('logTable').querySelector('tbody');
+        tbody.innerHTML = '';
+        
+        // ソート
+        const sortedLogs = [...currentLogs].sort((a, b) => {
+            const dateA = new Date(a.date);
+            const dateB = new Date(b.date);
+            return sortAscending ? dateA - dateB : dateB - dateA;
+        });
+        
+        // 表示
+        sortedLogs.forEach(log => addLogToTable(log));
+    }
+
     function displayLogs() {
         const input = document.getElementById('jsonInput').value.trim();
-        const tbody = document.getElementById('logTable').querySelector('tbody');
         const errorDisplay = document.getElementById('errorDisplay');
         const editSection = document.getElementById('editSection');
 
-        tbody.innerHTML = '';
         errorDisplay.classList.add('hidden');
         editSection.classList.add('hidden');
         document.getElementById('jsonOutput').classList.add('hidden');
@@ -341,15 +367,17 @@
                 throw new Error('JSONデータは配列形式（[...]）である必要があります。');
             }
 
+            currentLogs = [];
             logs.forEach((log, index) => {
                 if (log && typeof log === 'object' && log.date && typeof log.durationMinutes === 'number') {
-                    addLogToTable(log);
+                    currentLogs.push(log);
                 } else {
                     console.warn("Skipping invalid log entry at index", index, ":", log);
                 }
             });
 
-            if (tbody.rows.length > 0) {
+            if (currentLogs.length > 0) {
+                sortAndDisplayLogs();
                 editSection.classList.remove('hidden');
             } else {
                 errorDisplay.textContent = 'JSONデータ内に有効な瞑想ログが見つかりませんでした。';
