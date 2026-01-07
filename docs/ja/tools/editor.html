@@ -405,7 +405,7 @@
 
     function addLogToTable(logData) {
         const tbody = document.getElementById('logTable').querySelector('tbody');
-        const row = tbody.insertRow();
+        const row = tbody.insertRow(0); // 0を指定して先頭に挿入
         row.dataset.originalDate = logData.date;
 
         const dateCell = row.insertCell();
@@ -454,6 +454,18 @@
             memo: '新規追加のログ',
         };
         addLogToTable(newLog);
+        
+        // 新しく追加した行までスクロール
+        const tbody = document.getElementById('logTable').querySelector('tbody');
+        const firstRow = tbody.rows[0];
+        if (firstRow) {
+            firstRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            // 新規行を一時的にハイライト
+            firstRow.style.backgroundColor = '#f0fdfa';
+            setTimeout(() => {
+                firstRow.style.backgroundColor = '';
+            }, 2000);
+        }
     }
 
     function exportLogs() {
