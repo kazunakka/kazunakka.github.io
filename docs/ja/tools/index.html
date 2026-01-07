@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>データ管理ツール - Still Time</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Kalam', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #66b2b2, #8cc5c5);
+            min-height: 100vh;
+            padding: 24px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 12px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header p {
+            font-size: 1.125rem;
+            color: white;
+            opacity: 0.95;
+        }
+        
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+        
+        .tool-card {
+            background: white;
+            border: 2px solid #66b2b2;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 8px 24px rgba(51, 102, 102, 0.2);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(51, 102, 102, 0.3);
+        }
+        
+        .tool-icon {
+            font-size: 3rem;
+            margin-bottom: 16px;
+        }
+        
+        .tool-card h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #336666;
+            margin-bottom: 12px;
+        }
+        
+        .tool-card p {
+            color: #336666;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+        
+        .tool-features {
+            list-style: none;
+            margin: 16px 0;
+        }
+        
+        .tool-features li {
+            color: #4d8a8a;
+            padding: 6px 0;
+            font-size: 0.95rem;
+        }
+        
+        .tool-features li:before {
+            content: "✓ ";
+            color: #66b2b2;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+        
+        .tool-button {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #66b2b2;
+            color: white;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 700;
+            box-shadow: 0 2px 8px rgba(102, 178, 178, 0.3);
+            transition: all 0.3s ease;
+            margin-top: 16px;
+        }
+        
+        .tool-button:hover {
+            background: #4d8a8a;
+            box-shadow: 0 4px 12px rgba(102, 178, 178, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        .comparison-section {
+            background: white;
+            border: 2px solid #66b2b2;
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 24px rgba(51, 102, 102, 0.2);
+        }
+        
+        .comparison-section h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #336666;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+        
+        .comparison-table th,
+        .comparison-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e6f4f4;
+        }
+        
+        .comparison-table th {
+            background: #e6f4f4;
+            color: #336666;
+            font-weight: 700;
+        }
+        
+        .comparison-table td {
+            color: #4d8a8a;
+        }
+        
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .privacy-notice {
+            background: #b3d6d6;
+            border: 2px solid #8cc5c5;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+        
+        .privacy-notice h4 {
+            color: #336666;
+            font-weight: 700;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+        
+        .privacy-notice p {
+            color: #336666;
+            line-height: 1.6;
+        }
+        
+        .back-link {
+            text-align: center;
+            margin-top: 32px;
+        }
+        
+        .back-link a {
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            opacity: 0.9;
+            transition: opacity 0.3s ease;
+        }
+        
+        .back-link a:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.875rem;
+            }
+            
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .comparison-table {
+                font-size: 0.9rem;
+            }
+            
+            .comparison-table th,
+            .comparison-table td {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Still Time データ管理ツール</h1>
+            <p>瞑想ログの管理に便利な2つのツールをご用意しています</p>
+        </div>
+
+        <div class="tools-grid">
+            <div class="tool-card">
+                <div class="tool-icon">🔄</div>
+                <h2>JSON ⇔ スプレッドシート変換</h2>
+                <p>大量のデータを一括で管理・分析したい方におすすめ</p>
+                <ul class="tool-features">
+                    <li>Googleスプレッドシートで自由に編集</li>
+                    <li>検索・フィルタ・並び替えが簡単</li>
+                    <li>データ分析やグラフ作成に最適</li>
+                    <li>複数の項目を一括で修正可能</li>
+                </ul>
+                <a href="converter-ja.html" class="tool-button">変換ツールを開く →</a>
+            </div>
+
+            <div class="tool-card">
+                <div class="tool-icon">✏️</div>
+                <h2>瞑想ログ編集ツール</h2>
+                <p>特定のログを素早く修正したい方におすすめ</p>
+                <ul class="tool-features">
+                    <li>ブラウザだけで完結</li>
+                    <li>1〜数件のログを素早く編集</li>
+                    <li>シンプルで直感的な操作</li>
+                    <li>ログの追加・削除も簡単</li>
+                </ul>
+                <a href="log-editor-ja.html" class="tool-button">編集ツールを開く →</a>
+            </div>
+        </div>
+
+        <div class="privacy-notice">
+            <h4>🔒 プライバシー保護</h4>
+            <p>すべてのツールはブラウザ内で完結して動作します。入力されたデータは一切サーバーに送信されず、お使いのデバイス内でのみ処理されます。安心してご利用ください。</p>
+        </div>
+
+        <div class="comparison-section">
+            <h3>どちらのツールを使えばいい？</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>状況</th>
+                        <th>おすすめツール</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>100件以上のログから特定の日付を探したい</td>
+                        <td><strong>変換ツール</strong> → スプレッドシートで検索</td>
+                    </tr>
+                    <tr>
+                        <td>特定の気分のログだけ修正したい</td>
+                        <td><strong>変換ツール</strong> → スプレッドシートでフィルタ</td>
+                    </tr>
+                    <tr>
+                        <td>昨日のログのメモを修正したい</td>
+                        <td><strong>編集ツール</strong> → すぐに見つけて修正</td>
+                    </tr>
+                    <tr>
+                        <td>データの統計やグラフを作りたい</td>
+                        <td><strong>変換ツール</strong> → スプレッドシートで分析</td>
+                    </tr>
+                    <tr>
+                        <td>数件のログを素早く削除・追加したい</td>
+                        <td><strong>編集ツール</strong> → 直感的に操作</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="back-link">
+            <a href="https://kazunakka.github.io/ja/">← Still Time トップページに戻る</a>
+        </div>
+    </div>
+</body>
+</html>

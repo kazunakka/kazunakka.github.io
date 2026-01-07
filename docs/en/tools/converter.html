@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSON ⇔ Spreadsheet Converter - Still Time</title>
+  <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Kalam', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(135deg, #66b2b2, #8cc5c5);
+      min-height: 100vh;
+      padding: 24px;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .header {
+      background: white;
+      border: 2px solid #66b2b2;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(51, 102, 102, 0.2);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 8px;
+    }
+    
+    h1 {
+      font-size: 1.875rem;
+      font-weight: 700;
+      color: #336666;
+    }
+    
+    .switch-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: #66b2b2;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: 'Kalam', sans-serif;
+      box-shadow: 0 2px 8px rgba(102, 178, 178, 0.3);
+      transition: all 0.3s ease;
+    }
+    
+    .switch-btn:hover {
+      background: #4d8a8a;
+      box-shadow: 0 4px 12px rgba(102, 178, 178, 0.4);
+      transform: translateY(-2px);
+    }
+    
+    .subtitle {
+      color: #336666;
+      margin-bottom: 16px;
+      font-size: 16px;
+    }
+    
+    .privacy-box {
+      padding: 16px;
+      background: #b3d6d6;
+      border: 1px solid #8cc5c5;
+      border-radius: 12px;
+    }
+    
+    .privacy-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #336666;
+      margin-bottom: 4px;
+    }
+    
+    .privacy-text {
+      font-size: 14px;
+      color: #336666;
+    }
+    
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+    
+    @media (max-width: 768px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .card {
+      background: white;
+      border: 2px solid #66b2b2;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(51, 102, 102, 0.2);
+      padding: 24px;
+    }
+    
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    
+    h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #336666;
+    }
+    
+    .example-btn {
+      font-size: 14px;
+      color: #66b2b2;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: 'Kalam', sans-serif;
+    }
+    
+    .example-btn:hover {
+      color: #4d8a8a;
+      text-decoration: underline;
+    }
+    
+    textarea {
+      width: 100%;
+      height: 256px;
+      padding: 12px;
+      border: 2px solid #8cc5c5;
+      border-radius: 8px;
+      font-family: monospace;
+      font-size: 14px;
+      resize: vertical;
+      transition: border-color 0.3s ease;
+    }
+    
+    textarea:focus {
+      outline: none;
+      border-color: #66b2b2;
+      box-shadow: 0 0 0 3px rgba(102, 178, 178, 0.1);
+    }
+    
+    textarea[readonly] {
+      background: #f9fafb;
+    }
+    
+    .convert-btn {
+      width: 100%;
+      margin-top: 16px;
+      padding: 12px;
+      background: #66b2b2;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Kalam', sans-serif;
+      box-shadow: 0 2px 8px rgba(102, 178, 178, 0.3);
+      transition: all 0.3s ease;
+    }
+    
+    .convert-btn:hover {
+      background: #4d8a8a;
+      box-shadow: 0 4px 12px rgba(102, 178, 178, 0.4);
+      transform: translateY(-2px);
+    }
+    
+    .error-box {
+      margin-top: 16px;
+      padding: 12px;
+      background: #fef2f2;
+      border: 2px solid #d17e83;
+      border-radius: 12px;
+      color: #991b1b;
+      font-size: 14px;
+    }
+    
+    .button-group {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .action-btn {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 14px;
+      border: none;
+      border-radius: 25px;
+      font-size: 14px;
+      cursor: pointer;
+      color: white;
+      font-family: 'Kalam', sans-serif;
+      transition: all 0.3s ease;
+    }
+    
+    .copy-btn {
+      background: #66b2b2;
+      box-shadow: 0 2px 6px rgba(102, 178, 178, 0.3);
+    }
+    
+    .copy-btn:hover {
+      background: #4d8a8a;
+      transform: translateY(-1px);
+    }
+    
+    .download-btn {
+      background: #8cc5c5;
+      color: #336666;
+      box-shadow: 0 2px 6px rgba(140, 197, 197, 0.3);
+    }
+    
+    .download-btn:hover {
+      background: #66b2b2;
+      color: white;
+      transform: translateY(-1px);
+    }
+    
+    .info-box {
+      margin-top: 16px;
+      padding: 12px;
+      border-radius: 12px;
+      font-size: 14px;
+      border: 2px solid;
+    }
+    
+    .info-box-blue {
+      background: #e6f4f4;
+      border-color: #8cc5c5;
+      color: #336666;
+    }
+    
+    .info-box-teal {
+      background: #b3d6d6;
+      border-color: #66b2b2;
+      color: #336666;
+    }
+    
+    .info-box strong {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+    
+    .info-box ol {
+      margin-left: 20px;
+      margin-top: 8px;
+    }
+    
+    .info-box li {
+      margin: 4px 0;
+    }
+    
+    .features {
+      background: white;
+      border: 2px solid #66b2b2;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(51, 102, 102, 0.2);
+      padding: 24px;
+    }
+    
+    h3 {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: #336666;
+      margin-bottom: 12px;
+    }
+    
+    .features-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    
+    @media (max-width: 768px) {
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+      h1 {
+        font-size: 1.5rem;
+      }
+    }
+    
+    h4 {
+      font-weight: 700;
+      color: #336666;
+      margin-bottom: 8px;
+    }
+    
+    .features ul {
+      list-style: none;
+    }
+    
+    .features li {
+      color: #2D2D2D;
+      font-size: 14px;
+      margin: 4px 0;
+    }
+    
+    .footer {
+      text-align: center;
+      margin-top: 24px;
+      color: #336666;
+      font-size: 14px;
+    }
+    
+    .footer a {
+      color: #336666;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script>
+    const { useState, createElement: h } = React;
+
+    function JsonSheetsConverter() {
+      const [mode, setMode] = useState('toSheets');
+      const [input, setInput] = useState('');
+      const [output, setOutput] = useState('');
+      const [error, setError] = useState('');
+      const [copied, setCopied] = useState(false);
+
+      const parseJson = (jsonStr) => {
+        try {
+          return JSON.parse(jsonStr);
+        } catch (e) {
+          throw new Error('Invalid JSON format: ' + e.message);
+        }
+      };
+
+      const flattenObject = (obj, prefix = '') => {
+        const flattened = {};
+        for (const key in obj) {
+          const value = obj[key];
+          const newKey = prefix ? prefix + '.' + key : key;
+          if (value === null || value === undefined) {
+            flattened[newKey] = '';
+          } else if (typeof value === 'object' && !Array.isArray(value)) {
+            Object.assign(flattened, flattenObject(value, newKey));
+          } else if (Array.isArray(value)) {
+            flattened[newKey] = JSON.stringify(value);
+          } else {
+            flattened[newKey] = value;
+          }
+        }
+        return flattened;
+      };
+
+      const convertJsonToTsv = () => {
+        setError('');
+        setOutput('');
+        setCopied(false);
+        try {
+          const data = parseJson(input);
+          let rows = [];
+          if (Array.isArray(data)) {
+            if (data.length === 0) throw new Error('Empty array');
+            rows = data.map(item => flattenObject(item));
+          } else if (typeof data === 'object') {
+            rows = [flattenObject(data)];
+          } else {
+            throw new Error('Must be an object or array');
+          }
+          const allKeys = [...new Set(rows.flatMap(row => Object.keys(row)))];
+          const header = allKeys.join('\t');
+          const dataRows = rows.map(row => 
+            allKeys.map(key => String(row[key] ?? '').replace(/\t/g, ' ')).join('\t')
+          );
+          setOutput([header, ...dataRows].join('\n'));
+        } catch (e) {
+          setError(e.message);
+        }
+      };
+
+      const convertTsvToJson = () => {
+        setError('');
+        setOutput('');
+        setCopied(false);
+        try {
+          if (!input.trim()) throw new Error('Please enter data');
+          const lines = input.trim().split('\n');
+          if (lines.length < 2) throw new Error('Header row and data row required');
+          const headers = lines[0].split('\t').map(h => h.trim());
+          const jsonArray = [];
+          for (let i = 1; i < lines.length; i++) {
+            const values = lines[i].split('\t');
+            const obj = {};
+            headers.forEach((header, index) => {
+              let value = values[index] || '';
+              if (value && !isNaN(value) && value.trim() !== '') {
+                value = Number(value);
+              }
+              if (header.includes('.')) {
+                const parts = header.split('.');
+                let current = obj;
+                for (let j = 0; j < parts.length - 1; j++) {
+                  if (!current[parts[j]]) current[parts[j]] = {};
+                  current = current[parts[j]];
+                }
+                current[parts[parts.length - 1]] = value;
+              } else {
+                obj[header] = value;
+              }
+            });
+            jsonArray.push(obj);
+          }
+          setOutput(JSON.stringify(jsonArray));
+        } catch (e) {
+          setError(e.message);
+        }
+      };
+
+      const handleConvert = () => {
+        mode === 'toSheets' ? convertJsonToTsv() : convertTsvToJson();
+      };
+
+      const copyToClipboard = async () => {
+        try {
+          await navigator.clipboard.writeText(output);
+          setCopied(true);
+          setTimeout(() => setCopied(false), 2000);
+        } catch (e) {
+          alert('Failed to copy');
+        }
+      };
+
+      const downloadFile = () => {
+        const ext = mode === 'toSheets' ? 'tsv' : 'json';
+        const type = mode === 'toSheets' ? 'text/tab-separated-values' : 'application/json';
+        const blob = new Blob([output], { type });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'data.' + ext;
+        a.click();
+        URL.revokeObjectURL(url);
+      };
+
+      const exampleJson = '[{"date":"2026-01-06T08:00:00.000000","durationMinutes":10,"mood":5,"memo":"Morning meditation. Feeling refreshed."},{"date":"2026-01-05T20:30:00.000000","durationMinutes":5,"mood":4,"memo":"Evening relaxation before bed."}]';
+      const exampleTsv = 'date\tdurationMinutes\tmood\tmemo\n2026-01-06T08:00:00.000000\t10\t5\tMorning meditation. Feeling refreshed.\n2026-01-05T20:30:00.000000\t5\t4\tEvening relaxation before bed.';
+
+      const loadExample = () => {
+        setInput(mode === 'toSheets' ? exampleJson : exampleTsv);
+        setOutput('');
+        setError('');
+      };
+
+      const switchMode = () => {
+        setMode(mode === 'toSheets' ? 'toJson' : 'toSheets');
+        setInput('');
+        setOutput('');
+        setError('');
+        setCopied(false);
+      };
+
+      return h('div', { className: 'container' },
+        h('div', { className: 'header' },
+          h('div', { className: 'header-top' },
+            h('h1', null, 'JSON ⇔ Spreadsheet Converter'),
+            h('button', { className: 'switch-btn', onClick: switchMode }, '⇄ Switch Direction')
+          ),
+          h('p', { className: 'subtitle' },
+            mode === 'toSheets' ? 'Convert JSON to spreadsheet format' : 'Convert spreadsheet data to JSON format'
+          ),
+          h('div', { className: 'privacy-box' },
+            h('p', { className: 'privacy-title' }, '🔒 Privacy Protection'),
+            h('p', { className: 'privacy-text' },
+              'This tool works entirely in your browser. No data is sent to any server. All processing happens locally on your device. Use with confidence.'
+            )
+          )
+        ),
+        h('div', { className: 'grid' },
+          h('div', { className: 'card' },
+            h('div', { className: 'card-header' },
+              h('h2', null, mode === 'toSheets' ? 'JSON Input' : 'Spreadsheet Data Input'),
+              h('button', { className: 'example-btn', onClick: loadExample }, 'Load Sample')
+            ),
+            h('textarea', {
+              value: input,
+              onChange: (e) => setInput(e.target.value),
+              placeholder: mode === 'toSheets' ? 'Enter JSON data here' : 'Paste data copied from spreadsheet'
+            }),
+            h('button', { className: 'convert-btn', onClick: handleConvert }, 'Convert'),
+            error && h('div', { className: 'error-box' }, error)
+          ),
+          h('div', { className: 'card' },
+            h('div', { className: 'card-header' },
+              h('h2', null, 'Result'),
+              output && h('div', { className: 'button-group' },
+                h('button', { className: 'action-btn copy-btn', onClick: copyToClipboard },
+                  copied ? '✓ Copied' : '📋 Copy'
+                ),
+                h('button', { className: 'action-btn download-btn', onClick: downloadFile },
+                  '⬇ Download'
+                )
+              )
+            ),
+            h('textarea', { value: output, readOnly: true, placeholder: 'Conversion result will appear here' }),
+            output && mode === 'toSheets' && h('div', { className: 'info-box info-box-blue' },
+              h('strong', null, 'How to use:'),
+              h('ol', null,
+                h('li', null, 'Click the "Copy" button'),
+                h('li', null, 'Open Google Sheets'),
+                h('li', null, 'Select cell A1 and paste (Ctrl+V / Cmd+V)')
+              )
+            ),
+            output && mode === 'toJson' && h('div', { className: 'info-box info-box-teal' },
+              h('strong', null, 'How to use:'),
+              h('ol', null,
+                h('li', null, 'Select data range in Google Sheets'),
+                h('li', null, 'Copy (Ctrl+C / Cmd+C)'),
+                h('li', null, 'Paste into the left box'),
+                h('li', null, 'Click "Convert"')
+              )
+            )
+          )
+        ),
+        h('div', { className: 'features' },
+          h('h3', null, 'Features'),
+          h('div', { className: 'features-grid' },
+            h('div', null,
+              h('h4', null, 'JSON → Spreadsheet'),
+              h('ul', null,
+                h('li', null, '✓ Convert JSON arrays and objects to table format'),
+                h('li', null, '✓ Flatten nested objects'),
+                h('li', null, '✓ Paste directly into Google Sheets')
+              )
+            ),
+            h('div', null,
+              h('h4', null, 'Spreadsheet → JSON'),
+              h('ul', null,
+                h('li', null, '✓ Convert copied cell data to JSON array'),
+                h('li', null, '✓ Automatic number detection'),
+                h('li', null, '✓ Restore nested structures')
+              )
+            )
+          )
+        ),
+        h('div', { className: 'footer' },
+          h('p', null, 'Still Time Support Tool')
+        )
+      );
+    }
+
+    ReactDOM.render(React.createElement(JsonSheetsConverter), document.getElementById('root'));
+  </script>
+</body>
+</html>

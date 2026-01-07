@@ -4,205 +4,307 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Still Time Meditation Log Editor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Arial', 'Helvetica', sans-serif;
+        * {
             margin: 0;
-            padding: 20px;
-            background-color: #f4f4f4;
-            color: #333;
-        }
-        .container {
-            max-width: 900px;
-            margin: auto;
-            background: #fff;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            color: #4d8a8a; 
-            border-bottom: 2px solid #66b2b2;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-            font-size: 1.8em;
-        }
-        h2 {
-            color: #66b2b2;
-            margin-top: 30px;
-            font-size: 1.4em;
-        }
-        textarea {
-            width: 100%;
-            height: 120px;
-            padding: 10px;
+            padding: 0;
             box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            margin-bottom: 10px;
-            resize: vertical;
-            font-family: monospace;
-        }
-        button {
-            padding: 10px 18px;
-            background-color: #66b2b2;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            margin-right: 0; 
-            font-size: 1em;
-            font-weight: bold;
-        }
-        button:hover {
-            background-color: #4d8a8a;
         }
         
-        /* ★Fix 1: Add margin below the display button */
-        #logDisplayButton {
-            margin-bottom: 20px; 
+        body {
+            font-family: 'Kalam', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #66b2b2, #8cc5c5);
+            min-height: 100vh;
+            padding: 24px;
         }
-
-        /* ★Fix 2: Adjust spacing and width for Edit section buttons */
-        #exportButton {
-            margin-bottom: 10px; 
-            display: block; 
-            width: 100%; 
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
         }
-        #addRowButton {
-            display: block; 
-            width: 100%; 
+        
+        .header {
+            background: white;
+            border: 2px solid #66b2b2;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(51, 102, 102, 0.2);
+            padding: 24px;
+            margin-bottom: 24px;
         }
-        /* When there's enough space (600px+), revert to horizontal layout with margin */
-        @media (min-width: 600px) {
-            #exportButton {
-                margin-right: 15px; /* Horizontal gap */
-                margin-bottom: 0;
-                display: inline-block;
-                width: auto;
-            }
-            #addRowButton {
-                display: inline-block;
-                width: auto;
-            }
+        
+        h1 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: #336666;
+            margin-bottom: 12px;
         }
-        /* --- End of Fix 2 --- */
-
-        table {
+        
+        .subtitle {
+            color: #336666;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        
+        .card {
+            background: white;
+            border: 2px solid #66b2b2;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(51, 102, 102, 0.2);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        
+        h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #336666;
+            margin-bottom: 16px;
+        }
+        
+        textarea {
             width: 100%;
-            min-width: 750px; 
-            border-collapse: separate; 
-            border-spacing: 0;
-            overflow: hidden;
+            height: 150px;
+            padding: 12px;
+            border: 2px solid #8cc5c5;
             border-radius: 8px;
+            font-family: monospace;
+            font-size: 14px;
+            resize: vertical;
+            margin-bottom: 16px;
+            transition: border-color 0.3s ease;
         }
-        th, td {
-            border-right: 1px solid #ddd;
-            border-bottom: 1px solid #ddd;
-            padding: 12px 8px;
-            text-align: left;
-            vertical-align: middle;
+        
+        textarea:focus {
+            outline: none;
+            border-color: #66b2b2;
+            box-shadow: 0 0 0 3px rgba(102, 178, 178, 0.1);
         }
-
-        th {
-            background-color: #eef4f4;
-            font-weight: bold;
-            color: #333;
-            border-top: 1px solid #ddd;
-            white-space: nowrap; 
+        
+        textarea[readonly] {
+            background: #f9fafb;
         }
-        #logTable thead th {
-            width: auto;
+        
+        button {
+            padding: 10px 20px;
+            background: #66b2b2;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-family: 'Kalam', sans-serif;
+            font-weight: 700;
+            box-shadow: 0 2px 8px rgba(102, 178, 178, 0.3);
+            transition: all 0.3s ease;
+            margin-right: 10px;
+            margin-bottom: 10px;
         }
-        #logTable thead tr th:nth-child(4) {
-            width: 45%; 
+        
+        button:hover {
+            background: #4d8a8a;
+            box-shadow: 0 4px 12px rgba(102, 178, 178, 0.4);
+            transform: translateY(-2px);
         }
-        th:last-child, td:last-child {
-            border-right: none;
+        
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 16px;
         }
-        tr:last-child td {
-            border-bottom: none;
+        
+        .delete-btn {
+            background: #d17e83;
+            padding: 6px 14px;
+            font-size: 13px;
         }
-        .mood-select {
-            padding: 5px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
+        
+        .delete-btn:hover {
+            background: #b96569;
         }
-        .memo-input {
-            width: 100%;
-            border: 1px solid #eee;
-            padding: 5px;
-            box-sizing: border-box;
-            border-radius: 4px;
-            white-space: normal; 
+        
+        .add-btn {
+            background: #8cc5c5;
         }
-        .duration-input {
-            width: 60px;
-            text-align: right;
-            border: 1px solid #eee;
-            padding: 5px;
-            border-radius: 4px;
+        
+        .add-btn:hover {
+            background: #66b2b2;
         }
-        .date-display {
-            font-size: 0.8em;
-            color: #888;
+        
+        .error {
+            background: #fef2f2;
+            border: 2px solid #d17e83;
+            border-radius: 12px;
+            padding: 12px;
+            color: #991b1b;
+            margin-bottom: 16px;
         }
+        
+        .info-box {
+            background: #b3d6d6;
+            border: 2px solid #8cc5c5;
+            border-radius: 12px;
+            padding: 12px;
+            color: #336666;
+            margin-top: 16px;
+            font-size: 14px;
+        }
+        
         .hidden {
             display: none;
         }
-        .error {
-            color: #d9534f;
-            background-color: #f2dede;
-            border: 1px solid #ebccd1;
-            padding: 10px;
-            border-radius: 6px;
-            margin-bottom: 15px;
+        
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 16px;
         }
-        #logTableContainer {
-            margin-top: 20px; 
-            overflow-x: auto; 
+        
+        th, td {
+            padding: 12px 10px;
+            text-align: left;
+            border-bottom: 1px solid #e6f4f4;
+        }
+        
+        th {
+            background: #e6f4f4;
+            color: #336666;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
+        tr:hover {
+            background: #f0fdfa;
+        }
+        
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 6px 8px;
+            border: 1px solid #8cc5c5;
+            border-radius: 6px;
+            font-family: 'Kalam', sans-serif;
+            transition: border-color 0.3s ease;
+        }
+        
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #66b2b2;
+        }
+        
+        input[type="number"] {
+            width: 70px;
+            text-align: right;
+        }
+        
+        .date-cell {
+            font-size: 14px;
+            color: #336666;
+        }
+        
+        .date-time {
+            font-size: 12px;
+            color: #8cc5c5;
+            display: block;
+            margin-top: 2px;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+                margin-right: 0;
+            }
+            
+            table {
+                font-size: 13px;
+            }
+            
+            th, td {
+                padding: 8px 6px;
+            }
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 24px;
+            color: #336666;
+            font-size: 14px;
         }
     </style>
 </head>
 <body>
-
 <div class="container">
-    <h1>Still Time Meditation Log Editor</h1>
-    <p>This tool allows you to load, edit, and re-export your JSON meditation logs for use with the app's import feature. Your data is processed only in your browser and is not sent externally.</p>
+    <div class="header">
+        <h1>Still Time Meditation Log Editor</h1>
+        <p class="subtitle">This tool allows you to load, edit, and re-export your JSON meditation logs for use with the app's import feature. Your data is processed only in your browser and is not sent externally.</p>
+    </div>
 
-    <h2>1. Import JSON Data</h2>
-    <textarea id="jsonInput" placeholder='Paste the JSON data copied from the app\'s "Export Data" feature here.'></textarea>
-    <button id="logDisplayButton" onclick="displayLogs()">Show / Update Logs</button> 
-    <div id="errorDisplay" class="error hidden"></div>
+    <div class="card">
+        <h2>1. Import JSON Data</h2>
+        <textarea id="jsonInput" placeholder='Paste the JSON data copied from the app\'s "Export Data" feature here.'></textarea>
+        <button onclick="displayLogs()">Show / Update Logs</button>
+        <div id="errorDisplay" class="error hidden"></div>
+    </div>
 
-    <h2 id="editHeader" class="hidden">2. Edit Logs and Export</h2>
-    
-    <div id="exportSection" style="margin-bottom: 20px;">
-        <button id="exportButton" class="hidden" onclick="exportLogs()">Generate Edited JSON & Copy to Clipboard</button>
-        <button id="addRowButton" class="hidden" onclick="addRow()">+ Add New Log</button>
-        <p id="exportMessage" class="hidden" style="margin-top: 10px; color: #555;">Copy the JSON string and use the app's "Import Data (Restore)" feature.</p>
+    <div id="editSection" class="card hidden">
+        <h2>2. Edit Logs and Export</h2>
+        
+        <div class="button-group">
+            <button onclick="exportLogs()">📋 Generate Edited JSON & Copy to Clipboard</button>
+            <button class="add-btn" onclick="addRow()">+ Add New Log</button>
+        </div>
+        
+        <div id="exportMessage" class="info-box hidden">
+            Copy the JSON string and use the app's "Import Data (Restore)" feature.
+        </div>
+        
         <textarea id="jsonOutput" class="hidden" readonly></textarea>
+
+        <div class="table-container">
+            <table id="logTable">
+                <thead>
+                    <tr>
+                        <th>Date & Time</th>
+                        <th>Duration (min)</th>
+                        <th>Mood</th>
+                        <th style="width: 40%;">Memo</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
     </div>
 
-    <div id="logTableContainer">
-        <table id="logTable" class="hidden">
-            <thead>
-                <tr>
-                    <th>Date & Time (Original/Creation)</th>
-                    <th>Duration (min)</th>
-                    <th>Mood</th>
-                    <th>Memo</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
+    <div class="footer">
+        <p>Still Time Support Tool</p>
     </div>
+</div>
 
 <script>
-    // 1: Bad, 5: Great
     const MOOD_MAPPING = {
         1: '😫 (1: Bad)',
         2: '😞 (2: Not Good)',
@@ -211,15 +313,6 @@
         5: '😀 (5: Great)'
     };
 
-    function toggleElements(visible) {
-        document.getElementById('editHeader').classList.toggle('hidden', !visible);
-        document.getElementById('logTable').classList.toggle('hidden', !visible);
-        document.getElementById('addRowButton').classList.toggle('hidden', !visible); 
-        document.getElementById('exportButton').classList.toggle('hidden', !visible); 
-        document.getElementById('jsonOutput').classList.add('hidden');
-        document.getElementById('exportMessage').classList.add('hidden');
-    }
-    
     function getMoodEmoji(value) {
         return MOOD_MAPPING[value] || '😐 (3: Neutral)';
     }
@@ -228,10 +321,13 @@
         const input = document.getElementById('jsonInput').value.trim();
         const tbody = document.getElementById('logTable').querySelector('tbody');
         const errorDisplay = document.getElementById('errorDisplay');
-        
+        const editSection = document.getElementById('editSection');
+
         tbody.innerHTML = '';
         errorDisplay.classList.add('hidden');
-        toggleElements(false);
+        editSection.classList.add('hidden');
+        document.getElementById('jsonOutput').classList.add('hidden');
+        document.getElementById('exportMessage').classList.add('hidden');
 
         if (!input) {
             errorDisplay.textContent = 'JSON data is empty.';
@@ -254,22 +350,19 @@
             });
 
             if (tbody.rows.length > 0) {
-                toggleElements(true);
+                editSection.classList.remove('hidden');
             } else {
-                 errorDisplay.textContent = 'No valid meditation logs found in the JSON data.';
+                errorDisplay.textContent = 'No valid meditation logs found in the JSON data.';
                 errorDisplay.classList.remove('hidden');
             }
-            
         } catch (e) {
             errorDisplay.textContent = 'Failed to parse JSON data. Please check the format. Error: ' + e.message;
             errorDisplay.classList.remove('hidden');
         }
     }
-    
+
     function createMoodSelect(initialValue) {
         const select = document.createElement('select');
-        select.className = 'mood-select';
-        
         for (let val = 1; val <= 5; val++) {
             const option = document.createElement('option');
             option.value = val;
@@ -285,57 +378,49 @@
     function addLogToTable(logData) {
         const tbody = document.getElementById('logTable').querySelector('tbody');
         const row = tbody.insertRow();
-        row.dataset.originalDate = logData.date; 
+        row.dataset.originalDate = logData.date;
 
-        // 1. Date & Time
         const dateCell = row.insertCell();
         const dateObj = new Date(logData.date);
+        dateCell.className = 'date-cell';
         dateCell.innerHTML = `
-            ${dateObj.getFullYear()}/${dateObj.getMonth() + 1}/${dateObj.getDate()} 
-            <br>
-            <span class="date-display">${String(dateObj.getHours()).padStart(2, '0')}:${String(dateObj.getMinutes()).padStart(2, '0')}</span>
+            ${dateObj.getFullYear()}/${String(dateObj.getMonth() + 1).padStart(2, '0')}/${String(dateObj.getDate()).padStart(2, '0')}
+            <span class="date-time">${String(dateObj.getHours()).padStart(2, '0')}:${String(dateObj.getMinutes()).padStart(2, '0')}</span>
         `;
-        
-        // 2. Duration
+
         const durationCell = row.insertCell();
         const durationInput = document.createElement('input');
         durationInput.type = 'number';
         durationInput.min = '1';
         durationInput.value = logData.durationMinutes || 5;
-        durationInput.className = 'duration-input';
         durationCell.appendChild(durationInput);
 
-        // 3. Mood
         const moodCell = row.insertCell();
         const moodSelect = createMoodSelect(logData.mood);
         moodCell.appendChild(moodSelect);
-        
-        // 4. Memo
+
         const memoCell = row.insertCell();
         const memoInput = document.createElement('input');
         memoInput.type = 'text';
-        memoInput.value = logData.memo || ''; 
-        memoInput.className = 'memo-input';
+        memoInput.value = logData.memo || '';
         memoCell.appendChild(memoInput);
 
-        // 5. Delete Button
         const deleteCell = row.insertCell();
         const deleteButton = document.createElement('button');
         deleteButton.textContent = 'Delete';
-        deleteButton.style.backgroundColor = '#d9534f'; 
-        deleteButton.style.marginRight = '0';
+        deleteButton.className = 'delete-btn';
         deleteButton.onclick = function() {
             tbody.removeChild(row);
             if (tbody.rows.length === 0) {
-                 toggleElements(false);
+                document.getElementById('editSection').classList.add('hidden');
             }
         };
         deleteCell.appendChild(deleteButton);
     }
-    
+
     function addRow() {
         const newLog = {
-            date: new Date().toISOString(), 
+            date: new Date().toISOString(),
             durationMinutes: 10,
             mood: 3,
             memo: 'New added log',
@@ -354,23 +439,22 @@
             const memoInput = row.cells[3].querySelector('input').value;
 
             const log = {
-                date: row.dataset.originalDate, 
+                date: row.dataset.originalDate,
                 durationMinutes: parseInt(durationInput) || 1,
                 mood: parseInt(moodSelect) || 3,
                 memo: memoInput.trim(),
             };
             exportedLogs.push(log);
         });
-        
+
         exportedLogs.sort((a, b) => new Date(a.date) - new Date(b.date));
 
         const jsonString = JSON.stringify(exportedLogs);
-        
+
         document.getElementById('jsonOutput').value = jsonString;
         document.getElementById('jsonOutput').classList.remove('hidden');
         document.getElementById('exportMessage').classList.remove('hidden');
-        
-        // Copy to clipboard
+
         navigator.clipboard.writeText(jsonString).then(() => {
             alert('Edited JSON copied to clipboard!\nGo back to the app and paste it into the "Import Data" feature.');
         }).catch(err => {
@@ -379,12 +463,6 @@
             alert('Failed to copy to clipboard.\nPlease manually copy all the JSON from the output area.');
         });
     }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        toggleElements(false);
-    });
-
 </script>
-
 </body>
 </html>

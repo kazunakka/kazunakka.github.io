@@ -341,11 +341,11 @@
                 throw new Error('JSONデータは配列形式（[...]）である必要があります。');
             }
 
-            logs.forEach(log => {
-                if (log.date && typeof log.durationMinutes === 'number') {
+            logs.forEach((log, index) => {
+                if (log && typeof log === 'object' && log.date && typeof log.durationMinutes === 'number') {
                     addLogToTable(log);
                 } else {
-                    console.warn("Skipping invalid log entry:", log);
+                    console.warn("Skipping invalid log entry at index", index, ":", log);
                 }
             });
 
