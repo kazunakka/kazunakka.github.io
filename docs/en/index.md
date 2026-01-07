@@ -14,17 +14,16 @@ title: "Still Time Studio - English"
 </p>
 </section>
 
-<section id="meditation-timer">
-    <img src="/images/meditation_timer/meditation_timer_icon.png" alt="Still Time app icon" class="app-icon">
-    <h2>Still Time / わたし時間</h2>
-    <p>A user-friendly interface with breathing-support animation and gentle sounds to enhance your meditation practice.</p>
-    <a href="/meditation_timer" class="detail-link">View Details</a>
+<section id="log-editor-tool">
+    <h2>Data Management Tools</h2>
+    <p>We provide two convenient tools for managing your meditation logs. Edit and convert JSON data exported from the app directly in your browser. Choose the right tool for your needs—bulk editing and analysis in spreadsheets, or quick edits to specific logs.</p>
+    <a href="/en/tools/" class="detail-link">Access the Tools</a>
 </section>
 
 <section id="log-editor-tool">
     <h2>Meditation Log Editor Tool</h2>
     <p>This external tool allows you to edit the JSON data exported from the "Still Time" app directly in your browser. Useful for manually correcting records, batch deletion, or restoring backups.</p>
-    <a href="/en/log_editor_en.html" class="detail-link">Access the Tool</a>
+    <a href="/en/tools-portal-en.html" class="detail-link">Access the Tool</a>
 </section>
 
 <section id="updates">
