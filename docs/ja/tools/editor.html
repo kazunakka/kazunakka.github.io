@@ -447,8 +447,19 @@
     }
 
     function addRow() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = now.getMonth() + 1;
+        const day = now.getDate();
+        const hours = now.getHours();
+        const minutes = now.getMinutes();
+        const seconds = now.getSeconds();
+        
+        // アプリと同じフォーマット: "2026-01-07 9:00:26"
+        const dateString = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')} ${hours}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        
         const newLog = {
-            date: new Date().toISOString(),
+            date: dateString,
             durationMinutes: 10,
             mood: 3,
             memo: '新規追加のログ',

@@ -405,7 +405,7 @@
 
     function addLogToTable(logData) {
         const tbody = document.getElementById('logTable').querySelector('tbody');
-        const row = tbody.insertRow();
+        const row = tbody.insertRow(0); // 0を指定して先頭に挿入
         row.dataset.originalDate = logData.date;
 
         const dateCell = row.insertCell();
@@ -447,13 +447,36 @@
     }
 
     function addRow() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = now.getMonth() + 1;
+        const day = now.getDate();
+        const hours = now.getHours();
+        const minutes = now.getMinutes();
+        const seconds = now.getSeconds();
+        
+        // アプリと同じフォーマット: "2026-01-07 9:00:26"
+        const dateString = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')} ${hours}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        
         const newLog = {
-            date: new Date().toISOString(),
+            date: dateString,
             durationMinutes: 10,
             mood: 3,
             memo: '新規追加のログ',
         };
         addLogToTable(newLog);
+        
+        // 新しく追加した行までスクロール
+        const tbody = document.getElementById('logTable').querySelector('tbody');
+        const firstRow = tbody.rows[0];
+        if (firstRow) {
+            firstRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            // 新規行を一時的にハイライト
+            firstRow.style.backgroundColor = '#f0fdfa';
+            setTimeout(() => {
+                firstRow.style.backgroundColor = '';
+            }, 2000);
+        }
     }
 
     function exportLogs() {
