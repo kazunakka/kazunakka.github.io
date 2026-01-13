@@ -22,7 +22,7 @@
     }
     
     .container {
-      max-width: 1200px;
+      max-width: 1000px;
       margin: 0 auto;
     }
     
@@ -332,6 +332,27 @@
       color: #336666;
       font-weight: 700;
     }
+
+    .warning-box {
+      background: #fff3cd;
+      border: 2px solid #ffc107;
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 16px;
+    }
+
+    .warning-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #856404;
+      margin-bottom: 4px;
+    }
+
+    .warning-text {
+      font-size: 13px;
+      color: #856404;
+      line-height: 1.5;
+    }
   </style>
 </head>
 <body>
@@ -373,7 +394,62 @@
         return flattened;
       };
 
-      const convertJsonToTsv = () => {
+      // CSVエスケープ関数
+      const escapeCSV = (value) => {
+        if (value === null || value === undefined) return '';
+        const str = String(value);
+        // ダブルクォート、改行、カンマを含む場合はクォートで囲む
+        if (str.includes('"') || str.includes('\n') || str.includes(',')) {
+          return '"' + str.replace(/"/g, '""') + '"';
+        }
+        return str;
+      };
+
+      // CSV解析関数（改行対応）
+      const parseCSV = (csvText) => {
+        const rows = [];
+        let currentRow = [];
+        let currentField = '';
+        let insideQuotes = false;
+
+        for (let i = 0; i < csvText.length; i++) {
+          const char = csvText[i];
+          const nextChar = csvText[i + 1];
+
+          if (char === '"') {
+            if (insideQuotes && nextChar === '"') {
+              // エスケープされたクォート
+              currentField += '"';
+              i++; // 次の文字をスキップ
+            } else {
+              // クォートの開始/終了
+              insideQuotes = !insideQuotes;
+            }
+          } else if (char === ',' && !insideQuotes) {
+            // フィールドの区切り
+            currentRow.push(currentField);
+            currentField = '';
+          } else if (char === '\n' && !insideQuotes) {
+            // 行の区切り
+            currentRow.push(currentField);
+            rows.push(currentRow);
+            currentRow = [];
+            currentField = '';
+          } else {
+            currentField += char;
+          }
+        }
+
+        // 最後のフィールドと行を追加
+        if (currentField || currentRow.length > 0) {
+          currentRow.push(currentField);
+          rows.push(currentRow);
+        }
+
+        return rows;
+      };
+
+      const convertJsonToCSV = () => {
         setError('');
         setOutput('');
         setCopied(false);
@@ -389,34 +465,49 @@
             throw new Error('オブジェクトまたは配列である必要があります');
           }
           const allKeys = [...new Set(rows.flatMap(row => Object.keys(row)))];
-          const header = allKeys.join('\t');
+          
+          // ヘッダー行（CSVエスケープ）
+          const header = allKeys.map(key => escapeCSV(key)).join(',');
+          
+          // データ行（CSVエスケープ）
           const dataRows = rows.map(row => 
-            allKeys.map(key => String(row[key] ?? '').replace(/\t/g, ' ')).join('\t')
+            allKeys.map(key => escapeCSV(row[key] ?? '')).join(',')
           );
-          setOutput([header, ...dataRows].join('\n'));
+          
+          const csv = [header, ...dataRows].join('\n');
+          setOutput(csv);
         } catch (e) {
           setError(e.message);
         }
       };
 
-      const convertTsvToJson = () => {
+      const convertCSVToJson = () => {
         setError('');
         setOutput('');
         setCopied(false);
         try {
           if (!input.trim()) throw new Error('データを入力してください');
-          const lines = input.trim().split('\n');
-          if (lines.length < 2) throw new Error('ヘッダー行とデータ行が必要です');
-          const headers = lines[0].split('\t').map(h => h.trim());
+          
+          const rows = parseCSV(input);
+          
+          if (rows.length < 2) throw new Error('ヘッダー行とデータ行が必要です');
+          
+          const headers = rows[0].map(h => h.trim());
           const jsonArray = [];
-          for (let i = 1; i < lines.length; i++) {
-            const values = lines[i].split('\t');
+          
+          for (let i = 1; i < rows.length; i++) {
+            const values = rows[i];
             const obj = {};
+            
             headers.forEach((header, index) => {
               let value = values[index] || '';
+              
+              // 数値に変換を試みる
               if (value && !isNaN(value) && value.trim() !== '') {
                 value = Number(value);
               }
+              
+              // ネストされたキーを処理
               if (header.includes('.')) {
                 const parts = header.split('.');
                 let current = obj;
@@ -429,8 +520,10 @@
                 obj[header] = value;
               }
             });
+            
             jsonArray.push(obj);
           }
+          
           setOutput(JSON.stringify(jsonArray));
         } catch (e) {
           setError(e.message);
@@ -438,7 +531,7 @@
       };
 
       const handleConvert = () => {
-        mode === 'toSheets' ? convertJsonToTsv() : convertTsvToJson();
+        mode === 'toSheets' ? convertJsonToCSV() : convertCSVToJson();
       };
 
       const copyToClipboard = async () => {
@@ -452,8 +545,8 @@
       };
 
       const downloadFile = () => {
-        const ext = mode === 'toSheets' ? 'tsv' : 'json';
-        const type = mode === 'toSheets' ? 'text/tab-separated-values' : 'application/json';
+        const ext = mode === 'toSheets' ? 'csv' : 'json';
+        const type = mode === 'toSheets' ? 'text/csv;charset=utf-8;' : 'application/json';
         const blob = new Blob([output], { type });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -464,10 +557,10 @@
       };
 
       const exampleJson = '[{"date":"2026-01-06T08:00:00.000000","durationMinutes":10,"mood":5,"memo":"朝の瞑想。気分爽快。"},{"date":"2026-01-05T20:30:00.000000","durationMinutes":5,"mood":4,"memo":"寝る前のリラックス。"}]';
-      const exampleTsv = 'date\tdurationMinutes\tmood\tmemo\n2026-01-06T08:00:00.000000\t10\t5\t朝の瞑想。気分爽快。\n2026-01-05T20:30:00.000000\t5\t4\t寝る前のリラックス。';
+      const exampleCSV = 'date,durationMinutes,mood,memo\n2026-01-06T08:00:00.000000,10,5,"朝の瞑想。気分爽快。"\n2026-01-05T20:30:00.000000,5,4,"寝る前のリラックス。"';
 
       const loadExample = () => {
-        setInput(mode === 'toSheets' ? exampleJson : exampleTsv);
+        setInput(mode === 'toSheets' ? exampleJson : exampleCSV);
         setOutput('');
         setError('');
       };
@@ -502,6 +595,10 @@
               h('h2', null, mode === 'toSheets' ? 'JSON入力' : 'スプレッドシートデータ入力'),
               h('button', { className: 'example-btn', onClick: loadExample }, 'サンプルを読み込む')
             ),
+            mode === 'toSheets' && h('div', { className: 'warning-box' },
+              h('p', { className: 'warning-title' }, '⚠️ 改行対応について'),
+              h('p', { className: 'warning-text' }, 'メモに改行が含まれていても正しく処理されます。CSV形式でエクスポートされます。')
+            ),
             h('textarea', {
               value: input,
               onChange: (e) => setInput(e.target.value),
@@ -528,7 +625,8 @@
               h('ol', null,
                 h('li', null, '「コピー」ボタンをクリック'),
                 h('li', null, 'Googleスプレッドシートを開く'),
-                h('li', null, 'セルA1を選択して貼り付け（Ctrl+V / Cmd+V）')
+                h('li', null, 'セルA1を選択して貼り付け（Ctrl+V / Cmd+V）'),
+                h('li', null, '改行を含むメモも正しく表示されます')
               )
             ),
             output && mode === 'toJson' && h('div', { className: 'info-box info-box-teal' },
@@ -550,6 +648,7 @@
               h('ul', null,
                 h('li', null, '✓ JSON配列やオブジェクトを表形式に変換'),
                 h('li', null, '✓ ネストされたオブジェクトをフラット化'),
+                h('li', null, '✓ 改行を含むメモも正しく処理（CSV形式）'),
                 h('li', null, '✓ Googleスプレッドシートに直接貼り付け可能')
               )
             ),
@@ -558,6 +657,7 @@
               h('ul', null,
                 h('li', null, '✓ コピーしたセルデータをJSON配列に変換'),
                 h('li', null, '✓ 数値の自動判定'),
+                h('li', null, '✓ 改行を含むデータも正しく復元'),
                 h('li', null, '✓ ネストされた構造の復元')
               )
             )
