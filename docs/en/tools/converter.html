@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>JSON ⇔ Spreadsheet Converter - Still Time</title>
   <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
-  <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script crossorigin
+    src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&display=swap" rel="stylesheet">
   <style>
     * {
@@ -13,19 +15,19 @@
       padding: 0;
       box-sizing: border-box;
     }
-    
+
     body {
       font-family: 'Kalam', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background: linear-gradient(135deg, #66b2b2, #8cc5c5);
       min-height: 100vh;
       padding: 24px;
     }
-    
+
     .container {
       max-width: 1000px;
       margin: 0 auto;
     }
-    
+
     .header {
       background: white;
       border: 2px solid #66b2b2;
@@ -34,7 +36,7 @@
       padding: 24px;
       margin-bottom: 24px;
     }
-    
+
     .header-top {
       display: flex;
       justify-content: space-between;
@@ -43,13 +45,13 @@
       gap: 16px;
       margin-bottom: 8px;
     }
-    
+
     h1 {
       font-size: 1.875rem;
       font-weight: 700;
       color: #336666;
     }
-    
+
     .switch-btn {
       display: flex;
       align-items: center;
@@ -65,51 +67,51 @@
       box-shadow: 0 2px 8px rgba(102, 178, 178, 0.3);
       transition: all 0.3s ease;
     }
-    
+
     .switch-btn:hover {
       background: #4d8a8a;
       box-shadow: 0 4px 12px rgba(102, 178, 178, 0.4);
       transform: translateY(-2px);
     }
-    
+
     .subtitle {
       color: #336666;
       margin-bottom: 16px;
       font-size: 16px;
     }
-    
+
     .privacy-box {
       padding: 16px;
       background: #b3d6d6;
       border: 1px solid #8cc5c5;
       border-radius: 12px;
     }
-    
+
     .privacy-title {
       font-size: 14px;
       font-weight: 700;
       color: #336666;
       margin-bottom: 4px;
     }
-    
+
     .privacy-text {
       font-size: 14px;
       color: #336666;
     }
-    
+
     .grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 24px;
       margin-bottom: 24px;
     }
-    
+
     @media (max-width: 768px) {
       .grid {
         grid-template-columns: 1fr;
       }
     }
-    
+
     .card {
       background: white;
       border: 2px solid #66b2b2;
@@ -117,20 +119,20 @@
       box-shadow: 0 8px 24px rgba(51, 102, 102, 0.2);
       padding: 24px;
     }
-    
+
     .card-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 16px;
     }
-    
+
     h2 {
       font-size: 1.25rem;
       font-weight: 700;
       color: #336666;
     }
-    
+
     .example-btn {
       font-size: 14px;
       color: #66b2b2;
@@ -139,12 +141,12 @@
       cursor: pointer;
       font-family: 'Kalam', sans-serif;
     }
-    
+
     .example-btn:hover {
       color: #4d8a8a;
       text-decoration: underline;
     }
-    
+
     textarea {
       width: 100%;
       height: 256px;
@@ -156,17 +158,17 @@
       resize: vertical;
       transition: border-color 0.3s ease;
     }
-    
+
     textarea:focus {
       outline: none;
       border-color: #66b2b2;
       box-shadow: 0 0 0 3px rgba(102, 178, 178, 0.1);
     }
-    
+
     textarea[readonly] {
       background: #f9fafb;
     }
-    
+
     .convert-btn {
       width: 100%;
       margin-top: 16px;
@@ -182,13 +184,13 @@
       box-shadow: 0 2px 8px rgba(102, 178, 178, 0.3);
       transition: all 0.3s ease;
     }
-    
+
     .convert-btn:hover {
       background: #4d8a8a;
       box-shadow: 0 4px 12px rgba(102, 178, 178, 0.4);
       transform: translateY(-2px);
     }
-    
+
     .error-box {
       margin-top: 16px;
       padding: 12px;
@@ -198,12 +200,12 @@
       color: #991b1b;
       font-size: 14px;
     }
-    
+
     .button-group {
       display: flex;
       gap: 8px;
     }
-    
+
     .action-btn {
       display: flex;
       align-items: center;
@@ -217,29 +219,29 @@
       font-family: 'Kalam', sans-serif;
       transition: all 0.3s ease;
     }
-    
+
     .copy-btn {
       background: #66b2b2;
       box-shadow: 0 2px 6px rgba(102, 178, 178, 0.3);
     }
-    
+
     .copy-btn:hover {
       background: #4d8a8a;
       transform: translateY(-1px);
     }
-    
+
     .download-btn {
       background: #8cc5c5;
       color: #336666;
       box-shadow: 0 2px 6px rgba(140, 197, 197, 0.3);
     }
-    
+
     .download-btn:hover {
       background: #66b2b2;
       color: white;
       transform: translateY(-1px);
     }
-    
+
     .info-box {
       margin-top: 16px;
       padding: 12px;
@@ -247,34 +249,34 @@
       font-size: 14px;
       border: 2px solid;
     }
-    
+
     .info-box-blue {
       background: #e6f4f4;
       border-color: #8cc5c5;
       color: #336666;
     }
-    
+
     .info-box-teal {
       background: #b3d6d6;
       border-color: #66b2b2;
       color: #336666;
     }
-    
+
     .info-box strong {
       display: block;
       margin-bottom: 8px;
       font-weight: 700;
     }
-    
+
     .info-box ol {
       margin-left: 20px;
       margin-top: 8px;
     }
-    
+
     .info-box li {
       margin: 4px 0;
     }
-    
+
     .features {
       background: white;
       border: 2px solid #66b2b2;
@@ -282,52 +284,53 @@
       box-shadow: 0 8px 24px rgba(51, 102, 102, 0.2);
       padding: 24px;
     }
-    
+
     h3 {
       font-size: 1.125rem;
       font-weight: 700;
       color: #336666;
       margin-bottom: 12px;
     }
-    
+
     .features-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 16px;
     }
-    
+
     @media (max-width: 768px) {
       .features-grid {
         grid-template-columns: 1fr;
       }
+
       h1 {
         font-size: 1.5rem;
       }
     }
-    
+
     h4 {
       font-weight: 700;
       color: #336666;
       margin-bottom: 8px;
     }
-    
+
     .features ul {
       list-style: none;
     }
-    
+
     .features li {
       color: #2D2D2D;
       font-size: 14px;
       margin: 4px 0;
     }
-    
+
     .footer {
       text-align: center;
       margin-top: 24px;
       color: #336666;
       font-size: 14px;
     }
-    
+
     .footer a {
       color: #336666;
       font-weight: 700;
@@ -355,6 +358,7 @@
     }
   </style>
 </head>
+
 <body>
   <div id="root"></div>
 
@@ -394,48 +398,96 @@
         return flattened;
       };
 
+      // CSV escape function (RFC 4180 compliant)
       const escapeCSV = (value) => {
-        if (value === null || value === undefined) return '';
+        if (value === null || value === undefined) return '""';
         const str = String(value);
-        if (str.includes('"') || str.includes('\n') || str.includes(',')) {
-          return '"' + str.replace(/"/g, '""') + '"';
-        }
-        return str;
+        // Wrap all fields in double quotes
+        // Escape internal double quotes by doubling them
+        return '"' + str.replace(/"/g, '""') + '"';
       };
 
+      // CSV parser (RFC 4180 compliant)
       const parseCSV = (csvText) => {
         const rows = [];
         let currentRow = [];
         let currentField = '';
         let insideQuotes = false;
+        let i = 0;
 
-        for (let i = 0; i < csvText.length; i++) {
+        while (i < csvText.length) {
           const char = csvText[i];
           const nextChar = csvText[i + 1];
 
-          if (char === '"') {
-            if (insideQuotes && nextChar === '"') {
-              currentField += '"';
+          if (insideQuotes) {
+            if (char === '"') {
+              if (nextChar === '"') {
+                // Escaped double quote
+                currentField += '"';
+                i += 2;
+                continue;
+              } else {
+                // End of quoted field
+                insideQuotes = false;
+                i++;
+                continue;
+              }
+            } else {
+              // Normal character inside quotes
+              currentField += char;
+              i++;
+            }
+          } else {
+            if (char === '"') {
+              // Start of quoted field
+              insideQuotes = true;
+              i++;
+            } else if (char === ',') {
+              // Field separator
+              currentRow.push(currentField);
+              currentField = '';
+              i++;
+            } else if (char === '\n') {
+              // Line separator
+              currentRow.push(currentField);
+              if (currentRow.some(f => f !== '')) {
+                rows.push(currentRow);
+              }
+              currentRow = [];
+              currentField = '';
+              i++;
+            } else if (char === '\r' && nextChar === '\n') {
+              // Windows line break
+              currentRow.push(currentField);
+              if (currentRow.some(f => f !== '')) {
+                rows.push(currentRow);
+              }
+              currentRow = [];
+              currentField = '';
+              i += 2;
+            } else if (char === '\r') {
+              // Mac line break
+              currentRow.push(currentField);
+              if (currentRow.some(f => f !== '')) {
+                rows.push(currentRow);
+              }
+              currentRow = [];
+              currentField = '';
               i++;
             } else {
-              insideQuotes = !insideQuotes;
+              // Normal character
+              currentField += char;
+              i++;
             }
-          } else if (char === ',' && !insideQuotes) {
-            currentRow.push(currentField);
-            currentField = '';
-          } else if (char === '\n' && !insideQuotes) {
-            currentRow.push(currentField);
-            rows.push(currentRow);
-            currentRow = [];
-            currentField = '';
-          } else {
-            currentField += char;
           }
         }
 
-        if (currentField || currentRow.length > 0) {
+        // Add last field and row
+        if (currentField !== '' || currentRow.length > 0) {
           currentRow.push(currentField);
-          rows.push(currentRow);
+          if (currentRow.some(f => f !== '')) {
+            rows.push(currentRow);
+          }
         }
 
         return rows;
@@ -457,12 +509,15 @@
             throw new Error('Must be an object or array');
           }
           const allKeys = [...new Set(rows.flatMap(row => Object.keys(row)))];
-          
+
+          // Header row (all quoted)
           const header = allKeys.map(key => escapeCSV(key)).join(',');
-          const dataRows = rows.map(row => 
+
+          // Data rows (all quoted)
+          const dataRows = rows.map(row =>
             allKeys.map(key => escapeCSV(row[key] ?? '')).join(',')
           );
-          
+
           const csv = [header, ...dataRows].join('\n');
           setOutput(csv);
         } catch (e) {
@@ -476,25 +531,27 @@
         setCopied(false);
         try {
           if (!input.trim()) throw new Error('Please enter data');
-          
+
           const rows = parseCSV(input);
-          
+
           if (rows.length < 2) throw new Error('Header row and data row required');
-          
+
           const headers = rows[0].map(h => h.trim());
           const jsonArray = [];
-          
+
           for (let i = 1; i < rows.length; i++) {
             const values = rows[i];
             const obj = {};
-            
+
             headers.forEach((header, index) => {
               let value = values[index] || '';
-              
+
+              // Try to convert to number
               if (value && !isNaN(value) && value.trim() !== '') {
                 value = Number(value);
               }
-              
+
+              // Handle nested keys
               if (header.includes('.')) {
                 const parts = header.split('.');
                 let current = obj;
@@ -507,11 +564,11 @@
                 obj[header] = value;
               }
             });
-            
+
             jsonArray.push(obj);
           }
-          
-          setOutput(JSON.stringify(jsonArray));
+
+          setOutput(JSON.stringify(jsonArray, null, 2));
         } catch (e) {
           setError(e.message);
         }
@@ -544,7 +601,7 @@
       };
 
       const exampleJson = '[{"date":"2026-01-06T08:00:00.000000","durationMinutes":10,"mood":5,"memo":"Morning meditation. Feeling great."},{"date":"2026-01-05T20:30:00.000000","durationMinutes":5,"mood":4,"memo":"Relaxing before bed."}]';
-      const exampleCSV = 'date,durationMinutes,mood,memo\n2026-01-06T08:00:00.000000,10,5,"Morning meditation. Feeling great."\n2026-01-05T20:30:00.000000,5,4,"Relaxing before bed."';
+      const exampleCSV = '"date","durationMinutes","mood","memo"\n"2026-01-06T08:00:00.000000","10","5","Morning meditation. Feeling great."\n"2026-01-05T20:30:00.000000","5","4","Relaxing before bed."';
 
       const loadExample = () => {
         setInput(mode === 'toSheets' ? exampleJson : exampleCSV);
@@ -583,8 +640,8 @@
               h('button', { className: 'example-btn', onClick: loadExample }, 'Load Sample')
             ),
             mode === 'toSheets' && h('div', { className: 'warning-box' },
-              h('p', { className: 'warning-title' }, '⚠️ Line Break Support'),
-              h('p', { className: 'warning-text' }, 'Memos with line breaks will be processed correctly and exported in CSV format.')
+              h('p', { className: 'warning-title' }, '⚠️ Line Break & Comma Support'),
+              h('p', { className: 'warning-text' }, 'Memos with line breaks or commas will be processed correctly. Exports in RFC 4180 compliant CSV format.')
             ),
             h('textarea', {
               value: input,
@@ -613,7 +670,7 @@
                 h('li', null, 'Click the "Copy" button'),
                 h('li', null, 'Open Google Sheets'),
                 h('li', null, 'Select cell A1 and paste (Ctrl+V / Cmd+V)'),
-                h('li', null, 'Memos with line breaks will display correctly')
+                h('li', null, 'Memos with line breaks or commas will display correctly')
               )
             ),
             output && mode === 'toJson' && h('div', { className: 'info-box info-box-teal' },
@@ -635,7 +692,7 @@
               h('ul', null,
                 h('li', null, '✓ Convert JSON arrays and objects to table format'),
                 h('li', null, '✓ Flatten nested objects'),
-                h('li', null, '✓ Process memos with line breaks correctly (CSV format)'),
+                h('li', null, '✓ Process memos with line breaks or commas correctly (RFC 4180 compliant)'),
                 h('li', null, '✓ Paste directly into Google Sheets')
               )
             ),
@@ -644,7 +701,7 @@
               h('ul', null,
                 h('li', null, '✓ Convert copied cell data to JSON array'),
                 h('li', null, '✓ Automatic number detection'),
-                h('li', null, '✓ Restore data with line breaks correctly'),
+                h('li', null, '✓ Restore data with line breaks or commas correctly'),
                 h('li', null, '✓ Restore nested structures')
               )
             )
@@ -659,4 +716,5 @@
     ReactDOM.render(React.createElement(JsonSheetsConverter), document.getElementById('root'));
   </script>
 </body>
+
 </html>
