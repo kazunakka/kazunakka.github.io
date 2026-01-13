@@ -407,8 +407,13 @@
         return '"' + str.replace(/"/g, '""') + '"';
       };
 
-      // CSV parser (RFC 4180 compliant)
+      // CSV/TSV parser (RFC 4180 compliant + tab-delimited support)
       const parseCSV = (csvText) => {
+        // Auto-detect delimiter: tab (from Google Sheets copy) or comma
+        const firstLine = csvText.split('\n')[0];
+        const hasTab = firstLine.includes('\t');
+        const delimiter = hasTab ? '\t' : ',';
+
         const rows = [];
         let currentRow = [];
         let currentField = '';
@@ -442,8 +447,8 @@
               // Start of quoted field
               insideQuotes = true;
               i++;
-            } else if (char === ',') {
-              // Field separator
+            } else if (char === delimiter) {
+              // Field separator (comma or tab)
               currentRow.push(currentField);
               currentField = '';
               i++;
@@ -568,7 +573,7 @@
             jsonArray.push(obj);
           }
 
-          setOutput(JSON.stringify(jsonArray, null, 2));
+          setOutput(JSON.stringify(jsonArray));
         } catch (e) {
           setError(e.message);
         }
@@ -640,8 +645,8 @@
               h('button', { className: 'example-btn', onClick: loadExample }, 'Load Sample')
             ),
             mode === 'toSheets' && h('div', { className: 'warning-box' },
-              h('p', { className: 'warning-title' }, '⚠️ Line Break & Comma Support'),
-              h('p', { className: 'warning-text' }, 'Memos with line breaks or commas will be processed correctly. Exports in RFC 4180 compliant CSV format.')
+              h('p', { className: 'warning-title' }, '⚠️ Line Break, Comma & Tab Support'),
+              h('p', { className: 'warning-text' }, 'Memos with line breaks, commas, or tabs will be processed correctly. Exports in RFC 4180 compliant CSV format.')
             ),
             h('textarea', {
               value: input,

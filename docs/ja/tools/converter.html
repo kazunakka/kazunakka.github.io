@@ -407,8 +407,13 @@
         return '"' + str.replace(/"/g, '""') + '"';
       };
 
-      // CSV解析関数（RFC 4180準拠）
+      // CSV/TSV解析関数（RFC 4180準拠 + タブ区切り対応）
       const parseCSV = (csvText) => {
+        // タブ区切り（Googleスプレッドシートからのコピー）かカンマ区切りか自動判定
+        const firstLine = csvText.split('\n')[0];
+        const hasTab = firstLine.includes('\t');
+        const delimiter = hasTab ? '\t' : ',';
+
         const rows = [];
         let currentRow = [];
         let currentField = '';
@@ -442,8 +447,8 @@
               // クォートの開始
               insideQuotes = true;
               i++;
-            } else if (char === ',') {
-              // フィールドの区切り
+            } else if (char === delimiter) {
+              // フィールドの区切り（カンマまたはタブ）
               currentRow.push(currentField);
               currentField = '';
               i++;
@@ -568,7 +573,7 @@
             jsonArray.push(obj);
           }
 
-          setOutput(JSON.stringify(jsonArray, null, 2));
+          setOutput(JSON.stringify(jsonArray));
         } catch (e) {
           setError(e.message);
         }
@@ -640,8 +645,8 @@
               h('button', { className: 'example-btn', onClick: loadExample }, 'サンプルを読み込む')
             ),
             mode === 'toSheets' && h('div', { className: 'warning-box' },
-              h('p', { className: 'warning-title' }, '⚠️ 改行・カンマ対応'),
-              h('p', { className: 'warning-text' }, 'メモに改行やカンマが含まれていても正しく処理されます。RFC 4180準拠のCSV形式でエクスポートされます。')
+              h('p', { className: 'warning-title' }, '⚠️ 改行・カンマ・タブ対応'),
+              h('p', { className: 'warning-text' }, 'メモに改行、カンマ、タブが含まれていても正しく処理されます。RFC 4180準拠のCSV形式でエクスポートされます。')
             ),
             h('textarea', {
               value: input,
