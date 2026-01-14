@@ -617,20 +617,12 @@
       };
 
       const exampleJson = '[{"date":"2026-01-06T08:00:00.000000","durationMinutes":10,"mood":5,"memo":"朝の瞑想。気分爽快。"},{"date":"2026-01-05T20:30:00.000000","durationMinutes":5,"mood":4,"memo":"寝る前のリラックス。"}]';
-      const exampleCSV = 'date\tdurationMinutes\tmood\tmemo\n2026-01-06T08:00:00.000000\t10\t5\t朝の瞑想。気分爽快。\n2026-01-05T20:30:00.000000\t5\t4\t寝る前のリラックス。';
+      const exampleTSV = 'date\tdurationMinutes\tmood\tmemo\n2026-01-06T08:00:00.000000\t10\t5\t朝の瞑想。気分爽快。\n2026-01-05T20:30:00.000000\t5\t4\t寝る前のリラックス。';
 
       const loadExample = () => {
-        setInput(mode === 'toSheets' ? exampleJson : exampleCSV);
+        setInput(mode === 'toSheets' ? exampleJson : exampleTSV);
         setOutput('');
         setError('');
-        // サンプルをロードしたら自動変換
-        setTimeout(() => {
-          if (mode === 'toSheets') {
-            convertJsonToCSV();
-          } else {
-            convertCSVToJson();
-          }
-        }, 100);
       };
 
       const switchMode = () => {
