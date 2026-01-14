@@ -398,13 +398,12 @@
         return flattened;
       };
 
-      // CSVエスケープ関数（RFC 4180準拠）
-      const escapeCSV = (value) => {
-        if (value === null || value === undefined) return '""';
+      // TSVエスケープ関数（タブ区切り形式）
+      const escapeTSV = (value) => {
+        if (value === null || value === undefined) return '';
         const str = String(value);
-        // すべてのフィールドをダブルクォートで囲む
-        // 内部のダブルクォートは2つ重ねてエスケープ
-        return '"' + str.replace(/"/g, '""') + '"';
+        // タブと改行をエスケープ
+        return str.replace(/\t/g, ' ').replace(/\n/g, ' ').replace(/\r/g, '');
       };
 
       // CSV/TSV解析関数（RFC 4180準拠 + タブ区切り対応）
@@ -515,16 +514,14 @@
           }
           const allKeys = [...new Set(rows.flatMap(row => Object.keys(row)))];
 
-          // ヘッダー行（すべてクォートで囲む）
-          const header = allKeys.map(key => escapeCSV(key)).join(',');
-
-          // データ行（すべてクォートで囲む）
+          // タブ区切り形式（TSV）で出力
+          const header = allKeys.map(key => escapeTSV(key)).join('\t');
           const dataRows = rows.map(row =>
-            allKeys.map(key => escapeCSV(row[key] ?? '')).join(',')
+            allKeys.map(key => escapeTSV(row[key] ?? '')).join('\t')
           );
 
-          const csv = [header, ...dataRows].join('\n');
-          setOutput(csv);
+          const tsv = [header, ...dataRows].join('\n');
+          setOutput(tsv);
         } catch (e) {
           setError(e.message);
         }
@@ -551,8 +548,22 @@
             headers.forEach((header, index) => {
               let value = values[index] || '';
 
-              // 数値に変換を試みる
-              if (value && !isNaN(value) && value.trim() !== '') {
+              // dateフィールドの特殊処理
+              if (header === 'date' && value) {
+                // ISO 8601形式に変換
+                try {
+                  // スプレッドシートから来た日付形式を解析
+                  const dateObj = new Date(value);
+                  if (!isNaN(dateObj.getTime())) {
+                    // ISO 8601形式に変換（マイクロ秒を追加）
+                    value = dateObj.toISOString().replace('Z', '.000000');
+                  }
+                } catch (e) {
+                  // 変換失敗時はそのまま
+                }
+              }
+              // 数値に変換を試みる（dateフィールド以外）
+              else if (value && !isNaN(value) && value.trim() !== '') {
                 value = Number(value);
               }
 
@@ -594,8 +605,8 @@
       };
 
       const downloadFile = () => {
-        const ext = mode === 'toSheets' ? 'csv' : 'json';
-        const type = mode === 'toSheets' ? 'text/csv;charset=utf-8;' : 'application/json';
+        const ext = mode === 'toSheets' ? 'tsv' : 'json';
+        const type = mode === 'toSheets' ? 'text/tab-separated-values;charset=utf-8;' : 'application/json';
         const blob = new Blob([output], { type });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -606,12 +617,20 @@
       };
 
       const exampleJson = '[{"date":"2026-01-06T08:00:00.000000","durationMinutes":10,"mood":5,"memo":"朝の瞑想。気分爽快。"},{"date":"2026-01-05T20:30:00.000000","durationMinutes":5,"mood":4,"memo":"寝る前のリラックス。"}]';
-      const exampleCSV = '"date","durationMinutes","mood","memo"\n"2026-01-06T08:00:00.000000","10","5","朝の瞑想。気分爽快。"\n"2026-01-05T20:30:00.000000","5","4","寝る前のリラックス。"';
+      const exampleCSV = 'date\tdurationMinutes\tmood\tmemo\n2026-01-06T08:00:00.000000\t10\t5\t朝の瞑想。気分爽快。\n2026-01-05T20:30:00.000000\t5\t4\t寝る前のリラックス。';
 
       const loadExample = () => {
         setInput(mode === 'toSheets' ? exampleJson : exampleCSV);
         setOutput('');
         setError('');
+        // サンプルをロードしたら自動変換
+        setTimeout(() => {
+          if (mode === 'toSheets') {
+            convertJsonToCSV();
+          } else {
+            convertCSVToJson();
+          }
+        }, 100);
       };
 
       const switchMode = () => {
@@ -645,8 +664,8 @@
               h('button', { className: 'example-btn', onClick: loadExample }, 'サンプルを読み込む')
             ),
             mode === 'toSheets' && h('div', { className: 'warning-box' },
-              h('p', { className: 'warning-title' }, '⚠️ 改行・カンマ・タブ対応'),
-              h('p', { className: 'warning-text' }, 'メモに改行、カンマ、タブが含まれていても正しく処理されます。RFC 4180準拠のCSV形式でエクスポートされます。')
+              h('p', { className: 'warning-title' }, '⚠️ タブ区切り形式（TSV）'),
+              h('p', { className: 'warning-text' }, '改行やカンマを含むメモは半角スペースに変換されます。タブ区切り形式（TSV）でエクスポートされるため、Googleスプレッドシートに直接貼り付けできます。')
             ),
             h('textarea', {
               value: input,
@@ -684,7 +703,9 @@
                 h('li', null, 'Googleスプレッドシートでデータ範囲を選択'),
                 h('li', null, 'コピー（Ctrl+C / Cmd+C）'),
                 h('li', null, '左側のボックスに貼り付け'),
-                h('li', null, '「変換する」をクリック')
+                h('li', null, '「変換する」をクリック'),
+                h('li', null, '※改行は半角スペースに変換されます'),
+                h('li', null, '※日付は自動的にISO 8601形式に変換されます')
               )
             )
           )
@@ -697,7 +718,7 @@
               h('ul', null,
                 h('li', null, '✓ JSON配列やオブジェクトを表形式に変換'),
                 h('li', null, '✓ ネストされたオブジェクトをフラット化'),
-                h('li', null, '✓ 改行やカンマを含むメモも正しく処理（RFC 4180準拠）'),
+                h('li', null, '✓ 改行やカンマは半角スペースに変換（タブ区切り形式）'),
                 h('li', null, '✓ Googleスプレッドシートに直接貼り付け可能')
               )
             ),
@@ -706,7 +727,7 @@
               h('ul', null,
                 h('li', null, '✓ コピーしたセルデータをJSON配列に変換'),
                 h('li', null, '✓ 数値の自動判定'),
-                h('li', null, '✓ 改行やカンマを含むデータも正しく復元'),
+                h('li', null, '✓ 日付をISO 8601形式に自動変換'),
                 h('li', null, '✓ ネストされた構造の復元')
               )
             )

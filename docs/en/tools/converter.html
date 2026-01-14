@@ -398,13 +398,12 @@
         return flattened;
       };
 
-      // CSV escape function (RFC 4180 compliant)
-      const escapeCSV = (value) => {
-        if (value === null || value === undefined) return '""';
+      // TSV escape function (tab-delimited format)
+      const escapeTSV = (value) => {
+        if (value === null || value === undefined) return '';
         const str = String(value);
-        // Wrap all fields in double quotes
-        // Escape internal double quotes by doubling them
-        return '"' + str.replace(/"/g, '""') + '"';
+        // Escape tabs and newlines by replacing with spaces
+        return str.replace(/\t/g, ' ').replace(/\n/g, ' ').replace(/\r/g, '');
       };
 
       // CSV/TSV parser (RFC 4180 compliant + tab-delimited support)
@@ -515,16 +514,14 @@
           }
           const allKeys = [...new Set(rows.flatMap(row => Object.keys(row)))];
 
-          // Header row (all quoted)
-          const header = allKeys.map(key => escapeCSV(key)).join(',');
-
-          // Data rows (all quoted)
+          // Tab-delimited format (TSV)
+          const header = allKeys.map(key => escapeTSV(key)).join('\t');
           const dataRows = rows.map(row =>
-            allKeys.map(key => escapeCSV(row[key] ?? '')).join(',')
+            allKeys.map(key => escapeTSV(row[key] ?? '')).join('\t')
           );
 
-          const csv = [header, ...dataRows].join('\n');
-          setOutput(csv);
+          const tsv = [header, ...dataRows].join('\n');
+          setOutput(tsv);
         } catch (e) {
           setError(e.message);
         }
@@ -551,8 +548,22 @@
             headers.forEach((header, index) => {
               let value = values[index] || '';
 
-              // Try to convert to number
-              if (value && !isNaN(value) && value.trim() !== '') {
+              // Special handling for date field
+              if (header === 'date' && value) {
+                // Convert to ISO 8601 format
+                try {
+                  // Parse date format from spreadsheet
+                  const dateObj = new Date(value);
+                  if (!isNaN(dateObj.getTime())) {
+                    // Convert to ISO 8601 format (add microseconds)
+                    value = dateObj.toISOString().replace('Z', '.000000');
+                  }
+                } catch (e) {
+                  // Keep original value if conversion fails
+                }
+              }
+              // Try to convert to number (except date field)
+              else if (value && !isNaN(value) && value.trim() !== '') {
                 value = Number(value);
               }
 
@@ -594,8 +605,8 @@
       };
 
       const downloadFile = () => {
-        const ext = mode === 'toSheets' ? 'csv' : 'json';
-        const type = mode === 'toSheets' ? 'text/csv;charset=utf-8;' : 'application/json';
+        const ext = mode === 'toSheets' ? 'tsv' : 'json';
+        const type = mode === 'toSheets' ? 'text/tab-separated-values;charset=utf-8;' : 'application/json';
         const blob = new Blob([output], { type });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -606,7 +617,7 @@
       };
 
       const exampleJson = '[{"date":"2026-01-06T08:00:00.000000","durationMinutes":10,"mood":5,"memo":"Morning meditation. Feeling great."},{"date":"2026-01-05T20:30:00.000000","durationMinutes":5,"mood":4,"memo":"Relaxing before bed."}]';
-      const exampleCSV = '"date","durationMinutes","mood","memo"\n"2026-01-06T08:00:00.000000","10","5","Morning meditation. Feeling great."\n"2026-01-05T20:30:00.000000","5","4","Relaxing before bed."';
+      const exampleCSV = 'date\tdurationMinutes\tmood\tmemo\n2026-01-06T08:00:00.000000\t10\t5\tMorning meditation. Feeling great.\n2026-01-05T20:30:00.000000\t5\t4\tRelaxing before bed.';
 
       const loadExample = () => {
         setInput(mode === 'toSheets' ? exampleJson : exampleCSV);
@@ -645,8 +656,8 @@
               h('button', { className: 'example-btn', onClick: loadExample }, 'Load Sample')
             ),
             mode === 'toSheets' && h('div', { className: 'warning-box' },
-              h('p', { className: 'warning-title' }, '⚠️ Line Break, Comma & Tab Support'),
-              h('p', { className: 'warning-text' }, 'Memos with line breaks, commas, or tabs will be processed correctly. Exports in RFC 4180 compliant CSV format.')
+              h('p', { className: 'warning-title' }, '⚠️ Tab-Delimited Format (TSV)'),
+              h('p', { className: 'warning-text' }, 'Line breaks and commas in memos are converted to spaces. Exported in tab-delimited format (TSV) for direct paste into Google Sheets.')
             ),
             h('textarea', {
               value: input,
@@ -684,7 +695,9 @@
                 h('li', null, 'Select data range in Google Sheets'),
                 h('li', null, 'Copy (Ctrl+C / Cmd+C)'),
                 h('li', null, 'Paste into the left box'),
-                h('li', null, 'Click "Convert"')
+                h('li', null, 'Click "Convert"'),
+                h('li', null, '※ Line breaks will be converted to spaces'),
+                h('li', null, '※ Dates will be automatically converted to ISO 8601 format')
               )
             )
           )
@@ -697,7 +710,7 @@
               h('ul', null,
                 h('li', null, '✓ Convert JSON arrays and objects to table format'),
                 h('li', null, '✓ Flatten nested objects'),
-                h('li', null, '✓ Process memos with line breaks or commas correctly (RFC 4180 compliant)'),
+                h('li', null, '✓ Line breaks and commas converted to spaces (tab-delimited)'),
                 h('li', null, '✓ Paste directly into Google Sheets')
               )
             ),
@@ -706,7 +719,7 @@
               h('ul', null,
                 h('li', null, '✓ Convert copied cell data to JSON array'),
                 h('li', null, '✓ Automatic number detection'),
-                h('li', null, '✓ Restore data with line breaks or commas correctly'),
+                h('li', null, '✓ Auto-convert dates to ISO 8601 format'),
                 h('li', null, '✓ Restore nested structures')
               )
             )
