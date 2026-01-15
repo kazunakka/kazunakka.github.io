@@ -572,6 +572,10 @@
                   // 変換失敗時はそのまま
                 }
               }
+              // 数値に変換を試みる(dateフィールド以外)
+              else if (value && !isNaN(value) && value.trim() !== '') {
+                value = Number(value);
+              }
 
               // ネストされたキーを処理
               if (header.includes('.')) {
