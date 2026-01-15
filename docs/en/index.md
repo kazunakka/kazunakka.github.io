@@ -23,7 +23,7 @@ title: "Still Time Studio - English"
 <section id="log-editor-tool">
     <h2>Meditation Log Editor Tool</h2>
     <p>This external tool allows you to edit the JSON data exported from the "Still Time" app directly in your browser. Useful for manually correcting records, batch deletion, or restoring backups.</p>
-    <a href="/en/tools-portal-en.html" class="detail-link">Access the Tool</a>
+    <a href="/en/tools/" class="detail-link">Access the Tool</a>
 </section>
 
 <section id="updates">
