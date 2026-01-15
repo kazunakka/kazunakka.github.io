@@ -552,11 +552,18 @@
               if (header === 'date' && value) {
                 // Convert to ISO 8601 format
                 try {
-                  // Parse date format from spreadsheet
-                  const dateObj = new Date(value);
-                  if (!isNaN(dateObj.getTime())) {
-                    // Convert to ISO 8601 format (add microseconds)
-                    value = dateObj.toISOString().replace('Z', '.000000');
+                  // If already in ISO 8601 format (with microseconds), keep as is
+                  if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{6}$/.test(value)) {
+                    // Already in correct format, keep as is
+                  } else {
+                    // Parse date format from spreadsheet
+                    const dateObj = new Date(value);
+                    if (!isNaN(dateObj.getTime())) {
+                      // Convert to ISO 8601 format with microseconds
+                      const isoStr = dateObj.toISOString();
+                      // Convert to microsecond format: 2026-01-05T11:30:00.000Z → 2026-01-05T11:30:00.000000
+                      value = isoStr.replace(/\.(\d{3})Z$/, '.$1000');
+                    }
                   }
                 } catch (e) {
                   // Keep original value if conversion fails
