@@ -552,19 +552,24 @@
               if (header === 'date' && value) {
                 // ISO 8601形式に変換
                 try {
-                  // スプレッドシートから来た日付形式を解析
-                  const dateObj = new Date(value);
-                  if (!isNaN(dateObj.getTime())) {
-                    // ISO 8601形式に変換（マイクロ秒を追加）
-                    value = dateObj.toISOString().replace('Z', '.000000');
+                  // 既にISO 8601形式(マイクロ秒含む)の場合はそのまま保持
+                  if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{6}$/.test(value)) {
+                    // 既に正しい形式なのでそのまま
+                  } else {
+                    // スプレッドシートから来た様々な日付形式を解析
+                    // 例: "2026-01-06 08:00:00", "2026-01-06T08:00:00", "1/6/2026 8:00:00"
+                    const dateObj = new Date(value);
+                    if (!isNaN(dateObj.getTime())) {
+                      // ISO 8601形式に変換してマイクロ秒を追加
+                      // toISOString()は常に "YYYY-MM-DDTHH:mm:ss.sssZ" 形式を返す
+                      const isoStr = dateObj.toISOString();
+                      // .sssZ を .sss000 に置換
+                      value = isoStr.replace('Z', '000');
+                    }
                   }
                 } catch (e) {
                   // 変換失敗時はそのまま
                 }
-              }
-              // 数値に変換を試みる（dateフィールド以外）
-              else if (value && !isNaN(value) && value.trim() !== '') {
-                value = Number(value);
               }
 
               // ネストされたキーを処理

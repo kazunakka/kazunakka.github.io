@@ -556,13 +556,15 @@
                   if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{6}$/.test(value)) {
                     // Already in correct format, keep as is
                   } else {
-                    // Parse date format from spreadsheet
+                    // Parse various date formats from spreadsheet
+                    // e.g., "2026-01-06 08:00:00", "2026-01-06T08:00:00", "1/6/2026 8:00:00"
                     const dateObj = new Date(value);
                     if (!isNaN(dateObj.getTime())) {
-                      // Convert to ISO 8601 format with microseconds
+                      // Convert to ISO 8601 format and add microseconds
+                      // toISOString() always returns "YYYY-MM-DDTHH:mm:ss.sssZ" format
                       const isoStr = dateObj.toISOString();
-                      // Convert to microsecond format: 2026-01-05T11:30:00.000Z → 2026-01-05T11:30:00.000000
-                      value = isoStr.replace(/\.(\d{3})Z$/, '.$1000');
+                      // Replace .sssZ with .sss000
+                      value = isoStr.replace('Z', '000');
                     }
                   }
                 } catch (e) {
