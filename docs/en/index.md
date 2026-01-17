@@ -16,7 +16,7 @@ title: "Still Time Studio - English"
 
 <section id="meditation-timer">
     <img src="/images/meditation_timer/meditation_timer_icon.png" alt="Still Time app icon" class="app-icon">
-    <h2>Still Time / わたし時間</h2>
+    <h2>Still Time</h2>
     <p>A user-friendly interface with breathing-support animation and gentle sounds to enhance your meditation practice.</p>
     <a href="/meditation_timer" class="detail-link">View Details</a>
 </section>

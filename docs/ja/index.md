@@ -5,15 +5,15 @@ title: アプリ総合窓口
 <section id="site-intro">
     <h2>このサイトについて</h2>
     <p>
-    このサイトでは、シンプルで使いやすい瞑想タイマーアプリ「わたし時間 / Still Time」を紹介しています。<br>
-    日々の生活に「わたし時間」を取り戻し、心を整えるサポートを目的としたアプリです。<br>
+    このサイトでは、シンプルで使いやすい瞑想タイマーアプリ「Still Time」を紹介しています。<br>
+    日々の生活に静かな時間を取り戻し、心を整えるサポートを目的としたアプリです。<br>
     詳細ページでは、アプリの機能や開発者の想いについて詳しく紹介しています。
 </p>
 </section>
 
 <section id="meditation-timer">
     <img src="/images/meditation_timer/meditation_timer_icon.png" alt="瞑想タイマーのアイコン" class="app-icon">
-    <h2>わたし時間 / Still Time</h2>
+    <h2>Still Time</h2>
     <p>使いやすいインターフェース。呼吸をサポートするアニメーションと、穏やかなサウンドで、あなたの瞑想をサポートします。</p>
     <a href="/ja/meditation-timer-jp" class="detail-link">詳細を見る</a>
 </section>

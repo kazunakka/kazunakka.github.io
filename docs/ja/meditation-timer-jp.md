@@ -1,7 +1,7 @@
 ---
 layout: default
 lang: ja
-title: "わたし時間 / Still Time - 詳細"
+title: "Still Time - 詳細"
 page_type: meditation_timer_ja
 ---
 
@@ -9,7 +9,7 @@ page_type: meditation_timer_ja
 <section id="about">
     <h2>アプリについて</h2>
     <img src="/images/meditation_timer/meditation_timer_icon.png" alt="瞑想タイマーのアイコン" class="app-icon">
-    <p>「わたし時間 / Still Time」は、余計な要素を省き、純粋な瞑想体験をサポートするために作られた、Android端末用の瞑想タイマーアプリです。</p>
+    <p>「Still Time」は、余計な要素を省き、純粋な瞑想体験をサポートするために作られた、Android端末用の瞑想タイマーアプリです。</p>
     <p>私自身、瞑想をする中で、スマホのタイマーアプリでは、終了時間を知らせる音が大きかったり、いつまでも鳴っていたりと、瞑想の終りを知らせる手段としては、あまりふさわしくないと感じていました。それがこのアプリを作ろうと思ったきっかけでした。</p>
     <p>それと、フリーで配布されているアプリの多くには広告がついていて、瞑想の前後に広告を目にすることになり、瞑想の効果の点で良くない影響があると考えました。</p>
 
