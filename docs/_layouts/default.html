@@ -1,84 +1,87 @@
 <!DOCTYPE html>
 <html lang="{{ page.lang | default: 'ja' }}">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ page.title | default: site.title }}</title>
     <link rel="stylesheet" href="/assets/main.css">
 </head>
+
 <body>
     <header>
         <h1>Still Time Studio</h1>
         <nav>
             <ul>
                 {% if page.page_type == 'meditation_timer' %}
-                    <!-- 瞑想アプリ詳細ページ（英語） -->
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/ja/meditation-timer-jp">🇯🇵 日本語</a></li>
-                    <li><a href="#about">About the App</a></li>
-                    <li><a href="#how-to-use">How to Use</a></li>
-                    <li><a href="#my-thoughts">My Thoughts</a></li>
-                    <li><a href="#support">Support Development</a></li>
-                    <li><a href="#download">Download</a></li>
+                <!-- 瞑想アプリ詳細ページ（英語） -->
+                <li><a href="/">Home</a></li>
+                <li><a href="/ja/meditation-timer-jp">🇯🇵 日本語</a></li>
+                <li><a href="#about">About the App</a></li>
+                <li><a href="#how-to-use">How to Use</a></li>
+                <li><a href="#my-thoughts">My Thoughts</a></li>
+                <li><a href="#support">Support Development</a></li>
+                <li><a href="#download">Download</a></li>
                 {% elsif page.page_type == 'meditation_timer_ja' %}
-                    <!-- 瞑想アプリ詳細ページ（日本語） -->
-                    <li><a href="/ja/">ホーム</a></li>
-                    <li><a href="/meditation_timer">🇺🇸 English</a></li>
-                    <li><a href="#about">アプリについて</a></li>
-                    <li><a href="#how-to-use">使い方</a></li>
-                    <li><a href="#my-thoughts">開発者の想い</a></li>
-                    <li><a href="#support">開発支援</a></li>
-                    <li><a href="#download">ダウンロード</a></li>
+                <!-- 瞑想アプリ詳細ページ（日本語） -->
+                <li><a href="/ja/">ホーム</a></li>
+                <li><a href="/meditation_timer">🇺🇸 English</a></li>
+                <li><a href="#about">アプリについて</a></li>
+                <li><a href="#how-to-use">使い方</a></li>
+                <li><a href="#my-thoughts">開発者の想い</a></li>
+                <li><a href="#support">開発支援</a></li>
+                <li><a href="#download">ダウンロード</a></li>
                 {% elsif page.url == '/ja/' or page.url == '/' %}
-                    <!-- 日本語ホームページ -->
-                    <li><a href="#meditation-timer">わたし時間 / Still Time</a></li>
-                    <li><a href="#log-editor-tool">ログエディターツール</a></li>
-                    <li><a href="#support-qa">サポート・Q&A</a></li>
+                <!-- 日本語ホームページ -->
+                <li><a href="#meditation-timer">Still Time</a></li>
+                <li><a href="#log-editor-tool">ログエディターツール</a></li>
+                <li><a href="#support-qa">サポート・Q&A</a></li>
                 {% elsif page.url == '/en/' %}
-                    <!-- 英語ホームページ -->
-                    <li><a href="#meditation-timer">Still Time</a></li>
-                    <li><a href="#log-editor-tool">Log Editor Tool</a></li>
-                    <li><a href="#support-qa">Support & Q&A</a></li>
+                <!-- 英語ホームページ -->
+                <li><a href="#meditation-timer">Still Time</a></li>
+                <li><a href="#log-editor-tool">Log Editor Tool</a></li>
+                <li><a href="#support-qa">Support & Q&A</a></li>
                 {% else %}
-                    <!-- その他のページ -->
-                    <li><a href="/">Home</a></li>
+                <!-- その他のページ -->
+                <li><a href="/">Home</a></li>
                 {% endif %}
             </ul>
         </nav>
     </header>
-    
+
     <main>
-         {{ content | markdownify }} 
+        {{ content | markdownify }}
     </main>
-    
+
     <footer>
         <p>&copy; 2025 Still Time Studio</p>
     </footer>
 
- 
-    
-    
-    <button class="back-to-top" id="backToTop" onclick="scrollToTop()">↑</button>
-    
-    
-    <script>
-// 上に戻るボタンの表示制御
-window.addEventListener('scroll', function() {
-    const backToTopButton = document.getElementById('backToTop');
-    if (window.pageYOffset > 300) {
-        backToTopButton.classList.add('show');
-    } else {
-        backToTopButton.classList.remove('show');
-    }
-});
 
-// スムーズスクロール
-function scrollToTop() {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
-}
-</script>
+
+
+    <button class="back-to-top" id="backToTop" onclick="scrollToTop()">↑</button>
+
+
+    <script>
+        // 上に戻るボタンの表示制御
+        window.addEventListener('scroll', function () {
+            const backToTopButton = document.getElementById('backToTop');
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.add('show');
+            } else {
+                backToTopButton.classList.remove('show');
+            }
+        });
+
+        // スムーズスクロール
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+    </script>
 </body>
+
 </html>
