@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ログビューアー - Still Time</title>
     <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
-    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+    <script crossorigin
+        src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -13,16 +15,19 @@
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
             font-family: 'Kalam', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background: linear-gradient(135deg, #66b2b2, #8cc5c5);
             min-height: 100vh;
         }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 24px;
         }
+
         .card {
             background: white;
             border: 2px solid #66b2b2;
@@ -31,6 +36,7 @@
             padding: 24px;
             margin-bottom: 24px;
         }
+
         .btn {
             padding: 10px 20px;
             border: none;
@@ -40,25 +46,31 @@
             font-weight: 700;
             transition: all 0.3s ease;
         }
+
         .btn-primary {
             background: #66b2b2;
             color: white;
             box-shadow: 0 2px 8px rgba(102, 178, 178, 0.3);
         }
+
         .btn-primary:hover {
             background: #4d8a8a;
         }
+
         .btn-secondary {
             background: #e6f4f4;
             color: #336666;
         }
+
         .btn-secondary:hover {
             background: #b3d6d6;
         }
+
         .btn-active {
             background: #66b2b2 !important;
             color: white !important;
         }
+
         textarea {
             width: 100%;
             height: 120px;
@@ -69,11 +81,13 @@
             font-size: 14px;
             resize: vertical;
         }
+
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
             gap: 4px;
         }
+
         .calendar-day {
             aspect-ratio: 1;
             border: 2px solid #e6f4f4;
@@ -87,30 +101,37 @@
             transition: all 0.3s ease;
             font-size: 0.9rem;
         }
+
         .calendar-day:hover {
             transform: scale(1.05);
         }
+
         @media (max-width: 768px) {
             .calendar-grid {
                 gap: 2px;
             }
+
             .calendar-day {
                 padding: 2px;
                 font-size: 0.75rem;
                 border-width: 1px;
             }
+
             .calendar-day-emoji {
                 font-size: 1rem;
             }
+
             .calendar-day-count {
                 font-size: 0.6rem;
             }
         }
+
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 16px;
         }
+
         .stat-card {
             background: white;
             border: 2px solid #66b2b2;
@@ -118,6 +139,7 @@
             padding: 20px;
             box-shadow: 0 4px 12px rgba(51, 102, 102, 0.1);
         }
+
         .timeline-item {
             border-left: 4px solid;
             padding-left: 16px;
@@ -126,17 +148,20 @@
             margin-bottom: 16px;
             border-radius: 0 8px 8px 0;
         }
+
         .chart-bar {
             display: flex;
             align-items: center;
             gap: 12px;
             margin-bottom: 12px;
         }
+
         .bar-fill {
             height: 40px;
             border-radius: 20px;
             transition: width 0.5s ease;
         }
+
         .error-box {
             background: #fef2f2;
             border: 2px solid #d17e83;
@@ -145,18 +170,21 @@
             color: #991b1b;
             margin-top: 16px;
         }
+
         .nav-buttons {
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
             margin-bottom: 16px;
         }
+
         .period-selector {
             display: flex;
             align-items: center;
             gap: 12px;
             margin-top: 12px;
         }
+
         .arrow-btn {
             width: 40px;
             height: 40px;
@@ -169,18 +197,59 @@
             border: none;
             cursor: pointer;
         }
+
         .arrow-btn:disabled {
             opacity: 0.3;
             cursor: not-allowed;
         }
+
+        /* カレンダーグリッドの親要素に幅制限 */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+            max-width: 100%;
+            /* これを追加 */
+            overflow: hidden;
+            /* これを追加 */
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 12px;
+                max-width: 100%;
+                /* これを追加 */
+            }
+
+            .card {
+                padding: 12px;
+                /* 16pxから12pxに変更 */
+                overflow: hidden;
+                /* これを追加 */
+            }
+
+            .calendar-grid {
+                gap: 1px;
+                width: 100%;
+                max-width: 100%;
+                /* 念のため */
+            }
+
+            /* 曜日ヘッダーのスタイル調整 */
+            .calendar-grid>div:nth-child(-n+7) {
+                padding: 4px 2px !important;
+                font-size: 0.7rem !important;
+            }
+        }
     </style>
 </head>
+
 <body>
     <div id="root"></div>
-    
+
     <script>
         const { useState, useMemo, createElement: h } = React;
-        
+
         const sampleLogs = [
             { date: "2026-01-18T08:00:00.000000", durationMinutes: 10, mood: 5, memo: "朝の瞑想。気分爽快。" },
             { date: "2026-01-17T20:30:00.000000", durationMinutes: 15, mood: 4, memo: "寝る前のリラックス。" },
@@ -257,7 +326,7 @@
                 const firstDay = new Date(year, month, 1);
                 const lastDay = new Date(year, month + 1, 0);
                 const logsByDate = {};
-                
+
                 logs.forEach(log => {
                     const date = new Date(log.date);
                     if (date.getFullYear() === year && date.getMonth() === month) {
@@ -266,7 +335,7 @@
                         logsByDate[day].push(log);
                     }
                 });
-                
+
                 return { firstDay, lastDay, logsByDate };
             }, [logs, selectedMonth]);
 
@@ -292,19 +361,19 @@
 
                 h('div', { className: 'card' },
                     h('div', { className: 'nav-buttons' },
-                        h('button', { 
+                        h('button', {
                             className: `btn btn-secondary ${view === 'calendar' ? 'btn-active' : ''}`,
                             onClick: () => setView('calendar')
                         }, '📅 カレンダー'),
-                        h('button', { 
+                        h('button', {
                             className: `btn btn-secondary ${view === 'stats' ? 'btn-active' : ''}`,
                             onClick: () => setView('stats')
                         }, '📈 統計'),
-                        h('button', { 
+                        h('button', {
                             className: `btn btn-secondary ${view === 'timeline' ? 'btn-active' : ''}`,
                             onClick: () => setView('timeline')
                         }, '📋 タイムライン'),
-                        h('button', { 
+                        h('button', {
                             className: `btn btn-secondary ${view === 'chart' ? 'btn-active' : ''}`,
                             onClick: () => setView('chart')
                         }, '📊 グラフ')
@@ -314,15 +383,15 @@
                 (view === 'timeline' || view === 'chart') && h('div', { className: 'card' },
                     h('div', { className: 'nav-buttons' },
                         h('span', { style: { fontWeight: 'bold', color: '#336666', padding: '10px' } }, '表示期間：'),
-                        h('button', { 
+                        h('button', {
                             className: `btn btn-secondary ${filterType === 'all' ? 'btn-active' : ''}`,
                             onClick: () => setFilterType('all')
                         }, 'すべて'),
-                        h('button', { 
+                        h('button', {
                             className: `btn btn-secondary ${filterType === 'year' ? 'btn-active' : ''}`,
                             onClick: () => setFilterType('year')
                         }, '年別'),
-                        h('button', { 
+                        h('button', {
                             className: `btn btn-secondary ${filterType === 'month' ? 'btn-active' : ''}`,
                             onClick: () => setFilterType('month')
                         }, '月別')
@@ -406,7 +475,7 @@
                     ),
                     h('div', { className: 'stat-card' },
                         h('div', { style: { fontSize: '0.9rem', fontWeight: 'bold', color: '#336666', marginBottom: '8px' } }, '平均時間'),
-                        h('div', { style: { fontSize: '3rem', fontWeight: 'bold', color: '#336666' } }, 
+                        h('div', { style: { fontSize: '3rem', fontWeight: 'bold', color: '#336666' } },
                             logs.length > 0 ? (totalMinutes / logs.length).toFixed(0) : 0
                         ),
                         h('div', { style: { fontSize: '0.9rem', color: '#4d8a8a' } }, '分/回')
@@ -416,17 +485,17 @@
                 view === 'calendar' && h('div', null,
                     h('div', { className: 'card' },
                         h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' } },
-                            h('button', { 
+                            h('button', {
                                 className: 'btn btn-primary',
                                 onClick: () => {
                                     setSelectedMonth(new Date(selectedMonth.getFullYear(), selectedMonth.getMonth() - 1, 1));
                                     setSelectedDay(null);
                                 }
                             }, '← 前月'),
-                            h('h2', { style: { color: '#336666', fontSize: '1.5rem' } }, 
+                            h('h2', { style: { color: '#336666', fontSize: '1.5rem' } },
                                 `${selectedMonth.getFullYear()}年 ${selectedMonth.getMonth() + 1}月`
                             ),
-                            h('button', { 
+                            h('button', {
                                 className: 'btn btn-primary',
                                 onClick: () => {
                                     setSelectedMonth(new Date(selectedMonth.getFullYear(), selectedMonth.getMonth() + 1, 1));
@@ -462,7 +531,7 @@
                         )
                     ),
                     selectedDay && calendarData.logsByDate[selectedDay] && h('div', { className: 'card' },
-                        h('h3', { style: { color: '#336666', marginBottom: '16px' } }, 
+                        h('h3', { style: { color: '#336666', marginBottom: '16px' } },
                             `${selectedMonth.getFullYear()}年${selectedMonth.getMonth() + 1}月${selectedDay}日の記録`
                         ),
                         calendarData.logsByDate[selectedDay].map((log, index) => {
@@ -492,7 +561,7 @@
 
                 view === 'timeline' && h('div', { className: 'card' },
                     h('h2', { style: { color: '#336666', marginBottom: '16px' } }, `📜 瞑想の記録 (${filteredLogs.length}件)`),
-                    filteredLogs.length === 0 ? 
+                    filteredLogs.length === 0 ?
                         h('p', { style: { color: '#4d8a8a' } }, 'この期間には記録がありません') :
                         filteredLogs.map((log, index) => {
                             const date = new Date(log.date);
@@ -556,4 +625,5 @@
         ReactDOM.render(React.createElement(LogViewer), document.getElementById('root'));
     </script>
 </body>
+
 </html>
