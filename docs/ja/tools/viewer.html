@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ログビューアー - Still Time</title>
+    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+    <script crossorigin
+        src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Kalam', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #66b2b2, #8cc5c5);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        .card {
+            background: white;
+            border: 2px solid #66b2b2;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(51, 102, 102, 0.2);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: 'Kalam', sans-serif;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: #66b2b2;
+            color: white;
+            box-shadow: 0 2px 8px rgba(102, 178, 178, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: #4d8a8a;
+        }
+
+        .btn-secondary {
+            background: #e6f4f4;
+            color: #336666;
+        }
+
+        .btn-secondary:hover {
+            background: #b3d6d6;
+        }
+
+        .btn-active {
+            background: #66b2b2 !important;
+            color: white !important;
+        }
+
+        textarea {
+            width: 100%;
+            height: 120px;
+            padding: 12px;
+            border: 2px solid #8cc5c5;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 14px;
+            resize: vertical;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            border: 2px solid #e6f4f4;
+            border-radius: 8px;
+            padding: 4px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .calendar-day:hover {
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .calendar-grid {
+                gap: 2px;
+            }
+
+            .calendar-day {
+                padding: 2px;
+                font-size: 0.75rem;
+                border-width: 1px;
+            }
+
+            .calendar-day-emoji {
+                font-size: 1rem;
+            }
+
+            .calendar-day-count {
+                font-size: 0.6rem;
+            }
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .stat-card {
+            background: white;
+            border: 2px solid #66b2b2;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(51, 102, 102, 0.1);
+        }
+
+        .timeline-item {
+            border-left: 4px solid;
+            padding-left: 16px;
+            padding-top: 12px;
+            padding-bottom: 12px;
+            margin-bottom: 16px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .chart-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .bar-fill {
+            height: 40px;
+            border-radius: 20px;
+            transition: width 0.5s ease;
+        }
+
+        .error-box {
+            background: #fef2f2;
+            border: 2px solid #d17e83;
+            border-radius: 12px;
+            padding: 12px;
+            color: #991b1b;
+            margin-top: 16px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .period-selector {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .arrow-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #e6f4f4;
+            color: #336666;
+            border: none;
+            cursor: pointer;
+        }
+
+        .arrow-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        /* 既存のCSSに追加 */
+
+        /* カレンダーのレスポンシブ対応 */
+        @media (max-width: 768px) {
+            .calendar-grid {
+                gap: 2px;
+            }
+
+            .calendar-day {
+                padding: 2px;
+                font-size: 0.7rem;
+                border-width: 1px;
+            }
+
+            .calendar-day>div:first-child {
+                font-size: 0.8rem;
+            }
+
+            .calendar-day>div:nth-child(2) {
+                font-size: 1rem;
+            }
+
+            .calendar-day>div:last-child {
+                font-size: 0.6rem;
+            }
+
+            .card {
+                padding: 16px;
+            }
+
+            .btn {
+                padding: 8px 16px;
+                font-size: 0.9rem;
+            }
+
+            .chart-bar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .calendar-day {
+                font-size: 0.65rem;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script>
+        const { useState, useMemo, createElement: h } = React;
+
+        const sampleLogs = [
+            { date: "2026-01-18T08:00:00.000000", durationMinutes: 10, mood: 5, memo: "朝の瞑想。気分爽快。" },
+            { date: "2026-01-17T20:30:00.000000", durationMinutes: 15, mood: 4, memo: "寝る前のリラックス。" },
+            { date: "2026-01-16T12:00:00.000000", durationMinutes: 5, mood: 3, memo: "昼休みに短く。" },
+            { date: "2026-01-15T08:00:00.000000", durationMinutes: 20, mood: 5, memo: "週末の朝、じっくりと。" },
+            { date: "2026-01-14T19:00:00.000000", durationMinutes: 10, mood: 4, memo: "仕事終わりにリフレッシュ。" },
+            { date: "2026-01-10T07:30:00.000000", durationMinutes: 15, mood: 5, memo: "早朝の瞑想" },
+            { date: "2026-01-08T21:00:00.000000", durationMinutes: 10, mood: 3, memo: "" },
+            { date: "2025-12-25T09:00:00.000000", durationMinutes: 30, mood: 5, memo: "クリスマスの朝" },
+            { date: "2025-11-15T18:00:00.000000", durationMinutes: 10, mood: 4, memo: "秋の瞑想" },
+            { date: "2024-06-10T08:00:00.000000", durationMinutes: 20, mood: 5, memo: "昨年の記録" }
+        ];
+
+        function LogViewer() {
+            const [view, setView] = useState('calendar');
+            const [selectedMonth, setSelectedMonth] = useState(new Date());
+            const [selectedDay, setSelectedDay] = useState(null);
+            const [filterYear, setFilterYear] = useState(new Date().getFullYear());
+            const [filterMonth, setFilterMonth] = useState(new Date().getMonth() + 1);
+            const [filterType, setFilterType] = useState('all');
+            const [logs, setLogs] = useState(sampleLogs);
+            const [jsonInput, setJsonInput] = useState('');
+            const [error, setError] = useState('');
+
+            const getMoodEmoji = (mood) => {
+                const emojis = { 1: '😫', 2: '😞', 3: '😐', 4: '🙂', 5: '😄' };
+                return emojis[mood] || '😐';
+            };
+
+            const getMoodColor = (mood) => {
+                const colors = { 1: '#d17e83', 2: '#e6a47e', 3: '#8cc5c5', 4: '#7eb8e6', 5: '#66b2b2' };
+                return colors[mood] || '#8cc5c5';
+            };
+
+            const loadData = () => {
+                try {
+                    const parsed = JSON.parse(jsonInput);
+                    if (!Array.isArray(parsed)) {
+                        throw new Error('JSONは配列形式である必要があります');
+                    }
+                    setLogs(parsed);
+                    setError('');
+                } catch (e) {
+                    setError('無効なJSON形式です: ' + e.message);
+                }
+            };
+
+            const availableYears = useMemo(() => {
+                const years = [...new Set(logs.map(log => new Date(log.date).getFullYear()))];
+                return years.sort((a, b) => b - a);
+            }, [logs]);
+
+            const availableMonths = useMemo(() => {
+                return logs
+                    .filter(log => new Date(log.date).getFullYear() === filterYear)
+                    .map(log => new Date(log.date).getMonth() + 1)
+                    .filter((month, index, self) => self.indexOf(month) === index)
+                    .sort((a, b) => b - a);
+            }, [logs, filterYear]);
+
+            const filteredLogs = useMemo(() => {
+                return logs.filter(log => {
+                    const logDate = new Date(log.date);
+                    if (filterType === 'all') return true;
+                    if (filterType === 'year') return logDate.getFullYear() === filterYear;
+                    if (filterType === 'month') return logDate.getFullYear() === filterYear && logDate.getMonth() + 1 === filterMonth;
+                    return true;
+                }).sort((a, b) => new Date(b.date) - new Date(a.date));
+            }, [logs, filterType, filterYear, filterMonth]);
+
+            const calendarData = useMemo(() => {
+                const year = selectedMonth.getFullYear();
+                const month = selectedMonth.getMonth();
+                const firstDay = new Date(year, month, 1);
+                const lastDay = new Date(year, month + 1, 0);
+                const logsByDate = {};
+
+                logs.forEach(log => {
+                    const date = new Date(log.date);
+                    if (date.getFullYear() === year && date.getMonth() === month) {
+                        const day = date.getDate();
+                        if (!logsByDate[day]) logsByDate[day] = [];
+                        logsByDate[day].push(log);
+                    }
+                });
+
+                return { firstDay, lastDay, logsByDate };
+            }, [logs, selectedMonth]);
+
+            const totalMinutes = logs.reduce((sum, log) => sum + log.durationMinutes, 0);
+            const avgMood = logs.length > 0 ? (logs.reduce((sum, log) => sum + log.mood, 0) / logs.length).toFixed(1) : 0;
+
+            return h('div', { className: 'container' },
+                h('div', { className: 'card' },
+                    h('h1', { style: { color: '#336666', fontSize: '2rem', marginBottom: '8px' } }, 'Still Time ログビューアー'),
+                    h('p', { style: { color: '#336666' } }, 'あなたの瞑想の記録を美しく振り返る')
+                ),
+
+                h('div', { className: 'card' },
+                    h('h2', { style: { color: '#336666', marginBottom: '16px' } }, '📥 データを読み込む'),
+                    h('textarea', {
+                        placeholder: 'アプリからエクスポートしたJSONデータを貼り付けてください',
+                        value: jsonInput,
+                        onChange: (e) => setJsonInput(e.target.value)
+                    }),
+                    h('button', { className: 'btn btn-primary', onClick: loadData, style: { marginTop: '12px' } }, 'データを読み込む'),
+                    error && h('div', { className: 'error-box' }, error)
+                ),
+
+                h('div', { className: 'card' },
+                    h('div', { className: 'nav-buttons' },
+                        h('button', {
+                            className: `btn btn-secondary ${view === 'calendar' ? 'btn-active' : ''}`,
+                            onClick: () => setView('calendar')
+                        }, '📅 カレンダー'),
+                        h('button', {
+                            className: `btn btn-secondary ${view === 'stats' ? 'btn-active' : ''}`,
+                            onClick: () => setView('stats')
+                        }, '📈 統計'),
+                        h('button', {
+                            className: `btn btn-secondary ${view === 'timeline' ? 'btn-active' : ''}`,
+                            onClick: () => setView('timeline')
+                        }, '📋 タイムライン'),
+                        h('button', {
+                            className: `btn btn-secondary ${view === 'chart' ? 'btn-active' : ''}`,
+                            onClick: () => setView('chart')
+                        }, '📊 グラフ')
+                    )
+                ),
+
+                (view === 'timeline' || view === 'chart') && h('div', { className: 'card' },
+                    h('div', { className: 'nav-buttons' },
+                        h('span', { style: { fontWeight: 'bold', color: '#336666', padding: '10px' } }, '表示期間：'),
+                        h('button', {
+                            className: `btn btn-secondary ${filterType === 'all' ? 'btn-active' : ''}`,
+                            onClick: () => setFilterType('all')
+                        }, 'すべて'),
+                        h('button', {
+                            className: `btn btn-secondary ${filterType === 'year' ? 'btn-active' : ''}`,
+                            onClick: () => setFilterType('year')
+                        }, '年別'),
+                        h('button', {
+                            className: `btn btn-secondary ${filterType === 'month' ? 'btn-active' : ''}`,
+                            onClick: () => setFilterType('month')
+                        }, '月別')
+                    ),
+                    filterType === 'year' && h('div', { className: 'period-selector' },
+                        h('button', {
+                            className: 'arrow-btn',
+                            disabled: availableYears.indexOf(filterYear) === availableYears.length - 1,
+                            onClick: () => {
+                                const idx = availableYears.indexOf(filterYear);
+                                if (idx < availableYears.length - 1) setFilterYear(availableYears[idx + 1]);
+                            }
+                        }, '←'),
+                        h('span', { style: { fontWeight: 'bold', fontSize: '1.5rem', color: '#336666' } }, `${filterYear}年`),
+                        h('button', {
+                            className: 'arrow-btn',
+                            disabled: availableYears.indexOf(filterYear) === 0,
+                            onClick: () => {
+                                const idx = availableYears.indexOf(filterYear);
+                                if (idx > 0) setFilterYear(availableYears[idx - 1]);
+                            }
+                        }, '→')
+                    ),
+                    filterType === 'month' && h('div', null,
+                        h('div', { className: 'period-selector' },
+                            h('button', {
+                                className: 'arrow-btn',
+                                disabled: availableYears.indexOf(filterYear) === availableYears.length - 1,
+                                onClick: () => {
+                                    const idx = availableYears.indexOf(filterYear);
+                                    if (idx < availableYears.length - 1) setFilterYear(availableYears[idx + 1]);
+                                }
+                            }, '←'),
+                            h('span', { style: { fontWeight: 'bold', fontSize: '1.5rem', color: '#336666' } }, `${filterYear}年`),
+                            h('button', {
+                                className: 'arrow-btn',
+                                disabled: availableYears.indexOf(filterYear) === 0,
+                                onClick: () => {
+                                    const idx = availableYears.indexOf(filterYear);
+                                    if (idx > 0) setFilterYear(availableYears[idx - 1]);
+                                }
+                            }, '→')
+                        ),
+                        h('div', { className: 'period-selector' },
+                            h('button', {
+                                className: 'arrow-btn',
+                                disabled: availableMonths.indexOf(filterMonth) === availableMonths.length - 1,
+                                onClick: () => {
+                                    const idx = availableMonths.indexOf(filterMonth);
+                                    if (idx < availableMonths.length - 1) setFilterMonth(availableMonths[idx + 1]);
+                                }
+                            }, '←'),
+                            h('span', { style: { fontWeight: 'bold', fontSize: '1.5rem', color: '#336666' } }, `${filterMonth}月`),
+                            h('button', {
+                                className: 'arrow-btn',
+                                disabled: availableMonths.indexOf(filterMonth) === 0,
+                                onClick: () => {
+                                    const idx = availableMonths.indexOf(filterMonth);
+                                    if (idx > 0) setFilterMonth(availableMonths[idx - 1]);
+                                }
+                            }, '→')
+                        )
+                    )
+                ),
+
+                view === 'stats' && h('div', { className: 'stats-grid' },
+                    h('div', { className: 'stat-card' },
+                        h('div', { style: { fontSize: '0.9rem', fontWeight: 'bold', color: '#336666', marginBottom: '8px' } }, '総瞑想回数'),
+                        h('div', { style: { fontSize: '3rem', fontWeight: 'bold', color: '#336666' } }, logs.length),
+                        h('div', { style: { fontSize: '0.9rem', color: '#4d8a8a' } }, '回')
+                    ),
+                    h('div', { className: 'stat-card' },
+                        h('div', { style: { fontSize: '0.9rem', fontWeight: 'bold', color: '#336666', marginBottom: '8px' } }, '総瞑想時間'),
+                        h('div', { style: { fontSize: '3rem', fontWeight: 'bold', color: '#336666' } }, totalMinutes),
+                        h('div', { style: { fontSize: '0.9rem', color: '#4d8a8a' } }, `分 (${(totalMinutes / 60).toFixed(1)}時間)`)
+                    ),
+                    h('div', { className: 'stat-card' },
+                        h('div', { style: { fontSize: '0.9rem', fontWeight: 'bold', color: '#336666', marginBottom: '8px' } }, '平均気分'),
+                        h('div', { style: { fontSize: '3rem', fontWeight: 'bold', color: '#336666' } }, avgMood),
+                        h('div', { style: { fontSize: '0.9rem', color: '#4d8a8a' } }, '/ 5.0')
+                    ),
+                    h('div', { className: 'stat-card' },
+                        h('div', { style: { fontSize: '0.9rem', fontWeight: 'bold', color: '#336666', marginBottom: '8px' } }, '平均時間'),
+                        h('div', { style: { fontSize: '3rem', fontWeight: 'bold', color: '#336666' } },
+                            logs.length > 0 ? (totalMinutes / logs.length).toFixed(0) : 0
+                        ),
+                        h('div', { style: { fontSize: '0.9rem', color: '#4d8a8a' } }, '分/回')
+                    )
+                ),
+
+                view === 'calendar' && h('div', null,
+                    h('div', { className: 'card' },
+                        h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' } },
+                            h('button', {
+                                className: 'btn btn-primary',
+                                onClick: () => {
+                                    setSelectedMonth(new Date(selectedMonth.getFullYear(), selectedMonth.getMonth() - 1, 1));
+                                    setSelectedDay(null);
+                                }
+                            }, '← 前月'),
+                            h('h2', { style: { color: '#336666', fontSize: '1.5rem' } },
+                                `${selectedMonth.getFullYear()}年 ${selectedMonth.getMonth() + 1}月`
+                            ),
+                            h('button', {
+                                className: 'btn btn-primary',
+                                onClick: () => {
+                                    setSelectedMonth(new Date(selectedMonth.getFullYear(), selectedMonth.getMonth() + 1, 1));
+                                    setSelectedDay(null);
+                                }
+                            }, '次月 →')
+                        ),
+                        h('div', { className: 'calendar-grid' },
+                            ['日', '月', '火', '水', '木', '金', '土'].map(day =>
+                                h('div', { key: day, style: { textAlign: 'center', fontWeight: 'bold', color: '#336666', padding: '8px' } }, day)
+                            ),
+                            Array.from({ length: calendarData.firstDay.getDay() }).map((_, i) =>
+                                h('div', { key: `empty-${i}` })
+                            ),
+                            Array.from({ length: calendarData.lastDay.getDate() }, (_, i) => i + 1).map(day => {
+                                const dayLogs = calendarData.logsByDate[day] || [];
+                                const avgMood = dayLogs.length > 0 ? dayLogs.reduce((sum, log) => sum + log.mood, 0) / dayLogs.length : 0;
+                                return h('div', {
+                                    key: day,
+                                    className: 'calendar-day',
+                                    onClick: () => dayLogs.length > 0 && setSelectedDay(selectedDay === day ? null : day),
+                                    style: {
+                                        borderColor: selectedDay === day ? '#66b2b2' : (dayLogs.length > 0 ? getMoodColor(Math.round(avgMood)) : '#e6f4f4'),
+                                        background: dayLogs.length > 0 ? `${getMoodColor(Math.round(avgMood))}15` : 'white',
+                                        borderWidth: selectedDay === day ? '3px' : '2px'
+                                    }
+                                },
+                                    h('div', { style: { fontWeight: 'bold', color: '#336666' } }, day),
+                                    dayLogs.length > 0 && h('div', { className: 'calendar-day-emoji', style: { fontSize: '1.5rem' } }, getMoodEmoji(Math.round(avgMood))),
+                                    dayLogs.length > 0 && h('div', { className: 'calendar-day-count', style: { fontSize: '0.7rem', color: '#4d8a8a' } }, `${dayLogs.length}回`)
+                                );
+                            })
+                        )
+                    ),
+                    selectedDay && calendarData.logsByDate[selectedDay] && h('div', { className: 'card' },
+                        h('h3', { style: { color: '#336666', marginBottom: '16px' } },
+                            `${selectedMonth.getFullYear()}年${selectedMonth.getMonth() + 1}月${selectedDay}日の記録`
+                        ),
+                        calendarData.logsByDate[selectedDay].map((log, index) => {
+                            const date = new Date(log.date);
+                            return h('div', {
+                                key: index,
+                                className: 'timeline-item',
+                                style: {
+                                    borderColor: getMoodColor(log.mood),
+                                    background: `${getMoodColor(log.mood)}10`
+                                }
+                            },
+                                h('div', { style: { display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' } },
+                                    h('span', { style: { fontSize: '1.5rem' } }, getMoodEmoji(log.mood)),
+                                    h('div', null,
+                                        h('div', { style: { fontWeight: 'bold', color: '#336666' } },
+                                            `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`
+                                        ),
+                                        h('div', { style: { fontSize: '0.9rem', color: '#4d8a8a' } }, `${log.durationMinutes}分間の瞑想`)
+                                    )
+                                ),
+                                log.memo && h('div', { style: { marginLeft: '44px', color: '#2D2D2D' } }, log.memo)
+                            );
+                        })
+                    )
+                ),
+
+                view === 'timeline' && h('div', { className: 'card' },
+                    h('h2', { style: { color: '#336666', marginBottom: '16px' } }, `📜 瞑想の記録 (${filteredLogs.length}件)`),
+                    filteredLogs.length === 0 ?
+                        h('p', { style: { color: '#4d8a8a' } }, 'この期間には記録がありません') :
+                        filteredLogs.map((log, index) => {
+                            const date = new Date(log.date);
+                            return h('div', {
+                                key: index,
+                                className: 'timeline-item',
+                                style: {
+                                    borderColor: getMoodColor(log.mood),
+                                    background: `${getMoodColor(log.mood)}05`
+                                }
+                            },
+                                h('div', { style: { display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' } },
+                                    h('span', { style: { fontSize: '1.5rem' } }, getMoodEmoji(log.mood)),
+                                    h('div', null,
+                                        h('div', { style: { fontWeight: 'bold', color: '#336666' } },
+                                            `${date.getFullYear()}/${String(date.getMonth() + 1).padStart(2, '0')}/${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`
+                                        ),
+                                        h('div', { style: { fontSize: '0.9rem', color: '#4d8a8a' } }, `${log.durationMinutes}分間の瞑想`)
+                                    )
+                                ),
+                                log.memo && h('div', { style: { marginLeft: '44px', color: '#2D2D2D' } }, log.memo)
+                            );
+                        })
+                ),
+
+                view === 'chart' && h('div', { className: 'card' },
+                    h('h2', { style: { color: '#336666', marginBottom: '24px' } }, `📊 気分の分布 (${filteredLogs.length}件)`),
+                    filteredLogs.length === 0 ?
+                        h('p', { style: { color: '#4d8a8a' } }, 'この期間には記録がありません') :
+                        [5, 4, 3, 2, 1].map(moodValue => {
+                            const count = filteredLogs.filter(log => log.mood === moodValue).length;
+                            const percentage = (count / filteredLogs.length * 100).toFixed(0);
+                            return h('div', { key: moodValue, className: 'chart-bar' },
+                                h('span', { style: { fontSize: '1.5rem' } }, getMoodEmoji(moodValue)),
+                                h('span', { style: { fontWeight: 'bold', color: '#336666', width: '70px' } }, `気分 ${moodValue}`),
+                                h('div', { style: { flex: 1, display: 'flex', alignItems: 'center', gap: '8px' } },
+                                    h('div', { style: { flex: 1, height: '40px', borderRadius: '20px', background: '#e6f4f4', overflow: 'hidden' } },
+                                        h('div', {
+                                            className: 'bar-fill',
+                                            style: {
+                                                width: `${percentage}%`,
+                                                background: getMoodColor(moodValue)
+                                            }
+                                        })
+                                    ),
+                                    h('div', { style: { display: 'flex', alignItems: 'center', gap: '8px', width: '100px' } },
+                                        h('span', { style: { fontWeight: 'bold', fontSize: '1.1rem', color: '#336666' } }, `${count}回`),
+                                        h('span', { style: { fontWeight: 'bold', color: '#4d8a8a' } }, `${percentage}%`)
+                                    )
+                                )
+                            );
+                        })
+                ),
+
+                h('div', { style: { textAlign: 'center', marginTop: '32px', color: 'white', fontSize: '0.9rem' } },
+                    h('p', null, 'Still Time Support Tool')
+                )
+            );
+        }
+
+        ReactDOM.render(React.createElement(LogViewer), document.getElementById('root'));
+    </script>
+</body>
+
+</html>
