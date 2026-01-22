@@ -204,42 +204,104 @@
         }
 
 
-        /* カレンダーグリッドの親要素に幅制限 */
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
             gap: 4px;
+            width: 100%;
+            /* max-widthではなくwidth */
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            border: 2px solid #e6f4f4;
+            border-radius: 8px;
+            padding: 4px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            width: 100%;
+            /* 追加 */
             max-width: 100%;
-            /* これを追加 */
-            overflow: hidden;
-            /* これを追加 */
+            /* 追加 */
         }
 
         @media (max-width: 768px) {
             .container {
-                padding: 12px;
-                max-width: 100%;
-                /* これを追加 */
+                padding: 8px;
+                /* さらに削減 */
             }
 
             .card {
                 padding: 12px;
-                /* 16pxから12pxに変更 */
-                overflow: hidden;
-                /* これを追加 */
+            }
+
+            .calendar-grid {
+                gap: 2px;
+                /* 1pxから2pxに戻す */
+                width: 100%;
+            }
+
+            .calendar-day {
+                padding: 2px;
+                font-size: 0.7rem;
+                border-width: 1px;
+                min-width: 0;
+                /* 追加: これが重要 */
+                min-height: 0;
+                /* 追加: これが重要 */
+            }
+
+            .calendar-day>div:first-child {
+                font-size: 0.75rem;
+            }
+
+            .calendar-day-emoji {
+                font-size: 1rem !important;
+            }
+
+            .calendar-day-count {
+                font-size: 0.6rem !important;
+            }
+
+            /* 曜日ヘッダー */
+            .calendar-grid>div {
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 4px;
+            }
+
+            .card {
+                padding: 8px;
             }
 
             .calendar-grid {
                 gap: 1px;
-                width: 100%;
-                max-width: 100%;
-                /* 念のため */
             }
 
-            /* 曜日ヘッダーのスタイル調整 */
-            .calendar-grid>div:nth-child(-n+7) {
-                padding: 4px 2px !important;
-                font-size: 0.7rem !important;
+            .calendar-day {
+                font-size: 0.65rem;
+                padding: 1px;
+            }
+
+            .calendar-day>div:first-child {
+                font-size: 0.7rem;
+            }
+
+            .calendar-day-emoji {
+                font-size: 0.9rem !important;
+            }
+
+            .calendar-day-count {
+                font-size: 0.55rem !important;
             }
         }
     </style>
